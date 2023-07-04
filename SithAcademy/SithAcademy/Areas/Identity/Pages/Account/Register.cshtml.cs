@@ -60,9 +60,16 @@ public class RegisterModel : PageModel
     }
 
 #pragma warning disable CS1998
-    public async Task OnGetAsync(string? returnUrl = null)
+    public async Task<IActionResult> OnGetAsync(string? returnUrl = null)
     {
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         ReturnUrl = returnUrl;
+
+        return Page();
     }
 #pragma warning restore CS1998
 
