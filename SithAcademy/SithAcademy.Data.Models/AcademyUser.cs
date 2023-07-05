@@ -10,5 +10,12 @@ using Microsoft.AspNetCore.Identity;
 /// </summary>
 public class AcademyUser : IdentityUser<Guid>
 {
+    public AcademyUser()
+    {
+        InProgressTrials = new HashSet<Trial>();
+        CompletedTrials = new HashSet<Trial>();
+    }
 
+    public virtual ICollection<Trial> InProgressTrials { get; set; }
+    public virtual ICollection<Trial> CompletedTrials { get; set; }
 }
