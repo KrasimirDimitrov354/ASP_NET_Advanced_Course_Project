@@ -1,5 +1,7 @@
 ﻿namespace SithAcademy.Data;
 
+using System.Reflection;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,5 +14,21 @@ public class AcademyDbContext : IdentityDbContext<AcademyUser, IdentityRole<Guid
         : base(options)
     {
 
+    }
+
+    public DbSet<Location> Locations { get; set; } = null!;
+    public DbSet<Academy> Academies { get; set; } = null!;
+    public DbSet<Overseer> Overseers { get; set; } = null!;
+    public DbSet<Trial> Trials { get; set; } = null!;
+    public DbSet<Resource> Resources { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        Assembly configAssembly = Assembly.GetAssembly(typeof(AcademyDbContext)) ??
+                                  Assembly.GetExecutingAssembly();
+
+        builder.ApplyConfigurationsFromAssembly(configAssembly);
+
+        base.OnModelCreating(builder);
     }
 }

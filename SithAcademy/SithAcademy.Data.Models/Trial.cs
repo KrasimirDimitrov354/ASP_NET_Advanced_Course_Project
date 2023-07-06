@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 using static SithAcademy.Common.EntityFieldValidation.Trial;
 using static SithAcademy.Common.EntityColumnInformation.Trial;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Trial
 {
@@ -35,5 +36,8 @@ public class Trial
     public virtual Academy Academy { get; set; } = null!;
 
     public virtual ICollection<Resource> Resources { get; set; }
+
+    //TODO - FIX THIS
+    [NotMapped]
     public virtual ICollection<AcademyUser> Acolytes { get; set; }
 }
