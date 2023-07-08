@@ -1,17 +1,18 @@
 ﻿namespace SithAcademy.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Microsoft.EntityFrameworkCore;
 
 using static SithAcademy.Common.EntityFieldValidation.Trial;
 using static SithAcademy.Common.EntityColumnInformation.Trial;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class Trial
 {
     public Trial()
     {
+        Id = Guid.NewGuid();
         Acolytes = new HashSet<AcademyUser>();
         Resources = new HashSet<Resource>();
     }

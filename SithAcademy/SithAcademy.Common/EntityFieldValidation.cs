@@ -12,18 +12,18 @@ public static class EntityFieldValidation
     public static class Password
     {
         public const int PasswordMinLength = 3;
-        public const int PasswordMaxLength = 40;
+        public const int PasswordMaxLength = 50;
         public const string PasswordLengthErrorMessage = "Password should be between 3 and 40 symbols long.";
         public const string PasswordNotMatchingErrorMessage = "The password and confirmation password do not match.";
     }
 
     public static class Academy
     {
-        public const int TitleMinLength = 5;
-        public const int TitleMaxLength = 50;
+        public const int TitleMinLength = 6;
+        public const int TitleMaxLength = 60;
 
         public const int DescriptionMinLength = 25;
-        public const int DescriptionMaxLength = 500;
+        public const int DescriptionMaxLength = 1000;
     }
 
     public static class Overseer
@@ -35,10 +35,10 @@ public static class EntityFieldValidation
     public static class Location
     {
         public const int NameMinLength = 6;
-        public const int NameMaxLength = 36;
+        public const int NameMaxLength = 60;
 
         public const int DescriptionMinLength = 25;
-        public const int DescriptionMaxLength = 500;
+        public const int DescriptionMaxLength = 1000;
     }
 
     public static class Trial
@@ -47,13 +47,13 @@ public static class EntityFieldValidation
         public const int TitleMaxLength = 25;
 
         public const int DescriptionMinLength = 25;
-        public const int DescriptionMaxLength = 500;
+        public const int DescriptionMaxLength = 1000;
     }
 
     public static class Resource
     {
         public const int NameMinLength = 6;
-        public const int NameMaxLength = 36;
+        public const int NameMaxLength = 60;
 
         public const int LinkMaxLength = 2048;
     }

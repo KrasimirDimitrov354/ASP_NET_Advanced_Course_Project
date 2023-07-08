@@ -9,6 +9,11 @@ using static SithAcademy.Common.EntityColumnInformation.Resource;
 
 public class Resource
 {
+    public Resource()
+    {
+        Id = Guid.NewGuid();
+    }
+
     [Key]
     [Comment(IdComment)]
     public Guid Id { get; set; }

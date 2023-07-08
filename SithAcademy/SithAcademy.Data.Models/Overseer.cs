@@ -9,6 +9,11 @@ using static SithAcademy.Common.EntityColumnInformation.Overseer;
 
 public class Overseer
 {
+    public Overseer()
+    {
+        Id = Guid.NewGuid();
+    }
+
     [Key]
     [Comment(IdComment)]
     public Guid Id { get; set; }
