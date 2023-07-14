@@ -11,13 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{92CBD20A-FA9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{4FA83172-EF57-4A69-BFD3-46EDBBAFF932}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SithAcademy.Data", "SithAcademy.Data\SithAcademy.Data.csproj", "{F79E4F02-5607-43A2-90C6-5367D78BD54A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SithAcademy.Data", "SithAcademy.Data\SithAcademy.Data.csproj", "{F79E4F02-5607-43A2-90C6-5367D78BD54A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SithAcademy.Data.Models", "SithAcademy.Data.Models\SithAcademy.Data.Models.csproj", "{A0D862E2-42B9-4CBB-B97C-32C8CE80050A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SithAcademy.Data.Models", "SithAcademy.Data.Models\SithAcademy.Data.Models.csproj", "{A0D862E2-42B9-4CBB-B97C-32C8CE80050A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SithAcademy.Web.ViewModels", "SithAcademy.Web.ViewModels\SithAcademy.Web.ViewModels.csproj", "{92D35D5A-D220-4266-9997-8ADA22ADE8E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SithAcademy.Web.ViewModels", "SithAcademy.Web.ViewModels\SithAcademy.Web.ViewModels.csproj", "{92D35D5A-D220-4266-9997-8ADA22ADE8E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SithAcademy.Web.Infrastructure", "SithAcademy.Web.Infrastructure\SithAcademy.Web.Infrastructure.csproj", "{7FC78C48-91F3-4E37-ACD1-B6E44C6187BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SithAcademy.Web.Infrastructure", "SithAcademy.Web.Infrastructure\SithAcademy.Web.Infrastructure.csproj", "{7FC78C48-91F3-4E37-ACD1-B6E44C6187BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{1620AA43-FCE1-4B0C-ADB4-44A2E7FBB855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SithAcademy.Services.Data", "SithAcademy.Services.Data\SithAcademy.Services.Data.csproj", "{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{7FC78C48-91F3-4E37-ACD1-B6E44C6187BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FC78C48-91F3-4E37-ACD1-B6E44C6187BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FC78C48-91F3-4E37-ACD1-B6E44C6187BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +67,7 @@ Global
 		{A0D862E2-42B9-4CBB-B97C-32C8CE80050A} = {4FA83172-EF57-4A69-BFD3-46EDBBAFF932}
 		{92D35D5A-D220-4266-9997-8ADA22ADE8E8} = {92CBD20A-FA95-4321-B2BB-134F6346EB87}
 		{7FC78C48-91F3-4E37-ACD1-B6E44C6187BB} = {92CBD20A-FA95-4321-B2BB-134F6346EB87}
+		{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB} = {1620AA43-FCE1-4B0C-ADB4-44A2E7FBB855}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EBB878E3-AF87-4D5D-AE3C-FEAF4DFF588C}

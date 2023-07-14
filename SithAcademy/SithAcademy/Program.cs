@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
+using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Web.Infrastructure.Extensions;
 using SithAcademy.Web.Infrastructure.ModelBinders;
 
 public class Program
@@ -29,6 +31,8 @@ public class Program
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
             .AddEntityFrameworkStores<AcademyDbContext>();
+
+        builder.Services.AddApplicationServices(typeof(ITrialService));
 
         builder.Services
             .AddControllersWithViews()

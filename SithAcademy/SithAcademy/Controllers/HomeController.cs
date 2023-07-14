@@ -5,20 +5,33 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 using SithAcademy.Web.ViewModels;
+using SithAcademy.Web.ViewModels.Trial;
+using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Web.Infrastructure.Extensions;
 
 public class HomeController : Controller
 {
-    public HomeController()
+    private readonly ITrialService trialService;
+
+    public HomeController(ITrialService trialService)
     {
-        
+        this.trialService = trialService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            IEnumerable<TrialOverviewViewModel> trials = await trialService.GetInProgressTrialsOfUserAsync(User.GetId());
+            return View(trials);
+        }
+        else 
+        {
+            return View(new List<TrialOverviewViewModel>());
+        }
     }
 
-    public IActionResult Acknowledgement()
+    public IActionResult About()
     {
         return View();
     }
