@@ -6,10 +6,12 @@
 
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
-    <p>Welcome back, acolyte @User.Identity.Name</p>
+    <p>Welcome, acolyte @User.Identity.Name</p>
 
     @if (trials.Any())
     {
+        <p>Below you will find the trials you have signed up for.</p>
+
         @for (int i = 0; i < trials.Length; i++)
         {
             TrialOverviewViewModel trial = trials[i];
@@ -19,14 +21,21 @@
                     <h5 class="card-title">@trial.Title</h5>
                     <h3 class="card-title">@trial.AcademyTitle</h3>
                     <p class="card-text">@trial.Description</p>
-                    <a href="#" class="btn btn-primary">View trial resources</a>
+                    @if (trial.IsCompleted)
+                    {
+                        <p class="card-text">You have completed this trial!</p>
+                    }
+                    else
+                    {
+                        <a href="#" class="btn btn-primary">View trial resources</a>
+                    }                   
                 </div>
             </div>
         }
     }
     else
     {
-        <p>You have completed your assigned trials. Reach out to our other academies to find out what more you can learn.</p>
+        <p>You have successfully created your account. Explore what our academies have to offer and begin your Sith training.</p>
     }
 }
 else

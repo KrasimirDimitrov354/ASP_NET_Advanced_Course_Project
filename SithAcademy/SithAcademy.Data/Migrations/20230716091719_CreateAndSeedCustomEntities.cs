@@ -4,7 +4,7 @@ namespace SithAcademy.Data.Migrations;
 
 using Microsoft.EntityFrameworkCore.Migrations;
 
-public partial class CreateAndSeedDb : Migration
+public partial class CreateAndSeedCustomEntities : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
@@ -90,6 +90,31 @@ public partial class CreateAndSeedDb : Migration
             });
 
         migrationBuilder.CreateTable(
+            name: "AcademiesStatistics",
+            columns: table => new
+            {
+                AcolyteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                TrialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                IsCompleted = table.Column<bool>(type: "bit", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_AcademiesStatistics", x => new { x.AcolyteId, x.TrialId });
+                table.ForeignKey(
+                    name: "FK_AcademiesStatistics_AspNetUsers_AcolyteId",
+                    column: x => x.AcolyteId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+                table.ForeignKey(
+                    name: "FK_AcademiesStatistics_Trials_TrialId",
+                    column: x => x.TrialId,
+                    principalTable: "Trials",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
             name: "Resources",
             columns: table => new
             {
@@ -171,6 +196,11 @@ public partial class CreateAndSeedDb : Migration
             column: "LocationId");
 
         migrationBuilder.CreateIndex(
+            name: "IX_AcademiesStatistics_TrialId",
+            table: "AcademiesStatistics",
+            column: "TrialId");
+
+        migrationBuilder.CreateIndex(
             name: "IX_Overseers_AcademyId",
             table: "Overseers",
             column: "AcademyId");
@@ -193,6 +223,9 @@ public partial class CreateAndSeedDb : Migration
 
     protected override void Down(MigrationBuilder migrationBuilder)
     {
+        migrationBuilder.DropTable(
+            name: "AcademiesStatistics");
+
         migrationBuilder.DropTable(
             name: "Overseers");
 

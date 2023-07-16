@@ -20,20 +20,20 @@ public class TrialService : ITrialService
 
     public async Task<IEnumerable<TrialOverviewViewModel>> GetInProgressTrialsOfUserAsync(string acolyteId)
     {
-        var acolyte = await dbContext.Users
+        IEnumerable<TrialOverviewViewModel> trials = await dbContext.Users
             .Where(u => u.Id.ToString() == acolyteId)
+            .Select(u => u.AcademyStatistics
+                .Select(t => new TrialOverviewViewModel()
+                {
+                    Id = t.TrialId.ToString(),
+                    Title = t.Trial.Title,
+                    Description = t.Trial.Description,
+                    IsCompleted = t.IsCompleted,
+                    AcademyId = t.Trial.AcademyId,
+                    AcademyTitle = t.Trial.Academy.Title
+                })
+                .ToArray())
             .FirstAsync();
-
-        IEnumerable<TrialOverviewViewModel> trials = acolyte.InProgressTrials
-            .Select(t => new TrialOverviewViewModel()
-            {
-                Id = t.Id.ToString(),
-                Title = t.Title,
-                Description = t.Description,
-                AcademyId = t.AcademyId,
-                AcademyTitle = t.Academy.Title
-            })
-            .ToArray();
 
         return trials;
     }

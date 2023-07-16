@@ -205,6 +205,24 @@ namespace SithAcademy.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SithAcademy.Data.Models.AcademyStatistic", b =>
+                {
+                    b.Property<Guid>("AcolyteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TrialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AcolyteId", "TrialId");
+
+                    b.HasIndex("TrialId");
+
+                    b.ToTable("AcademiesStatistics");
+                });
+
             modelBuilder.Entity("SithAcademy.Data.Models.AcademyUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -591,6 +609,25 @@ namespace SithAcademy.Data.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("SithAcademy.Data.Models.AcademyStatistic", b =>
+                {
+                    b.HasOne("SithAcademy.Data.Models.AcademyUser", "Acolyte")
+                        .WithMany("AcademyStatistics")
+                        .HasForeignKey("AcolyteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SithAcademy.Data.Models.Trial", "Trial")
+                        .WithMany("AcademyStatistics")
+                        .HasForeignKey("TrialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Acolyte");
+
+                    b.Navigation("Trial");
+                });
+
             modelBuilder.Entity("SithAcademy.Data.Models.Overseer", b =>
                 {
                     b.HasOne("SithAcademy.Data.Models.Academy", "Academy")
@@ -639,6 +676,11 @@ namespace SithAcademy.Data.Migrations
                     b.Navigation("Trials");
                 });
 
+            modelBuilder.Entity("SithAcademy.Data.Models.AcademyUser", b =>
+                {
+                    b.Navigation("AcademyStatistics");
+                });
+
             modelBuilder.Entity("SithAcademy.Data.Models.Location", b =>
                 {
                     b.Navigation("Academies");
@@ -646,6 +688,8 @@ namespace SithAcademy.Data.Migrations
 
             modelBuilder.Entity("SithAcademy.Data.Models.Trial", b =>
                 {
+                    b.Navigation("AcademyStatistics");
+
                     b.Navigation("Resources");
                 });
 #pragma warning restore 612, 618

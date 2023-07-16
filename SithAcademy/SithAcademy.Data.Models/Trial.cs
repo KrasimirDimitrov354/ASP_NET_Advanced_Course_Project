@@ -1,7 +1,6 @@
 ﻿namespace SithAcademy.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +12,8 @@ public class Trial
     public Trial()
     {
         Id = Guid.NewGuid();
-        Acolytes = new HashSet<AcademyUser>();
         Resources = new HashSet<Resource>();
+        AcademyStatistics = new HashSet<AcademyStatistic>();
     }
 
     [Key]
@@ -37,8 +36,5 @@ public class Trial
     public virtual Academy Academy { get; set; } = null!;
 
     public virtual ICollection<Resource> Resources { get; set; }
-
-    //TODO - FIX THIS
-    [NotMapped]
-    public virtual ICollection<AcademyUser> Acolytes { get; set; }
+    public virtual ICollection<AcademyStatistic> AcademyStatistics { get; set; }
 }

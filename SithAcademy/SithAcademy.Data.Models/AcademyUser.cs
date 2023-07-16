@@ -1,7 +1,6 @@
 ﻿namespace SithAcademy.Data.Models;
 
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -13,15 +12,8 @@ public class AcademyUser : IdentityUser<Guid>
 {
     public AcademyUser()
     {
-        InProgressTrials = new HashSet<Trial>();
-        CompletedTrials = new HashSet<Trial>();
+        AcademyStatistics = new HashSet<AcademyStatistic>();
     }
 
-    //TODO - FIX THIS
-    [NotMapped]
-    public virtual ICollection<Trial> InProgressTrials { get; set; }
-
-    //TODO - FIX THIS
-    [NotMapped]
-    public virtual ICollection<Trial> CompletedTrials { get; set; }
+    public virtual ICollection<AcademyStatistic> AcademyStatistics { get; set; }
 }

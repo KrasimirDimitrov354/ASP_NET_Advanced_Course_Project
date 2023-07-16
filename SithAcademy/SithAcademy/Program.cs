@@ -12,7 +12,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         string connectionString = builder.Configuration
             .GetConnectionString("DefaultConnection")
@@ -41,7 +41,7 @@ public class Program
                 options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
             });
 
-        var app = builder.Build();
+        WebApplication app = builder.Build();
 
         if (app.Environment.IsDevelopment())
         {
