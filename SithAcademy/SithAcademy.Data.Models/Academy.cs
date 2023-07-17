@@ -13,6 +13,7 @@ public class Academy
     {
         Trials = new HashSet<Trial>();
         Overseers = new HashSet<Overseer>();
+        Acolytes = new HashSet<AcademyAcolyte>();
     }
 
     [Key]
@@ -36,4 +37,5 @@ public class Academy
 
     public virtual ICollection<Trial> Trials { get; set; }
     public virtual ICollection<Overseer> Overseers { get; set; }
+    public virtual ICollection<AcademyAcolyte> Acolytes { get; set; }
 }

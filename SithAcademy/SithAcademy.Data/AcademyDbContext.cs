@@ -21,7 +21,8 @@ public class AcademyDbContext : IdentityDbContext<AcademyUser, IdentityRole<Guid
     public DbSet<Overseer> Overseers { get; set; } = null!;
     public DbSet<Trial> Trials { get; set; } = null!;
     public DbSet<Resource> Resources { get; set; } = null!;
-    public DbSet<AcademyStatistic> AcademiesStatistics { get; set; } = null!;
+    public DbSet<AcademyAcolyte> AcademiesAcolytes { get; set; } = null!;
+    public DbSet<TrialAcolyte> TrialsAcolytes { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

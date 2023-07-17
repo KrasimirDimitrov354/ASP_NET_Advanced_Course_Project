@@ -12,8 +12,10 @@ public class AcademyUser : IdentityUser<Guid>
 {
     public AcademyUser()
     {
-        AcademyStatistics = new HashSet<AcademyStatistic>();
+        AssignedTrials = new HashSet<TrialAcolyte>();
+        JoinedAcademies = new HashSet<AcademyAcolyte>();
     }
 
-    public virtual ICollection<AcademyStatistic> AcademyStatistics { get; set; }
+    public virtual ICollection<TrialAcolyte> AssignedTrials { get; set; }
+    public virtual ICollection<AcademyAcolyte> JoinedAcademies { get; set; }
 }

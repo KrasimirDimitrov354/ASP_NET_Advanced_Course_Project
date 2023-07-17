@@ -13,7 +13,7 @@ public class Trial
     {
         Id = Guid.NewGuid();
         Resources = new HashSet<Resource>();
-        AcademyStatistics = new HashSet<AcademyStatistic>();
+        AssignedAcolytes = new HashSet<TrialAcolyte>();
     }
 
     [Key]
@@ -36,5 +36,5 @@ public class Trial
     public virtual Academy Academy { get; set; } = null!;
 
     public virtual ICollection<Resource> Resources { get; set; }
-    public virtual ICollection<AcademyStatistic> AcademyStatistics { get; set; }
+    public virtual ICollection<TrialAcolyte> AssignedAcolytes { get; set; }
 }

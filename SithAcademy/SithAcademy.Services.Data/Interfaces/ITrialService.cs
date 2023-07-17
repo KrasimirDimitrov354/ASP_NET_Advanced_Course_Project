@@ -4,5 +4,5 @@ using SithAcademy.Web.ViewModels.Trial;
 
 public interface ITrialService
 {
-    Task<IEnumerable<TrialOverviewViewModel>> GetInProgressTrialsOfUserAsync(string acolyteId);
+    Task<IEnumerable<AcolyteTrialViewModel>> GetAllTrialsOfAcolyteAsync(string acolyteId);
 }

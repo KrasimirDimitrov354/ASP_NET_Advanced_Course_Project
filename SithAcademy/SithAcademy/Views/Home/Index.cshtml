@@ -1,48 +1,58 @@
-﻿@model IEnumerable<TrialOverviewViewModel>
+﻿@model IEnumerable<AcolyteTrialViewModel>
 @{
     ViewData["Title"] = "Home Page";
-    TrialOverviewViewModel[] trials = Model.ToArray();
+    AcolyteTrialViewModel[] trials = Model.ToArray();
 }
 
-@if (User.Identity != null && User.Identity.IsAuthenticated)
-{
-    <p>Welcome, acolyte @User.Identity.Name</p>
-
-    @if (trials.Any())
-    {
-        <p>Below you will find the trials you have signed up for.</p>
-
-        @for (int i = 0; i < trials.Length; i++)
+<div class="container text-center">
+    <div class="row">
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            TrialOverviewViewModel trial = trials[i];
+            <p>Welcome, acolyte @User.Identity.Name</p>
 
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">@trial.Title</h5>
-                    <h3 class="card-title">@trial.AcademyTitle</h3>
-                    <p class="card-text">@trial.Description</p>
-                    @if (trial.IsCompleted)
-                    {
-                        <p class="card-text">You have completed this trial!</p>
-                    }
-                    else
-                    {
-                        <a href="#" class="btn btn-primary">View trial resources</a>
-                    }                   
-                </div>
+            @if (trials.Any())
+            {
+                <p>Below you will find the trials you have signed up for.</p>
+
+                @for (int i = 0; i < trials.Length; i++)
+                {
+                    AcolyteTrialViewModel trial = trials[i];
+
+                    <div class="col">
+                        <div class="row d-flex justify-content-center">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h3 class="card-title">@trial.Title</h3>
+                                    <h5 class="card-title">@trial.AcademyTitle</h5>
+                                    @if (trial.IsCompleted)
+                                    {
+                                        <p class="card-text">You have completed this trial!</p>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-primary">View trial resources</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="mb-0">You have successfully began your journey as a Sith.</p>
+                <a class="text-danger m-0 pt-0" asp-controller="Academy" asp-action="Display">Take hold of your fate and join one of our academies!</a>
+            }
+        }
+        else
+        {
+            <div class="container text-start">
+                <p class="mb-0">Another hopeful seeking to join the ranks of the Sith? Many take on the path, but few complete it.</p>
+                <a class="text-danger m-0 pt-0" asp-area="Identity" asp-page="/Account/Register">Enter, if you have the courage...</a>
+                <p></p>
+                <p class="mb-0">Already a member?</p>
+                <a class="text-danger m-0 pt-0" asp-area="Identity" asp-page="/Account/Login">Identify yourself!</a>
             </div>
         }
-    }
-    else
-    {
-        <p>You have successfully created your account. Explore what our academies have to offer and begin your Sith training.</p>
-    }
-}
-else
-{
-    <p>So you want to become Sith? You have come to the right place!</p>
-    <a class="nav-link text-success" asp-area="Identity" asp-page="/Account/Register">Create an account and begin delving into the secrets of the Dark Side today!</a>
-    <p></p>
-    <p>Already an acolyte?</p>
-    <a class="nav-link text-info" asp-area="Identity" asp-page="/Account/Login">Log in and resume your studies!</a>
-}
+    </div>
+</div>

@@ -18,16 +18,15 @@ public class TrialService : ITrialService
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<TrialOverviewViewModel>> GetInProgressTrialsOfUserAsync(string acolyteId)
+    public async Task<IEnumerable<AcolyteTrialViewModel>> GetAllTrialsOfAcolyteAsync(string acolyteId)
     {
-        IEnumerable<TrialOverviewViewModel> trials = await dbContext.Users
+        IEnumerable<AcolyteTrialViewModel> trials = await dbContext.Users
             .Where(u => u.Id.ToString() == acolyteId)
-            .Select(u => u.AcademyStatistics
-                .Select(t => new TrialOverviewViewModel()
+            .Select(u => u.AssignedTrials
+                .Select(t => new AcolyteTrialViewModel()
                 {
                     Id = t.TrialId.ToString(),
                     Title = t.Trial.Title,
-                    Description = t.Trial.Description,
                     IsCompleted = t.IsCompleted,
                     AcademyId = t.Trial.AcademyId,
                     AcademyTitle = t.Trial.Academy.Title

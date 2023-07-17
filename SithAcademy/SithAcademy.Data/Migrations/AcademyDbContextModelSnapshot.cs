@@ -186,7 +186,7 @@ namespace SithAcademy.Data.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Academies");
+                    b.ToTable("Academies", (string)null);
 
                     b.HasData(
                         new
@@ -205,22 +205,22 @@ namespace SithAcademy.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SithAcademy.Data.Models.AcademyStatistic", b =>
+            modelBuilder.Entity("SithAcademy.Data.Models.AcademyAcolyte", b =>
                 {
+                    b.Property<int>("AcademyId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("AcolyteId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TrialId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsCompleted")
+                    b.Property<bool>("IsAssigned")
                         .HasColumnType("bit");
 
-                    b.HasKey("AcolyteId", "TrialId");
+                    b.HasKey("AcademyId", "AcolyteId");
 
-                    b.HasIndex("TrialId");
+                    b.HasIndex("AcolyteId");
 
-                    b.ToTable("AcademiesStatistics");
+                    b.ToTable("AcademiesAcolytes", (string)null);
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.AcademyUser", b =>
@@ -312,7 +312,7 @@ namespace SithAcademy.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
 
                     b.HasData(
                         new
@@ -362,7 +362,7 @@ namespace SithAcademy.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Overseers");
+                    b.ToTable("Overseers", (string)null);
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Resource", b =>
@@ -391,7 +391,7 @@ namespace SithAcademy.Data.Migrations
 
                     b.HasIndex("TrialId");
 
-                    b.ToTable("Resources");
+                    b.ToTable("Resources", (string)null);
 
                     b.HasData(
                         new
@@ -514,7 +514,7 @@ namespace SithAcademy.Data.Migrations
 
                     b.HasIndex("AcademyId");
 
-                    b.ToTable("Trials");
+                    b.ToTable("Trials", (string)null);
 
                     b.HasData(
                         new
@@ -545,6 +545,24 @@ namespace SithAcademy.Data.Migrations
                             Description = "A Sith must accept nothing less than the complete destruction of their enemies. Venture out into the wilderness. Observe the primal savagery of the beasts while taking note of their weaknesses. Return with proof of your victory over them.",
                             Title = "Trial of Victory"
                         });
+                });
+
+            modelBuilder.Entity("SithAcademy.Data.Models.TrialAcolyte", b =>
+                {
+                    b.Property<Guid>("TrialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AcolyteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("TrialId", "AcolyteId");
+
+                    b.HasIndex("AcolyteId");
+
+                    b.ToTable("TrialsAcolytes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -609,23 +627,23 @@ namespace SithAcademy.Data.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("SithAcademy.Data.Models.AcademyStatistic", b =>
+            modelBuilder.Entity("SithAcademy.Data.Models.AcademyAcolyte", b =>
                 {
+                    b.HasOne("SithAcademy.Data.Models.Academy", "Academy")
+                        .WithMany()
+                        .HasForeignKey("AcademyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SithAcademy.Data.Models.AcademyUser", "Acolyte")
-                        .WithMany("AcademyStatistics")
+                        .WithMany("JoinedAcademies")
                         .HasForeignKey("AcolyteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SithAcademy.Data.Models.Trial", "Trial")
-                        .WithMany("AcademyStatistics")
-                        .HasForeignKey("TrialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Academy");
 
                     b.Navigation("Acolyte");
-
-                    b.Navigation("Trial");
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Overseer", b =>
@@ -669,6 +687,25 @@ namespace SithAcademy.Data.Migrations
                     b.Navigation("Academy");
                 });
 
+            modelBuilder.Entity("SithAcademy.Data.Models.TrialAcolyte", b =>
+                {
+                    b.HasOne("SithAcademy.Data.Models.AcademyUser", "Acolyte")
+                        .WithMany("AssignedTrials")
+                        .HasForeignKey("AcolyteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SithAcademy.Data.Models.Trial", "Trial")
+                        .WithMany("AssignedAcolytes")
+                        .HasForeignKey("TrialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Acolyte");
+
+                    b.Navigation("Trial");
+                });
+
             modelBuilder.Entity("SithAcademy.Data.Models.Academy", b =>
                 {
                     b.Navigation("Overseers");
@@ -678,7 +715,9 @@ namespace SithAcademy.Data.Migrations
 
             modelBuilder.Entity("SithAcademy.Data.Models.AcademyUser", b =>
                 {
-                    b.Navigation("AcademyStatistics");
+                    b.Navigation("AssignedTrials");
+
+                    b.Navigation("JoinedAcademies");
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Location", b =>
@@ -688,7 +727,7 @@ namespace SithAcademy.Data.Migrations
 
             modelBuilder.Entity("SithAcademy.Data.Models.Trial", b =>
                 {
-                    b.Navigation("AcademyStatistics");
+                    b.Navigation("AssignedAcolytes");
 
                     b.Navigation("Resources");
                 });

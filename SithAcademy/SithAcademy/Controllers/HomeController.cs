@@ -18,19 +18,21 @@ public class HomeController : Controller
         this.trialService = trialService;
     }
 
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            IEnumerable<TrialOverviewViewModel> trials = await trialService.GetInProgressTrialsOfUserAsync(User.GetId());
+            IEnumerable<AcolyteTrialViewModel> trials = await trialService.GetAllTrialsOfAcolyteAsync(User.GetId());
             return View(trials);
         }
         else 
         {
-            return View(new List<TrialOverviewViewModel>());
+            return View(new List<AcolyteTrialViewModel>());
         }
     }
 
+    [HttpGet]
     public IActionResult About()
     {
         return View();
