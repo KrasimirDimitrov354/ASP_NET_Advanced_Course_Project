@@ -7,6 +7,8 @@ using SithAcademy.Web.ViewModels.Academy;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
 
+using static SithAcademy.Common.GeneralConstants;
+
 public class AcademyController : Controller
 {
     private readonly IAcademyService academyService;
@@ -39,6 +41,7 @@ public class AcademyController : Controller
         }
         catch (Exception)
         {
+            TempData[WarningMessage] = "Do not try to access knowledge you are not prepared for.";
             return RedirectToAction("Display", "Academy");
         }
     }
