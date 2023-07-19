@@ -3,6 +3,7 @@
     ViewData["Title"] = "Our Academies";
     AcademyOverviewViewModel[] academies = Model.ToArray();
 }
+
 <div class="container text-center">
     <div class="row">
         <p>The arts of the Sith are many and varied. The academies here are but a taste of what the Dark Side has to offer...</p>
@@ -17,6 +18,9 @@
                         <div class="card-body">
                             <h3 class="card-title">@academy.Title</h3>
                             <h5 class="card-title">@academy.LocationName</h5>
+                            <a asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
+                            <span></span>
+                            <a asp-controller="Location" asp-action="Details" asp-route-id="@academy.LocationId" class="btn btn-danger mb-2">Location Details</a>
                         </div>
                     </div>
                 </div>

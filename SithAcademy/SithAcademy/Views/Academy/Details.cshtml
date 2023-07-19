@@ -1,0 +1,26 @@
+﻿@model AcademyDetailsViewModel
+
+<h2 class="text-center">@Model.Title</h2>
+<hr />
+
+<div class="d-flex justify-content-center">
+    <div class="card " style="width: 50rem;">
+        <div class="card-body">
+            <p class="card-text">@Model.Description</p>
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated &&
+            Model.SignedAcolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
+            {
+                @foreach (var trial in Model.Trials)
+                {
+                    <p class="card-text">@trial.Title</p>
+                    <a asp-controller="Trial" asp-action="Display" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>
+                }
+            }
+            else
+            {
+                <a asp-controller="Academy" asp-action="Apply" class="btn btn-danger mb-2">Apply to this academy</a>
+            }
+        </div>
+    </div>
+</div>

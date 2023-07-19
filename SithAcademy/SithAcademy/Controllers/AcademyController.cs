@@ -1,9 +1,11 @@
 ﻿namespace SithAcademy.Web.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.ViewModels.Academy;
+using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Web.Infrastructure.Extensions;
 
 public class AcademyController : Controller
 {
@@ -20,5 +22,30 @@ public class AcademyController : Controller
         IEnumerable<AcademyOverviewViewModel> academies = await academyService.GetAllAcademiesAsync();
 
         return View(academies);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(int id)
+    {
+        try
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                ViewData["UserId"] = User.GetId();
+            }
+
+            AcademyDetailsViewModel academyDetails = await academyService.DisplayAcademyDetailsAsync(id);
+            return View(academyDetails);
+        }
+        catch (Exception)
+        {
+            return RedirectToAction("Display", "Academy");
+        }
+    }
+
+    [Authorize]
+    public async Task Apply()
+    {
+
     }
 }
