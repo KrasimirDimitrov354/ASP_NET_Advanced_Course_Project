@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SithAcademy.Web.Infrastruct
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{1620AA43-FCE1-4B0C-ADB4-44A2E7FBB855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SithAcademy.Services.Data", "SithAcademy.Services.Data\SithAcademy.Services.Data.csproj", "{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SithAcademy.Services.Data", "SithAcademy.Services.Data\SithAcademy.Services.Data.csproj", "{520AFD09-DD0A-4E67-AB61-D3F16E9D93BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

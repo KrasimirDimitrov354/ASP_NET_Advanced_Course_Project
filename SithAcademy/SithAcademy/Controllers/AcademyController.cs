@@ -46,8 +46,9 @@ public class AcademyController : Controller
         }
     }
 
+    [HttpPost]
     [Authorize]
-    public async Task Apply()
+    public async Task<IActionResult> Apply()
     {
 
     }

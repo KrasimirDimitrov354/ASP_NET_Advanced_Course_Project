@@ -11,7 +11,7 @@
             @if (User.Identity != null && User.Identity.IsAuthenticated &&
             Model.SignedAcolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
             {
-                @foreach (var trial in Model.Trials)
+                @foreach (TrialOverviewViewModel trial in Model.Trials)
                 {
                     <p class="card-text">@trial.Title</p>
                     <a asp-controller="Trial" asp-action="Display" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>

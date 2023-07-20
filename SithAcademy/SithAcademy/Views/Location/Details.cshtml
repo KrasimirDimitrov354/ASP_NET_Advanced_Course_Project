@@ -1,0 +1,26 @@
+﻿@model LocationDetailsViewModel
+
+<h2 class="text-center">@Model.Name</h2>
+<hr />
+
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 50rem;">
+        <div class="card-body">
+            <p class="card-text">@Model.Description</p>
+            <p class="card-text">Below you will find our facilities on this world.</p>
+            <span></span>
+            @if (Model.Academies.Any())
+            {
+                foreach (AcademySummaryViewModel academy in Model.Academies)
+                {
+                    <h3 class="card-text">@academy.Title</h3>
+                    <a asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
+                }
+            }
+            else
+            {
+                <h2 class="text-center text-danger bg-dark">[+++INFORMATION EXPUNGED ON THE ORDERS OF THE EMPEROR'S INQUISITION+++]</h2>
+            }
+        </div>
+    </div>
+</div>

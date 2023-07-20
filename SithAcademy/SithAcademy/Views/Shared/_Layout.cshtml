@@ -19,7 +19,6 @@
 
     <header>
         <partial name="_NotificationsPartial" />
-
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Sith Academy</a>
@@ -33,12 +32,13 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Location" asp-action="Display">Our Locations</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Academy" asp-action="Display">Our Academies</a>
                         </li>
                     </ul>
-
                     <partial name="_LoginPartial" />
-
                 </div>
             </div>
         </nav>
