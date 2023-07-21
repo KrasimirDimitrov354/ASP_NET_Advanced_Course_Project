@@ -18,6 +18,10 @@ public class ResourceEntityConfiguration : IEntityTypeConfiguration<Resource>
     public void Configure(EntityTypeBuilder<Resource> builder)
     {
         builder
+            .Property(r => r.IsDeleted)
+            .HasDefaultValue(false);
+
+        builder
             .HasOne(r => r.Trial)
             .WithMany(t => t.Resources)
             .HasForeignKey(r => r.TrialId)

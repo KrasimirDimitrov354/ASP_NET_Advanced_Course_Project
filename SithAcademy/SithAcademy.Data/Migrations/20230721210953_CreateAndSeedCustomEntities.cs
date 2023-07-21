@@ -17,6 +17,7 @@ namespace SithAcademy.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false, comment: "Name of the location"),
                     ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, comment: "URL of the image that will be used to visualize the location"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the location is accessible for new acolytes"),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Brief description of the location")
                 },
                 constraints: table =>
@@ -33,6 +34,7 @@ namespace SithAcademy.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false, comment: "Title of the academy"),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Brief description of the academy"),
                     ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, comment: "URL of the image that will be used to visualize the academy"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the academy is accessible for new acolytes"),
                     LocationId = table.Column<int>(type: "int", nullable: false, comment: "ID of the academy's location")
                 },
                 constraints: table =>
@@ -52,7 +54,7 @@ namespace SithAcademy.Data.Migrations
                 {
                     AcademyId = table.Column<int>(type: "int", nullable: false, comment: "ID of the academy in which the acolyte is assigned to"),
                     AcolyteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the acolyte"),
-                    IsGraduated = table.Column<bool>(type: "bit", nullable: false, comment: "Boolean showing whether or not the acolyte has completed all the trials in the academy")
+                    IsGraduated = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the acolyte has completed all the trials in the academy")
                 },
                 constraints: table =>
                 {
@@ -104,6 +106,7 @@ namespace SithAcademy.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the trial"),
                     Title = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false, comment: "Title of the trial"),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Description of the trial"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the trial can be participated in"),
                     AcademyId = table.Column<int>(type: "int", nullable: false, comment: "ID of the academy which hosts the trial")
                 },
                 constraints: table =>
@@ -123,7 +126,7 @@ namespace SithAcademy.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the homework"),
                     Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Content of the homework"),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false, comment: "Boolean showing whether or not the homework has been approved"),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the homework has been approved"),
                     TrialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the trial for which the homework is"),
                     AcolyteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the acolyte to which the homework belongs")
                 },
@@ -151,6 +154,7 @@ namespace SithAcademy.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the resource"),
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false, comment: "Name of the resource"),
                     Url = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, comment: "URL for the resource's location"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the resource should be displayed"),
                     TrialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -170,7 +174,7 @@ namespace SithAcademy.Data.Migrations
                 {
                     TrialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the trial which the acolyte must complete"),
                     AcolyteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the acolyte"),
-                    IsCompleted = table.Column<bool>(type: "bit", nullable: false, comment: "Boolean showing whether or not the acolyte has an approved homework for the trial")
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the acolyte has an approved homework for the trial")
                 },
                 constraints: table =>
                 {
@@ -192,7 +196,7 @@ namespace SithAcademy.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Locations",
                 columns: new[] { "Id", "Description", "ImageUrl", "Name" },
-                values: new object[] { 1, "Dromund Kaas was originally a colony world of the Sith Empire, and at one point its capital.Its atmosphere is heavily charged with electricity to the point where lightning is a near-constant sight in the almost perpetually clouded sky - a result of ancient Sith experiments in arcane and forbidden uses of the dark side of the Force.", "https://static.wikia.nocookie.net/starwars/images/f/f4/Dromund_Kaas_TOR_new.png", "Dromund Kaas" });
+                values: new object[] { 1, "Dromund Kaas was originally a colony world of the Sith Empire, and at one point its capital.Its atmosphere is heavily charged with electricity to the point where lightning is a near-constant sight in the almost perpetually clouded sky - a result of ancient Sith experiments in arcane and forbidden uses of the dark side of the Force.", "https://www.worldanvil.com/media/cache/cover/uploads/images/7c2913da4c331e69f6dfc4fd2225fb0f.jpg", "Dromund Kaas" });
 
             migrationBuilder.InsertData(
                 table: "Locations",
@@ -201,18 +205,18 @@ namespace SithAcademy.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Locations",
-                columns: new[] { "Id", "Description", "ImageUrl", "Name" },
-                values: new object[] { 3, "Ziost was originally covered with vast thick forests and possessed a warm climate, however a sudden ice age experienced during the initial Sith colonization leveled the vast woodlands as well as most evidence of the pre-existing civilization. As a result, the planet was transformed into a bitterly cold tundra with an arid climate, its surface covered with rocky terrain, ice-encrusted mountains and titanic glaciers.", "https://static.wikia.nocookie.net/starwars/images/d/d2/Ziost_TOR_destroyed.jpg", "Ziost" });
+                columns: new[] { "Id", "Description", "ImageUrl", "IsLocked", "Name" },
+                values: new object[] { 3, "Ziost was originally covered with vast thick forests and possessed a warm climate, however a sudden ice age experienced during the initial Sith colonization leveled the vast woodlands as well as most evidence of the pre-existing civilization. As a result, the planet was transformed into a bitterly cold tundra with an arid climate, its surface covered with rocky terrain, ice-encrusted mountains and titanic glaciers.", "https://cdnb.artstation.com/p/assets/images/images/020/733/493/4k/brian-hagan-ziost.jpg?1568947978", true, "Ziost" });
 
             migrationBuilder.InsertData(
                 table: "Academies",
                 columns: new[] { "Id", "Description", "ImageUrl", "LocationId", "Title" },
-                values: new object[] { 1, "The facility known today as Dreshdae Academy was originally established by the disciples of Exar Kun during the Great Sith War. It has been abandoned and rebuilt several times throughout the millennia, each time emerging as a more prestigious school of Sith studies.", "https://static.wikia.nocookie.net/starwars/images/9/97/Korriban_Valley_TOR.jpg", 2, "Dreshdae Academy" });
+                values: new object[] { 1, "The facility known today as Dreshdae Academy was originally established by the disciples of Exar Kun during the Great Sith War. It has been abandoned and rebuilt several times throughout the millennia, each time emerging as a more prestigious school of Sith studies.", "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/73e29da9-1d35-4f3b-976c-29aa9e2e11f0/dce4e87-9372d1cf-1921-4eba-bb39-4af28ffdb86f.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzczZTI5ZGE5LTFkMzUtNGYzYi05NzZjLTI5YWE5ZTJlMTFmMFwvZGNlNGU4Ny05MzcyZDFjZi0xOTIxLTRlYmEtYmIzOS00YWYyOGZmZGI4NmYuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vuR2MPGfi8YudSSvkO-OltPr8bd_zDICvhu9DAWRnDk", 2, "Dreshdae Academy" });
 
             migrationBuilder.InsertData(
                 table: "Academies",
                 columns: new[] { "Id", "Description", "ImageUrl", "LocationId", "Title" },
-                values: new object[] { 2, "The current-day Dark Temple complex is positioned close to the original structure of the same name, which has been fully destroyed during the last major war with the Galactic Republic. The wilderness surrounding the complex is home to a great deal of deadly predators, which provides a natural training ground for acolytes and overseers alike.", "https://static.wikia.nocookie.net/swtor/images/b/b7/Imperial_IntelligenceHQ.jpg", 1, "The Dark Temple" });
+                values: new object[] { 2, "The current-day Dark Temple complex is positioned close to the original structure of the same name, which has been fully destroyed during the last major war with the Galactic Republic. The wilderness surrounding the complex is home to a great deal of deadly predators, which provides a natural training ground for acolytes and overseers alike.", "https://cdnb.artstation.com/p/assets/images/images/013/314/009/large/micah-brown-sith-temple-2.jpg?1539039990", 1, "The Dark Temple" });
 
             migrationBuilder.InsertData(
                 table: "Trials",

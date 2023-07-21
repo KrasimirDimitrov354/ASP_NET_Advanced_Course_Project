@@ -36,6 +36,10 @@ public class Academy
     public string ImageUrl { get; set; } = null!;
 
     [Required]
+    [Comment(IsLockedComment)]
+    public bool IsLocked { get; set; }
+
+    [Required]
     [Comment(LocationIdComment)]
     public int LocationId { get; set; }
     public virtual Location Location { get; set; } = null!;

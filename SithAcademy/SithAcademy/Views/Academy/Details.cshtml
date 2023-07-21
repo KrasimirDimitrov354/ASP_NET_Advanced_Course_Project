@@ -9,18 +9,27 @@
         <div class="card-body">
             <p class="card-text">@Model.Description</p>
 
-            @if (User.Identity != null && User.Identity.IsAuthenticated &&
-            Model.SignedAcolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
+            @if (!Model.IsLocked)
             {
-                @foreach (TrialOverviewViewModel trial in Model.Trials)
+                @if (User.Identity != null && User.Identity.IsAuthenticated &&
+               Model.Acolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
                 {
-                    <p class="card-text">@trial.Title</p>
-                    <a asp-controller="Trial" asp-action="Display" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>
+                    @foreach (TrialOverviewViewModel trial in Model.Trials)
+                    {
+                        <p class="card-text">@trial.Title</p>
+                        <a asp-controller="Trial" asp-action="Display" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>
+                    }
+                }
+                else
+                {
+                    <form asp-controller="Academy" asp-action="Apply" asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-danger mb-2" type="submit" value="Join academy"/>
+                    </form>
                 }
             }
             else
             {
-                <a asp-controller="Academy" asp-action="Apply" class="btn btn-danger mb-2">Apply to this academy</a>
+                <partial name="_LockedPartial" />
             }
         </div>
     </div>

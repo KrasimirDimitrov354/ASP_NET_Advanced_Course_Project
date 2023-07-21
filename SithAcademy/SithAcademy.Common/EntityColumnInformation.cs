@@ -8,6 +8,7 @@ public static class EntityColumnInformation
         public const string TitleComment = "Title of the academy";
         public const string DescriptionComment = "Brief description of the academy";
         public const string ImageUrlComment = "URL of the image that will be used to visualize the academy";
+        public const string IsLockedComment = "Boolean showing whether or not the academy is accessible for new acolytes";
         public const string LocationIdComment = "ID of the academy's location";
     }
 
@@ -25,6 +26,7 @@ public static class EntityColumnInformation
         public const string NameComment = "Name of the location";
         public const string DescriptionComment = "Brief description of the location";
         public const string ImageUrlComment = "URL of the image that will be used to visualize the location";
+        public const string IsLockedComment = "Boolean showing whether or not the location is accessible for new acolytes";
     }
 
     public static class Trial
@@ -32,6 +34,7 @@ public static class EntityColumnInformation
         public const string IdComment = "ID of the trial";
         public const string TitleComment = "Title of the trial";
         public const string DescriptionComment = "Description of the trial";
+        public const string IsLockedComment = "Boolean showing whether or not the trial can be participated in";
         public const string AcademyIdComment = "ID of the academy which hosts the trial";
     }
 
@@ -40,6 +43,7 @@ public static class EntityColumnInformation
         public const string IdComment = "ID of the resource";
         public const string NameComment = "Name of the resource";
         public const string UrlComment = "URL for the resource's location";
+        public const string IsDeletedComment = "Boolean showing whether or not the resource should be displayed";
     }
 
     public static class Homework

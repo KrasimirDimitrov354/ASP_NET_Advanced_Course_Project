@@ -9,6 +9,10 @@ public class TrialAcolyteEntityConfiguration : IEntityTypeConfiguration<TrialAco
 {
     public void Configure(EntityTypeBuilder<TrialAcolyte> builder)
     {
+        builder
+            .Property(ta => ta.IsCompleted)
+            .HasDefaultValue(false);
+
         builder.HasKey(ta => new { ta.TrialId, ta.AcolyteId });
     }
 }

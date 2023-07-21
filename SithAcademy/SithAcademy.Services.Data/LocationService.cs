@@ -43,6 +43,7 @@ public class LocationService : ILocationService
                 Name = l.Name,
                 ImageUrl = l.ImageUrl,
                 Description = l.Description,
+                IsLocked = l.IsLocked,
                 Academies = l.Academies
                             .Select(a => new AcademySummaryViewModel()
                             {

@@ -38,7 +38,8 @@ internal class LocationSeeder
             Description = "Ziost was originally covered with vast thick forests and possessed a warm climate, " + 
             "however a sudden ice age experienced during the initial Sith colonization leveled the vast woodlands as well as most evidence of the pre-existing civilization. " +
             "As a result, the planet was transformed into a bitterly cold tundra with an arid climate, its surface covered with rocky terrain, ice-encrusted mountains and titanic glaciers.",
-            ImageUrl = "https://cdnb.artstation.com/p/assets/images/images/020/733/493/4k/brian-hagan-ziost.jpg?1568947978"
+            ImageUrl = "https://cdnb.artstation.com/p/assets/images/images/020/733/493/4k/brian-hagan-ziost.jpg?1568947978",
+            IsLocked = true
         };
         locations.Add(location);
 

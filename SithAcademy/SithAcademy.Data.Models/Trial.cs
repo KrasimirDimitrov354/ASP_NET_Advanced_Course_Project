@@ -32,6 +32,10 @@ public class Trial
     public string Description { get; set;} = null!;
 
     [Required]
+    [Comment(IsLockedComment)]
+    public bool IsLocked { get; set; }
+
+    [Required]
     [Comment(AcademyIdComment)]
     public int AcademyId { get; set; }
     public virtual Academy Academy { get; set; } = null!;

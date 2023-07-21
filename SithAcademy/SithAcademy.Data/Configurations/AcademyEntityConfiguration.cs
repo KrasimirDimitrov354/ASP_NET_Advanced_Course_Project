@@ -18,6 +18,10 @@ public class AcademyEntityConfiguration : IEntityTypeConfiguration<Academy>
     public void Configure(EntityTypeBuilder<Academy> builder)
     {
         builder
+            .Property(a => a.IsLocked)
+            .HasDefaultValue(false);
+
+        builder
             .HasOne(a => a.Location)
             .WithMany(l => l.Academies)
             .HasForeignKey(a => a.LocationId)

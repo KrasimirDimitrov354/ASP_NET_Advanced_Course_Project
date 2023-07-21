@@ -12,10 +12,12 @@ using static SithAcademy.Common.GeneralConstants;
 public class AcademyController : Controller
 {
     private readonly IAcademyService academyService;
+    private readonly IOverseerService overseerService;
 
-    public AcademyController(IAcademyService academyService)
+    public AcademyController(IAcademyService academyService, IOverseerService overseerService)
     {
         this.academyService = academyService;
+        this.overseerService = overseerService;
     }
 
     [HttpGet]
@@ -41,15 +43,57 @@ public class AcademyController : Controller
         }
         catch (Exception)
         {
-            TempData[WarningMessage] = "Do not try to access knowledge you are not prepared for.";
-            return RedirectToAction("Display", "Academy");
+            return InaccessibleMessage();
         }
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Apply()
+    public async Task<IActionResult> Apply(int id)
     {
-        return Ok();
+        bool academyExistAndIsNotLocked = await academyService.AcademyExistsAndIsNotLocked(id);
+        if (!academyExistAndIsNotLocked)
+        {
+            return InaccessibleMessage();
+        }
+
+        string userId = User.GetId();
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Overseers cannot join academies as acolytes.";
+            return RedirectToAction("Display", "Academy");
+
+        }
+
+        bool acolyteExistsInAcademy = await academyService.AcolyteExistsInAcademyAsync(id, userId);
+        if (acolyteExistsInAcademy)
+        {
+            TempData[ErrorMessage] = "You have already joined this academy.";
+            return RedirectToAction("Details", "Academy", new { id });
+        }
+
+        try
+        {
+            await academyService.AddAcolyteToAcademyAsync(id, userId);
+            TempData[SuccessMessage] = "You have successfully joined your selected academy.";
+            return RedirectToAction("Details", "Academy", new { id });
+        }
+        catch (Exception)
+        {
+            return UnknownFailureMessage();
+        }
+    }
+
+    private IActionResult InaccessibleMessage()
+    {
+        TempData[WarningMessage] = "Do not try to access knowledge you are not prepared for.";
+        return RedirectToAction("Display", "Academy");
+    }
+
+    private IActionResult UnknownFailureMessage()
+    {
+        TempData[InformationMessage] = "The Dark Side has prevented your academy application from going through. Meditate upon your failure or try again later.";
+        return RedirectToAction("Index", "Home");
     }
 }

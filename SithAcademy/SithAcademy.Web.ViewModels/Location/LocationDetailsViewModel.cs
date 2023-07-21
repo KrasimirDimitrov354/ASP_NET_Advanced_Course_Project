@@ -11,5 +11,7 @@ public class LocationDetailsViewModel : LocationOverviewViewModel
 
     public string Description { get; set; } = null!;
 
+    public bool IsLocked { get; set; }
+
     public virtual IEnumerable<AcademySummaryViewModel> Academies { get; set; }
 }

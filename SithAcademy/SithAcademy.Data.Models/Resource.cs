@@ -28,6 +28,10 @@ public class Resource
     [Comment(UrlComment)]
     public string Url { get; set; } = null!;
 
+    [Required]
+    [Comment(IsDeletedComment)]
+    public bool IsDeleted { get; set; }
+
     public Guid TrialId { get; set; }
     public virtual Trial Trial { get; set; } = null!;
 }

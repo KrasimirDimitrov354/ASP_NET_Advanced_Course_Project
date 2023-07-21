@@ -18,6 +18,10 @@ public class TrialEntityConfiguration : IEntityTypeConfiguration<Trial>
     public void Configure(EntityTypeBuilder<Trial> builder)
     {
         builder
+            .Property(t => t.IsLocked)
+            .HasDefaultValue(false);
+
+        builder
             .HasOne(t => t.Academy)
             .WithMany(a => a.Trials)
             .HasForeignKey(t => t.AcademyId)

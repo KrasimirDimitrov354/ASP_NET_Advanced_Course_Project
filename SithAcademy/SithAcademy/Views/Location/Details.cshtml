@@ -13,7 +13,7 @@
             <p class="card-text">@Model.Description</p>
             <p class="card-text">Below you will find our facilities on this world.</p>
             <span></span>
-            @if (Model.Academies.Any())
+            @if (!Model.IsLocked)
             {
                 foreach (AcademySummaryViewModel academy in Model.Academies)
                 {
@@ -23,7 +23,7 @@
             }
             else
             {
-                <h2 class="text-center text-danger bg-dark">[+++INFORMATION EXPUNGED ON THE ORDERS OF THE EMPEROR'S INQUISITION+++]</h2>
+                <partial name="_LockedPartial" />
             }
         </div>
     </div>

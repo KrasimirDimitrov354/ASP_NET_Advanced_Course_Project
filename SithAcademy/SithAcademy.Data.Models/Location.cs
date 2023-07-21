@@ -29,6 +29,10 @@ public class Location
     public string ImageUrl { get; set; } = null!;
 
     [Required]
+    [Comment(IsLockedComment)]
+    public bool IsLocked { get; set; }
+
+    [Required]
     [MaxLength(DescriptionMaxLength)]
     [Comment(DescriptionComment)]
     public string Description { get; set; } = null!;

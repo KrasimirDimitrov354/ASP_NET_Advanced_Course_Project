@@ -17,6 +17,10 @@ public class LocationEntityConfiguration : IEntityTypeConfiguration<Location>
 
     public void Configure(EntityTypeBuilder<Location> builder)
     {
+        builder
+            .Property(l => l.IsLocked)
+            .HasDefaultValue(false);
+
         builder.HasData(locationSeeder.GenerateLocations());
     }
 }
