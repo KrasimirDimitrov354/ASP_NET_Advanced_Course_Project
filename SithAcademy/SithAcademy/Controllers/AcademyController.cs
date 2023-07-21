@@ -35,7 +35,7 @@ public class AcademyController : Controller
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                ViewData["UserId"] = User.GetId();
+                ViewData["UserId"] = User.GetId().ToUpper();
             }
 
             AcademyDetailsViewModel academyDetails = await academyService.DisplayAcademyDetailsAsync(id);
