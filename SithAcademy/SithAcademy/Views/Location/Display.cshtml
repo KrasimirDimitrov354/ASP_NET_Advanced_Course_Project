@@ -15,6 +15,7 @@
             <div class="col">
                 <div class="row d-flex justify-content-center">
                     <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="@location.ImageUrl" alt="Location Image">
                         <div class="card-body">
                             <h3 class="card-title">@location.Name</h3>
                             <a asp-controller="Location" asp-action="Details" asp-route-id="@location.Id" class="btn btn-danger mb-2">Details</a>

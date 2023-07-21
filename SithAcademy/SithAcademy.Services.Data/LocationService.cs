@@ -25,7 +25,8 @@ public class LocationService : ILocationService
             .Select(l => new LocationOverviewViewModel()
             {
                 Id = l.Id,
-                Name = l.Name
+                Name = l.Name,
+                ImageUrl = l.ImageUrl
             })
             .ToArrayAsync();
 
@@ -40,6 +41,7 @@ public class LocationService : ILocationService
             {
                 Id = l.Id,
                 Name = l.Name,
+                ImageUrl = l.ImageUrl,
                 Description = l.Description,
                 Academies = l.Academies
                             .Select(a => new AcademySummaryViewModel()

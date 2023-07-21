@@ -24,12 +24,14 @@ public static class EntityFieldValidation
 
         public const int DescriptionMinLength = 25;
         public const int DescriptionMaxLength = 1000;
+
+        public const int UrlMaxLength = 2048;
     }
 
     public static class Overseer
     {
-        public const int HoloFrequencyMinLength = 7;
-        public const int HoloFrequencyMaxLength = 15;
+        public const int TitleMinLength = 3;
+        public const int TitleMaxLength = 30;
     }
 
     public static class Location
@@ -39,6 +41,8 @@ public static class EntityFieldValidation
 
         public const int DescriptionMinLength = 25;
         public const int DescriptionMaxLength = 1000;
+
+        public const int UrlMaxLength = 2048;
     }
 
     public static class Trial
@@ -55,6 +59,12 @@ public static class EntityFieldValidation
         public const int NameMinLength = 6;
         public const int NameMaxLength = 60;
 
-        public const int LinkMaxLength = 2048;
+        public const int UrlMaxLength = 2048;
+    }
+
+    public static class Homework
+    {
+        public const int ContentMinLength = 10;
+        public const int ContentMaxLength = 1000;
     }
 }

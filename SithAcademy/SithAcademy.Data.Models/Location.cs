@@ -24,6 +24,11 @@ public class Location
     public string Name { get; set; } = null!;
 
     [Required]
+    [MaxLength(UrlMaxLength)]
+    [Comment(ImageUrlComment)]
+    public string ImageUrl { get; set; } = null!;
+
+    [Required]
     [MaxLength(DescriptionMaxLength)]
     [Comment(DescriptionComment)]
     public string Description { get; set; } = null!;

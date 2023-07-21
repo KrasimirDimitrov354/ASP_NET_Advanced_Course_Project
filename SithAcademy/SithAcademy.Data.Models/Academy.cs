@@ -31,6 +31,11 @@ public class Academy
     public string Description { get; set; } = null!;
 
     [Required]
+    [MaxLength(UrlMaxLength)]
+    [Comment(ImageUrlComment)]
+    public string ImageUrl { get; set; } = null!;
+
+    [Required]
     [Comment(LocationIdComment)]
     public int LocationId { get; set; }
     public virtual Location Location { get; set; } = null!;

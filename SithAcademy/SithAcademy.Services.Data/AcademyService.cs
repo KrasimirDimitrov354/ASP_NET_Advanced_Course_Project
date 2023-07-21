@@ -27,6 +27,7 @@ public class AcademyService : IAcademyService
             {
                 Id = a.Id,
                 Title = a.Title,
+                ImageUrl = a.ImageUrl,
                 LocationId = a.LocationId,
                 LocationName = a.Location.Name
             })
@@ -43,6 +44,7 @@ public class AcademyService : IAcademyService
             {
                 Id = a.Id,
                 Title = a.Title,
+                ImageUrl = a.ImageUrl,
                 LocationId = a.LocationId,
                 LocationName = a.Location.Name,
                 Description = a.Description,

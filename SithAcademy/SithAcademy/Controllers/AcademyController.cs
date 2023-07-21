@@ -50,6 +50,6 @@ public class AcademyController : Controller
     [Authorize]
     public async Task<IActionResult> Apply()
     {
-
+        return Ok();
     }
 }

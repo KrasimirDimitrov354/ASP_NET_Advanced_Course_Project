@@ -24,9 +24,9 @@ public class Resource
     public string Name { get; set; } = null!;
 
     [Required]
-    [MaxLength(LinkMaxLength)]
-    [Comment(LinkComment)]
-    public string Link { get; set; } = null!;
+    [MaxLength(UrlMaxLength)]
+    [Comment(UrlComment)]
+    public string Url { get; set; } = null!;
 
     public Guid TrialId { get; set; }
     public virtual Trial Trial { get; set; } = null!;

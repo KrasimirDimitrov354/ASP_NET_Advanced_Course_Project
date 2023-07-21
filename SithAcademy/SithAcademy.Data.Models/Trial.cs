@@ -13,6 +13,7 @@ public class Trial
     {
         Id = Guid.NewGuid();
         Resources = new HashSet<Resource>();
+        PublishedHomeworks = new HashSet<Homework>();
         AssignedAcolytes = new HashSet<TrialAcolyte>();
     }
 
@@ -36,5 +37,6 @@ public class Trial
     public virtual Academy Academy { get; set; } = null!;
 
     public virtual ICollection<Resource> Resources { get; set; }
+    public virtual ICollection<Homework> PublishedHomeworks { get; set; }
     public virtual ICollection<TrialAcolyte> AssignedAcolytes { get; set; }
 }

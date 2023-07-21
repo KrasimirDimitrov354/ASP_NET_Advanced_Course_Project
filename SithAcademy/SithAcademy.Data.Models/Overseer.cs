@@ -19,9 +19,9 @@ public class Overseer
     public Guid Id { get; set; }
 
     [Required]
-    [MaxLength(HoloFrequencyMaxLength)]
-    [Comment(HoloFrequencyComment)]
-    public string HoloFrequency { get; set; } = null!;
+    [MaxLength(TitleMaxLength)]
+    [Comment(TitleComment)]
+    public string Title { get; set; } = null!;
 
     [Required]
     [Comment(UserIdComment)]
