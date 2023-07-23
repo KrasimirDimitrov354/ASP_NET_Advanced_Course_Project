@@ -10,10 +10,6 @@ public class HomeworkEntityConfiguration : IEntityTypeConfiguration<Homework>
     public void Configure(EntityTypeBuilder<Homework> builder)
     {
         builder
-            .Property(h => h.IsApproved)
-            .HasDefaultValue(false);
-
-        builder
             .HasOne(h => h.Trial)
             .WithMany(t => t.PublishedHomeworks)
             .HasForeignKey(h => h.TrialId)

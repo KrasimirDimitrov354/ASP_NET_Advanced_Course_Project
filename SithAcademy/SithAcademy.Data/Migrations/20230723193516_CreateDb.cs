@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SithAcademy.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class CreateDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -277,7 +277,10 @@ namespace SithAcademy.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the homework"),
                     Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Content of the homework"),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the homework has been approved"),
+                    Score = table.Column<decimal>(type: "decimal(4,2)", nullable: false, comment: "Score of the homework"),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "Date when the homework was created"),
+                    ReviewerName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true, comment: "Name of the user that has reviewed the homework - overseer or admin"),
+                    ReviewerFeedback = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true, comment: "Feedback left by the user that has reviewed the homework - overseer or admin"),
                     TrialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the trial for which the homework is"),
                     AcolyteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the acolyte to which the homework belongs")
                 },

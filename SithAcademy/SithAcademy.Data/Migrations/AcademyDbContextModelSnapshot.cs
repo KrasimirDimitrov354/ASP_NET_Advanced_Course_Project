@@ -327,11 +327,23 @@ namespace SithAcademy.Data.Migrations
                         .HasColumnType("nvarchar(1000)")
                         .HasComment("Content of the homework");
 
-                    b.Property<bool>("IsApproved")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasComment("Boolean showing whether or not the homework has been approved");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2")
+                        .HasComment("Date when the homework was created");
+
+                    b.Property<string>("ReviewerFeedback")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Feedback left by the user that has reviewed the homework - overseer or admin");
+
+                    b.Property<string>("ReviewerName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasComment("Name of the user that has reviewed the homework - overseer or admin");
+
+                    b.Property<decimal>("Score")
+                        .HasColumnType("decimal(4,2)")
+                        .HasComment("Score of the homework");
 
                     b.Property<Guid>("TrialId")
                         .HasColumnType("uniqueidentifier")
@@ -481,7 +493,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Hutt Cartel",
                             TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "starwars.fandom.com/wiki/Hutt_Cartel"
+                            Url = "https://starwars.fandom.com/wiki/Hutt_Cartel"
                         },
                         new
                         {
@@ -489,7 +501,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Black Sun",
                             TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "starwars.fandom.com/wiki/Black_Sun/Legends"
+                            Url = "https://starwars.fandom.com/wiki/Black_Sun/Legends"
                         },
                         new
                         {
@@ -497,7 +509,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Bounty Hunters' Guild",
                             TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "starwars.fandom.com/wiki/Bounty_Hunters'_Guild/Legends"
+                            Url = "https://starwars.fandom.com/wiki/Bounty_Hunters'_Guild/Legends"
                         },
                         new
                         {
@@ -505,7 +517,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Spice",
                             TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "starwars.fandom.com/wiki/Spice/Legends"
+                            Url = "https://starwars.fandom.com/wiki/Spice/Legends"
                         },
                         new
                         {
@@ -513,7 +525,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "History of the Valley of the Dark Lords",
                             TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "starwars.fandom.com/wiki/Valley_of_the_Dark_Lords/Legends"
+                            Url = "https://starwars.fandom.com/wiki/Valley_of_the_Dark_Lords/Legends"
                         },
                         new
                         {
@@ -521,7 +533,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "K'lor'slug",
                             TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "starwars.fandom.com/wiki/K'lor'slug/Legends"
+                            Url = "https://starwars.fandom.com/wiki/K'lor'slug/Legends"
                         },
                         new
                         {
@@ -529,7 +541,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Shyrack",
                             TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "starwars.fandom.com/wiki/Shyrack/Legends"
+                            Url = "https://starwars.fandom.com/wiki/Shyrack/Legends"
                         },
                         new
                         {
@@ -537,7 +549,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Tuk'ata",
                             TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "starwars.fandom.com/wiki/Tuk'ata/Legends"
+                            Url = "https://starwars.fandom.com/wiki/Tuk'ata/Legends"
                         },
                         new
                         {
@@ -545,7 +557,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Study the origins of the clans you will encounter",
                             TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"),
-                            Url = "starwars.fandom.com/wiki/Prophets_of_the_Dark_Side"
+                            Url = "https://starwars.fandom.com/wiki/Prophets_of_the_Dark_Side"
                         },
                         new
                         {
@@ -553,7 +565,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Jurgoran",
                             TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "starwars.fandom.com/wiki/Jurgoran"
+                            Url = "https://starwars.fandom.com/wiki/Jurgoran"
                         },
                         new
                         {
@@ -561,7 +573,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Gundark",
                             TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "starwars.fandom.com/wiki/Gundark/Legends"
+                            Url = "https://starwars.fandom.com/wiki/Gundark/Legends"
                         },
                         new
                         {
@@ -569,7 +581,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Vine cat",
                             TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "starwars.fandom.com/wiki/Vine_cat"
+                            Url = "https://starwars.fandom.com/wiki/Vine_cat"
                         },
                         new
                         {
@@ -577,7 +589,7 @@ namespace SithAcademy.Data.Migrations
                             IsDeleted = false,
                             Name = "Yozusk",
                             TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "starwars.fandom.com/wiki/Yozusk"
+                            Url = "https://starwars.fandom.com/wiki/Yozusk"
                         });
                 });
 

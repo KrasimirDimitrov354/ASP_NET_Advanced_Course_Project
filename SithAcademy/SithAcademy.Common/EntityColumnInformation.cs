@@ -55,7 +55,10 @@ public static class EntityColumnInformation
     {
         public const string IdComment = "ID of the homework";
         public const string ContentComment = "Content of the homework";
-        public const string IsApprovedComment = "Boolean showing whether or not the homework has been approved";
+        public const string ScoreComment = "Score of the homework";
+        public const string CreatedOnComment = "Date when the homework was created";
+        public const string ReviewerNameComment = "Name of the user that has reviewed the homework - overseer or admin";
+        public const string ReviewerFeedbackComment = "Feedback left by the user that has reviewed the homework - overseer or admin";
         public const string TrialIdComment = "ID of the trial for which the homework is";
         public const string AcolyteIdComment = "ID of the acolyte to which the homework belongs";
     }
