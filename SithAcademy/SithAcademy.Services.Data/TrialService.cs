@@ -52,16 +52,19 @@ public class TrialService : ITrialService
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<AcolyteTrialViewModel>> GetAllTrialsOfAcolyteAsync(string acolyteId)
+    public async Task<IEnumerable<IncompleteTrialViewModel>> GetIncompleteTrialsOfAcolyteAsync(string acolyteId)
     {
-        IEnumerable<AcolyteTrialViewModel> trials = await dbContext.Users
+        IEnumerable<IncompleteTrialViewModel> trials = await dbContext.Users
+            .Include(u => u.AssignedTrials)
+            .ThenInclude(t => t.Trial)
+            .ThenInclude(t => t.Academy)
             .Where(u => u.Id.ToString() == acolyteId)
             .Select(u => u.AssignedTrials
-                .Select(t => new AcolyteTrialViewModel()
+                .Where(t => !t.IsCompleted)
+                .Select(t => new IncompleteTrialViewModel()
                 {
                     Id = t.TrialId.ToString(),
                     Title = t.Trial.Title,
-                    IsCompleted = t.IsCompleted,
                     AcademyId = t.Trial.AcademyId,
                     AcademyTitle = t.Trial.Academy.Title
                 })

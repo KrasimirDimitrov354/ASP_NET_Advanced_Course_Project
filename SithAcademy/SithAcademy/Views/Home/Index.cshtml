@@ -1,48 +1,13 @@
-﻿@model IEnumerable<AcolyteTrialViewModel>
+﻿@model IEnumerable<IncompleteTrialViewModel>
 @{
     ViewData["Title"] = "Home Page";
-    AcolyteTrialViewModel[] trials = Model.ToArray();
 }
 
 <div class="container text-center">
     <div class="row">
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            <p>Welcome, acolyte @User.Identity.Name</p>
-
-            @if (trials.Any())
-            {
-                <p>Below you will find the trials you have signed up for.</p>
-
-                @for (int i = 0; i < trials.Length; i++)
-                {
-                    AcolyteTrialViewModel trial = trials[i];
-
-                    <div class="col">
-                        <div class="row d-flex justify-content-center">
-                            <div class="card" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h3 class="card-title">@trial.Title</h3>
-                                    <h5 class="card-title">@trial.AcademyTitle</h5>
-                                    @if (trial.IsCompleted)
-                                    {
-                                        <p class="card-text">You have completed this trial!</p>
-                                    }
-                                    else
-                                    {
-                                        <a asp-controller="Trial" asp-action="Display" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <p class="mb-0">You have successfully began your journey as a Sith.</p>
-                <a class="text-danger m-0 pt-0" asp-controller="Academy" asp-action="Display">Take hold of your fate and join one of our academies!</a>
-            }
+            <partial name="_IncompleteTrialsPartial" model="Model.ToArray()"></partial>
         }
         else
         {
@@ -56,3 +21,8 @@
         }
     </div>
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

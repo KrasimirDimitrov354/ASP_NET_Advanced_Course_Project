@@ -8,5 +8,5 @@ public interface ITrialService
 
     Task RemoveTrialsFromAcolyteAsync(string acolyteId);
 
-    Task<IEnumerable<AcolyteTrialViewModel>> GetAllTrialsOfAcolyteAsync(string acolyteId);
+    Task<IEnumerable<IncompleteTrialViewModel>> GetIncompleteTrialsOfAcolyteAsync(string acolyteId);
 }

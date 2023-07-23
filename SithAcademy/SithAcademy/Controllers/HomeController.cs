@@ -9,6 +9,8 @@ using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
 
+using static SithAcademy.Common.GeneralConstants;
+
 public class HomeController : Controller
 {
     private readonly ITrialService trialService;
@@ -23,12 +25,19 @@ public class HomeController : Controller
     {
         if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            IEnumerable<AcolyteTrialViewModel> trials = await trialService.GetAllTrialsOfAcolyteAsync(User.GetId());
-            return View(trials);
+            try
+            {
+                IEnumerable<IncompleteTrialViewModel> trials = await trialService.GetIncompleteTrialsOfAcolyteAsync(User.GetId());
+                return View(trials);
+            }
+            catch (Exception)
+            {
+                return UnknownFailureMessage();
+            }           
         }
         else 
         {
-            return View(new List<AcolyteTrialViewModel>());
+            return View(new List<IncompleteTrialViewModel>());
         }
     }
 
@@ -42,5 +51,11 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private IActionResult UnknownFailureMessage()
+    {
+        TempData[InformationMessage] = "The Dark Side has prevented your academy application from going through. Meditate upon your failure or try again later.";
+        return RedirectToAction("Index", "Home");
     }
 }
