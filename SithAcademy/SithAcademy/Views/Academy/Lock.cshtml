@@ -16,8 +16,7 @@
             <div class="mb-3 d-flex justify-content-center">
                 @if (!Model.IsLocked)
                 {
-                    <input type="submit" value="Lock" class="btn btn-danger" onclick="return confirm('Are you sure you want to lock @Model.Title? Acolytes will be able to neither leave
-                nor join the academy.')" />
+                    <input type="submit" value="Lock" class="btn btn-danger" onclick="return confirm('Are you sure you want to lock @Model.Title?')" />
                 }
                 else
                 {

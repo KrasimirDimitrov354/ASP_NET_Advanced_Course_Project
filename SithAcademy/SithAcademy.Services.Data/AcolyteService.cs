@@ -17,6 +17,14 @@ public class AcolyteService : IAcolyteService
         this.dbContext = dbContext;
     }
 
+    public async Task<int?> GetAcolyteCurrentLocationAsync(string acolyteId)
+    {
+        AcademyUser acolyte = await dbContext.Users
+            .FirstAsync(u => u.Id.ToString() == acolyteId);
+
+        return acolyte.LocationId;
+    }
+
     public async Task<bool> AcolyteIsInLocationAsync(int locationId, string acolyteId)
     {
         AcademyUser acolyte = await dbContext.Users

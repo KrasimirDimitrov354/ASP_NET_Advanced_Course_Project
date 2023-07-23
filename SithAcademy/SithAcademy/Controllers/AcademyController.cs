@@ -9,6 +9,10 @@ using SithAcademy.Web.Infrastructure.Extensions;
 
 using static SithAcademy.Common.GeneralConstants;
 
+//TODO: Custom error page for code 405 (Post only actions)
+//TODO: Create Academy (Get and Post methods) - only admin can do that
+//TODO: RedirectToAction for Edit() and Lock()
+
 [Authorize]
 public class AcademyController : Controller
 {
@@ -85,8 +89,8 @@ public class AcademyController : Controller
         bool acolyteIsInLocation = await acolyteService.AcolyteIsInLocationAsync(locationId, userId);
         if (!acolyteIsInLocation)
         {
-            TempData[WarningMessage] = "You cannot travel to the selected location before you leave the joined academies in the current location.";
-            return RedirectToAction("Details", "Location", new { id = locationId });
+            TempData[WarningMessage] = "You cannot travel to the selected location before you leave the academies in the current location.";
+            return RedirectToAction("Details", "Location", new { id = await acolyteService.GetAcolyteCurrentLocationAsync(userId) });
         }
 
         bool acolyteExistsInAcademy = await academyService.AcolyteExistsInAcademyAsync(id, userId);
@@ -146,7 +150,9 @@ public class AcademyController : Controller
         {
             await academyService.RemoveAcolyteFromAcademyAsync(id, userId);
             await trialService.RemoveTrialsFromAcolyteAsync(userId);
-            await acolyteService.RemoveAcolyteFromLocationAsync(id, userId);
+
+            int locationId = await academyService.GetLocationIdByAcademyIdAsync(id);
+            await acolyteService.RemoveAcolyteFromLocationAsync(locationId, userId);
 
             TempData[SuccessMessage] = "You have successfully left the selected academy.";
             return RedirectToAction("Details", "Academy", new { id });
@@ -237,8 +243,45 @@ public class AcademyController : Controller
         }
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> Lock(int id)
+    {
+        bool academyExists = await academyService.AcademyExistsAsync(id);
+        if (!academyExists)
+        {
+            return InaccessibleMessage();
+        }
+
+        string userId = User.GetId();
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
+            return RedirectToAction("Display", "Academy");
+        }
+
+        string overseerId = await overseerService.GetOverseerIdAsync(userId);
+        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
+        if (!overseerCanModify)
+        {
+            TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
+            //TODO!
+            return Ok();
+        }
+
+        try
+        {
+            AcademyFormViewModel academyToLock = await academyService.GetAcademyForModificationAsync(id);
+            return View(academyToLock);
+        }
+        catch (Exception)
+        {
+            return UnknownFailureMessage();
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Lock(int id, AcademyFormViewModel academyToLock)
     {
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
