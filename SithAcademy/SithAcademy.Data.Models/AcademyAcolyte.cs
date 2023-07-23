@@ -16,8 +16,4 @@ public class AcademyAcolyte
     [Comment(AcolyteIdComment)]
     public Guid AcolyteId { get; set; }
     public virtual AcademyUser Acolyte { get; set; } = null!;
-
-    [Required]
-    [Comment(IsGraduatedComment)]
-    public bool IsGraduated { get; set; }
 }

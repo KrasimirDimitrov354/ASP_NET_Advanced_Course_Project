@@ -20,6 +20,11 @@ public static class EntityColumnInformation
         public const string AcademyIdComment = "ID of the academy in which the overseer is assigned to";
     }
 
+    public static class Acolyte
+    {
+        public const string LocationIdComment = "ID of the location on which the acolyte is currently located";
+    }
+
     public static class Location
     {
         public const string IdComment = "ID of the location";
@@ -59,7 +64,6 @@ public static class EntityColumnInformation
     {
         public const string AcademyIdComment = "ID of the academy in which the acolyte is assigned to";
         public const string AcolyteIdComment = "ID of the acolyte";
-        public const string IsGraduatedComment = "Boolean showing whether or not the acolyte has completed all the trials in the academy";
     }
 
     public static class TrialAcolyte

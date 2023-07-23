@@ -9,10 +9,6 @@ public class AcademyAcolyteEntityConfiguration : IEntityTypeConfiguration<Academ
 {
     public void Configure(EntityTypeBuilder<AcademyAcolyte> builder)
     {
-        builder
-            .Property(aa => aa.IsGraduated)
-            .HasDefaultValue(false);
-
         builder.HasKey(aa => new { aa.AcademyId, aa.AcolyteId });
     }
 }

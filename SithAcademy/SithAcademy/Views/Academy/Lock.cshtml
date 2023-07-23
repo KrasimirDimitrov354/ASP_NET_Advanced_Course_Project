@@ -1,0 +1,29 @@
+﻿@model AcademyFormViewModel
+@{
+    ViewData["Title"] = "Lock Academy";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<form asp-controller="Academy" asp-action="Lock" method="post">
+    <div class="d-flex justify-content-center">
+        <div class="card " style="width: 50rem;">
+            <div class="card-body">
+                <h3 class="card-title text-center">Title: @Model.Title</h3>
+                <p class="card-text"><span class="fw-bold">Description: </span>@Model.Description</p>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                @if (!Model.IsLocked)
+                {
+                    <input type="submit" value="Lock" class="btn btn-danger" onclick="return confirm('Are you sure you want to lock @Model.Title? Acolytes will be able to neither leave
+                nor join the academy.')" />
+                }
+                else
+                {
+                    <input type="submit" value="Unlock" class="btn btn-success" onclick="return confirm('This will unlock @Model.Title. Are you sure you wish to proceed?')" />
+                }
+            </div>
+        </div>
+    </div>
+</form>

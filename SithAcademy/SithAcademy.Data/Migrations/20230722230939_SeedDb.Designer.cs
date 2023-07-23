@@ -12,8 +12,8 @@ using SithAcademy.Data;
 namespace SithAcademy.Data.Migrations
 {
     [DbContext(typeof(AcademyDbContext))]
-    [Migration("20230721210953_CreateAndSeedCustomEntities")]
-    partial class CreateAndSeedCustomEntities
+    [Migration("20230722230939_SeedDb")]
+    partial class SeedDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,12 +233,6 @@ namespace SithAcademy.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasComment("ID of the acolyte");
 
-                    b.Property<bool>("IsGraduated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasComment("Boolean showing whether or not the acolyte has completed all the trials in the academy");
-
                     b.HasKey("AcademyId", "AcolyteId");
 
                     b.HasIndex("AcolyteId");
@@ -265,6 +259,10 @@ namespace SithAcademy.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int")
+                        .HasComment("ID of the location on which the acolyte is currently located");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -300,6 +298,8 @@ namespace SithAcademy.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -757,6 +757,16 @@ namespace SithAcademy.Data.Migrations
                     b.Navigation("Acolyte");
                 });
 
+            modelBuilder.Entity("SithAcademy.Data.Models.AcademyUser", b =>
+                {
+                    b.HasOne("SithAcademy.Data.Models.Location", "Location")
+                        .WithMany("Acolytes")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Location");
+                });
+
             modelBuilder.Entity("SithAcademy.Data.Models.Homework", b =>
                 {
                     b.HasOne("SithAcademy.Data.Models.AcademyUser", "Acolyte")
@@ -857,6 +867,8 @@ namespace SithAcademy.Data.Migrations
             modelBuilder.Entity("SithAcademy.Data.Models.Location", b =>
                 {
                     b.Navigation("Academies");
+
+                    b.Navigation("Acolytes");
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Trial", b =>

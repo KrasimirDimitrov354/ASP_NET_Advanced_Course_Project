@@ -50,8 +50,6 @@ public class AcademyService : IAcademyService
                 Id = a.Id,
                 Title = a.Title,
                 ImageUrl = a.ImageUrl,
-                LocationId = a.LocationId,
-                LocationName = a.Location.Name,
                 Description = a.Description,
                 IsLocked = a.IsLocked,
                 Trials = a.Trials
@@ -73,16 +71,76 @@ public class AcademyService : IAcademyService
         return academyDetails;
     }
 
-    public async Task<bool> AcademyExistsAndIsNotLocked(int academyId)
+    public async Task<int> GetLocationIdByAcademyIdAsync(int academyId)
     {
-        return await dbContext.Academies
-            .Where(a => !a.IsLocked)
-            .AnyAsync(a => a.Id == academyId);
+        Academy academy = await dbContext.Academies
+            .FirstAsync(a => a.Id == academyId);
+
+        return academy.LocationId;
+    }
+
+    public async Task<AcademyFormViewModel> GetAcademyForModificationAsync(int academyId)
+    {
+        AcademyFormViewModel academyToModify = await dbContext.Academies
+            .Where(a => a.Id == academyId)
+            .Select(a => new AcademyFormViewModel()
+            {
+                Title = a.Title,
+                ImageUrl = a.ImageUrl,
+                Description = a.Description,
+                IsLocked = a.IsLocked
+            })
+            .FirstAsync();
+
+        return academyToModify;
+    }
+
+    public async Task EditAcademyAsync(int academyId, AcademyFormViewModel viewModel)
+    {
+        Academy academy = await dbContext.Academies
+            .FirstAsync(a => a.Id == academyId);
+
+        academy.Title = viewModel.Title;
+        academy.ImageUrl = viewModel.ImageUrl;
+        academy.Description = viewModel.Description;
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task ChangeAcademyLockStatusAsync(int academyId)
+    {
+        Academy academy = await dbContext.Academies
+            .FirstAsync(a => a.Id == academyId);
+
+        switch (academy.IsLocked)
+        {
+            case true:
+                academy.IsLocked = false;
+                break;
+            case false:
+                academy.IsLocked= true;
+                break;
+        }
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> AcademyExistsAsync(int academyId)
+    {
+        return await dbContext.Academies.AnyAsync(a => a.Id == academyId);
+    }
+
+    public async Task<bool> AcademyIsLockedAsync(int academyId)
+    {
+        Academy academy = await dbContext.Academies.FirstAsync(a => a.Id == academyId);
+
+        return academy.IsLocked;
     }
 
     public async Task<bool> AcolyteExistsInAcademyAsync(int academyId, string acolyteId)
     {
         Academy academy = await dbContext.Academies
+            .Include(a => a.Acolytes)
             .Where(a => !a.IsLocked)
             .FirstAsync(a => a.Id == academyId);
 
@@ -92,7 +150,6 @@ public class AcademyService : IAcademyService
     public async Task AddAcolyteToAcademyAsync(int academyId, string acolyteId)
     {
         Academy academy = await dbContext.Academies
-            .Where(a => !a.IsLocked)
             .FirstAsync(a => a.Id == academyId);
 
         academy.Acolytes.Add(new AcademyAcolyte()
@@ -101,6 +158,18 @@ public class AcademyService : IAcademyService
             AcolyteId = Guid.Parse(acolyteId)
         });
 
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task RemoveAcolyteFromAcademyAsync(int academyId, string acolyteId)
+    {
+        Academy academy = await dbContext.Academies
+            .Include(a => a.Acolytes)
+            .FirstAsync(a => a.Id == academyId);
+
+        AcademyAcolyte acolyteToRemove = academy.Acolytes.First(a => a.AcolyteId.ToString() == acolyteId);
+        academy.Acolytes.Remove(acolyteToRemove);
+        
         await dbContext.SaveChangesAsync();
     }
 }

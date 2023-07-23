@@ -12,6 +12,7 @@ public class Location
     public Location()
     {
         Academies = new HashSet<Academy>();
+        Acolytes = new HashSet<AcademyUser>();
     }
 
     [Key]
@@ -38,4 +39,5 @@ public class Location
     public string Description { get; set; } = null!;
 
     public virtual ICollection<Academy> Academies { get; set; }
+    public virtual ICollection<AcademyUser> Acolytes { get; set; }
 }

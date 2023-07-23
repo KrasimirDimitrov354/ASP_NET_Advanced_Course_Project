@@ -3,7 +3,7 @@
 using SithAcademy.Web.ViewModels.Acolyte;
 using SithAcademy.Web.ViewModels.Trial;
 
-public class AcademyDetailsViewModel : AcademyOverviewViewModel
+public class AcademyDetailsViewModel : AcademySummaryViewModel
 {
     public AcademyDetailsViewModel()
     {

@@ -14,15 +14,19 @@
                 @if (User.Identity != null && User.Identity.IsAuthenticated &&
                Model.Acolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
                 {
+                    <form asp-controller="Academy" asp-action="Leave" asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-danger mb-2" type="submit" value="Leave academy" />
+                    </form>
+
                     @foreach (TrialOverviewViewModel trial in Model.Trials)
                     {
                         <p class="card-text">@trial.Title</p>
-                        <a asp-controller="Trial" asp-action="Display" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>
+                        <a asp-controller="Trial" asp-action="Display" asp-route-id="@trial.Id" class="btn btn-warning mb-2">Trial Details</a>
                     }
                 }
                 else
                 {
-                    <form asp-controller="Academy" asp-action="Apply" asp-route-id="@Model.Id" method="post">
+                    <form asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-danger mb-2" type="submit" value="Join academy"/>
                     </form>
                 }

@@ -3,6 +3,9 @@
 using System;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+using static SithAcademy.Common.EntityColumnInformation.Acolyte;
 
 /// <summary>
 /// This is a custom user class that works with the default ASP.NET Core Identity.
@@ -16,6 +19,10 @@ public class AcademyUser : IdentityUser<Guid>
         AssignedTrials = new HashSet<TrialAcolyte>();
         PublishedHomeworks = new HashSet<Homework>();
     }
+
+    [Comment(LocationIdComment)]
+    public int? LocationId { get; set; }
+    public virtual Location? Location { get; set; }
 
     public virtual ICollection<AcademyAcolyte> JoinedAcademies { get; set; }
     public virtual ICollection<TrialAcolyte> AssignedTrials { get; set; }
