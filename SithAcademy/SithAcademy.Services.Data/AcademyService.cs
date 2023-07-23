@@ -139,12 +139,9 @@ public class AcademyService : IAcademyService
 
     public async Task<bool> AcolyteExistsInAcademyAsync(int academyId, string acolyteId)
     {
-        Academy academy = await dbContext.Academies
-            .Include(a => a.Acolytes)
-            .Where(a => !a.IsLocked)
-            .FirstAsync(a => a.Id == academyId);
-
-        return academy.Acolytes.Any(a => a.AcolyteId.ToString() == acolyteId);
+        return await dbContext.AcademiesAcolytes
+            .AnyAsync(academy => academy.AcademyId == academyId && 
+                      academy.AcolyteId.ToString() == acolyteId);
     }
 
     public async Task AddAcolyteToAcademyAsync(int academyId, string acolyteId)
