@@ -6,6 +6,7 @@ using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
+using SithAcademy.Web.Infrastructure.ModelBinders;
 
 public class Program
 {
@@ -33,7 +34,12 @@ public class Program
 
         builder.Services.AddApplicationServices(typeof(ITrialService));
 
-        builder.Services.AddControllersWithViews();
+        builder.Services
+            .AddControllersWithViews()
+            .AddMvcOptions(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+            });
 
         WebApplication app = builder.Build();
 
