@@ -11,13 +11,17 @@ using SithAcademy.Web.Infrastructure.Extensions;
 
 using static SithAcademy.Common.GeneralConstants;
 
+//TODO: Add custom error page to replace UnknownFailure with
+
 public class HomeController : Controller
 {
     private readonly ITrialService trialService;
+    private readonly IOverseerService overseerService;
 
-    public HomeController(ITrialService trialService)
+    public HomeController(ITrialService trialService, IOverseerService overseerService)
     {
         this.trialService = trialService;
+        this.overseerService = overseerService;
     }
 
     [HttpGet]
@@ -27,8 +31,17 @@ public class HomeController : Controller
         {
             try
             {
-                IEnumerable<IncompleteTrialViewModel> trials = await trialService.GetIncompleteTrialsOfAcolyteAsync(User.GetId());
-                return View(trials);
+                string userId = User.GetId();
+                bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+                if (userIsOverseer)
+                {
+                    return View(new List<IncompleteTrialViewModel>());
+                }
+                else
+                {
+                    IEnumerable<IncompleteTrialViewModel> trials = await trialService.GetIncompleteTrialsOfAcolyteAsync(userId);
+                    return View(trials);
+                }               
             }
             catch (Exception)
             {

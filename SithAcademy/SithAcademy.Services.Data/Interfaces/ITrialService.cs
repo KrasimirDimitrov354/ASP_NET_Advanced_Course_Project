@@ -9,4 +9,12 @@ public interface ITrialService
     Task RemoveTrialsFromAcolyteAsync(string acolyteId);
 
     Task<IEnumerable<IncompleteTrialViewModel>> GetIncompleteTrialsOfAcolyteAsync(string acolyteId);
+
+    Task<TrialDetailsViewModel> GetTrialDetailsAsync(string trialId);
+
+    Task<bool> TrialExistsAsync(string trialId);
+
+    Task<bool> UserCanAccessTrialAsync(string trialId, string userId);
+
+    Task<int> GetAcademyIdByTrialIdAsync(string trialId);
 }

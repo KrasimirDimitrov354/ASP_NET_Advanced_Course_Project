@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Trial;
+using SithAcademy.Web.ViewModels.Resource;
 using SithAcademy.Services.Data.Interfaces;
 
 public class TrialService : ITrialService
@@ -72,5 +73,49 @@ public class TrialService : ITrialService
             .FirstAsync();
 
         return trials;
+    }
+
+    public async Task<TrialDetailsViewModel> GetTrialDetailsAsync(string trialId)
+    {
+        TrialDetailsViewModel trial = await dbContext.Trials
+            .Include(t => t.Resources)
+            .Where(t => t.Id.ToString() == trialId)
+            .Select(t => new TrialDetailsViewModel()
+            {
+                Title = t.Title,
+                Description = t.Description,
+                IsLocked = t.IsLocked,
+                Resources = t.Resources
+                            .Where(r => !r.IsDeleted)
+                            .Select(r => new ResourceDetailsViewModel()
+                            {
+                                Name = r.Name,
+                                Url = r.Url
+                            })
+                            .ToArray()
+            })
+            .FirstAsync();
+
+        return trial;
+    }
+
+    public async Task<bool> TrialExistsAsync(string trialId)
+    {
+        return await dbContext.Trials.AnyAsync(t => t.Id.ToString() == trialId);
+    }
+
+    public async Task<bool> UserCanAccessTrialAsync(string trialId, string userId)
+    {
+        return await dbContext.TrialsAcolytes
+            .AnyAsync(trial => trial.TrialId.ToString() == trialId && 
+                      trial.AcolyteId.ToString() == userId);
+    }
+
+    public async Task<int> GetAcademyIdByTrialIdAsync(string trialId)
+    {
+        Trial trial = await dbContext.Trials
+            .FirstAsync(t => t.Id.ToString() == trialId);
+
+        return trial.AcademyId;
     }
 }
