@@ -25,8 +25,13 @@ public class Resource
 
     [Required]
     [MaxLength(UrlMaxLength)]
-    [Comment(UrlComment)]
-    public string Url { get; set; } = null!;
+    [Comment(SourceUrlComment)]
+    public string SourceUrl { get; set; } = null!;
+
+    [Required]
+    [MaxLength(UrlMaxLength)]
+    [Comment(ImageUrlComment)]
+    public string ImageUrl { get; set; } = null!;
 
     [Required]
     [Comment(IsDeletedComment)]

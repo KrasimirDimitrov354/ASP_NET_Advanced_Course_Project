@@ -459,6 +459,12 @@ namespace SithAcademy.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasComment("ID of the resource");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)")
+                        .HasComment("URL of the image that will be used to preview the resource");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -471,14 +477,14 @@ namespace SithAcademy.Data.Migrations
                         .HasColumnType("nvarchar(60)")
                         .HasComment("Name of the resource");
 
-                    b.Property<Guid>("TrialId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Url")
+                    b.Property<string>("SourceUrl")
                         .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)")
-                        .HasComment("URL for the resource's location");
+                        .HasComment("URL leading to the resource's location");
+
+                    b.Property<Guid>("TrialId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -490,106 +496,119 @@ namespace SithAcademy.Data.Migrations
                         new
                         {
                             Id = new Guid("fc34dc68-b10e-4c14-a1d9-3ad96b73f431"),
+                            ImageUrl = "https://media.moddb.com/images/mods/1/19/18461/hutt_fleet_by_wrait.jpg",
                             IsDeleted = false,
                             Name = "Hutt Cartel",
-                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "https://starwars.fandom.com/wiki/Hutt_Cartel"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Hutt_Cartel",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
                         },
                         new
                         {
                             Id = new Guid("2c529f2b-d864-4dc7-b468-c44d630ec7c4"),
+                            ImageUrl = "https://overmental.com/wp-content/uploads/2015/07/PrinceXizorart.png",
                             IsDeleted = false,
                             Name = "Black Sun",
-                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "https://starwars.fandom.com/wiki/Black_Sun/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Black_Sun/Legends",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
                         },
                         new
                         {
                             Id = new Guid("e6d39382-06ef-47f6-887c-a6f4e7806047"),
+                            ImageUrl = "https://www.worldanvil.com/media/cache/cover/uploads/images/e98ee0f248cd6fff599458a47aa7c1d4.jpg",
                             IsDeleted = false,
                             Name = "Bounty Hunters' Guild",
-                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "https://starwars.fandom.com/wiki/Bounty_Hunters'_Guild/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Bounty_Hunters'_Guild/Legends",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
                         },
                         new
                         {
                             Id = new Guid("559e40bd-13fa-47db-947e-0f087b3496a5"),
+                            ImageUrl = "https://fictionhorizon.com/wp-content/uploads/2022/01/pykes.jpg",
                             IsDeleted = false,
                             Name = "Spice",
-                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
-                            Url = "https://starwars.fandom.com/wiki/Spice/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Spice/Legends",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
                         },
                         new
                         {
                             Id = new Guid("b9da4d71-52bc-451e-951f-c46e04e8293c"),
+                            ImageUrl = "https://ddx5i92cqts4o.cloudfront.net/images/1ejq0l57t_Fearful_Landscape_CotG.png",
                             IsDeleted = false,
                             Name = "History of the Valley of the Dark Lords",
-                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "https://starwars.fandom.com/wiki/Valley_of_the_Dark_Lords/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Valley_of_the_Dark_Lords/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
                         },
                         new
                         {
                             Id = new Guid("1d15dbcc-67b8-4597-b32a-d9d54a91bb85"),
+                            ImageUrl = "https://static.wikia.nocookie.net/aliens/images/b/b7/K'lor'slug.png",
                             IsDeleted = false,
                             Name = "K'lor'slug",
-                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "https://starwars.fandom.com/wiki/K'lor'slug/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/K'lor'slug/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
                         },
                         new
                         {
                             Id = new Guid("a6def1fb-93d8-43f2-bd5c-6d3bdf220694"),
+                            ImageUrl = "https://pm1.aminoapps.com/6935/bb60fc764e739d6da08e25ae84d038c1885192ecr1-526-493v2_hq.jpg",
                             IsDeleted = false,
                             Name = "Shyrack",
-                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "https://starwars.fandom.com/wiki/Shyrack/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Shyrack/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
                         },
                         new
                         {
                             Id = new Guid("479a9611-5af8-4ebf-aa05-95d3d21397f6"),
+                            ImageUrl = "https://pm1.aminoapps.com/5870/1727f7e20f6ef47d8605c148ff71bdabc8c9df3f_hq.jpg",
                             IsDeleted = false,
                             Name = "Tuk'ata",
-                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
-                            Url = "https://starwars.fandom.com/wiki/Tuk'ata/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Tuk'ata/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
                         },
                         new
                         {
                             Id = new Guid("e76679a2-14a4-4e91-8a06-c972da405f05"),
+                            ImageUrl = "https://static.wikia.nocookie.net/starwars/images/b/b1/Darthmill.jpg/",
                             IsDeleted = false,
                             Name = "Study the origins of the clans you will encounter",
-                            TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"),
-                            Url = "https://starwars.fandom.com/wiki/Prophets_of_the_Dark_Side"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Prophets_of_the_Dark_Side",
+                            TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8")
                         },
                         new
                         {
                             Id = new Guid("de19a886-21a2-4550-ac26-34134ccf2268"),
+                            ImageUrl = "https://pm1.aminoapps.com/6435/a30efbffef3abff7d2860524cb52b48aba89181d_hq.jpg",
                             IsDeleted = false,
                             Name = "Jurgoran",
-                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "https://starwars.fandom.com/wiki/Jurgoran"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Jurgoran",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
                         },
                         new
                         {
                             Id = new Guid("b2b42c49-9fde-43cc-a409-5df9c1e7c774"),
+                            ImageUrl = "https://www.gamesmanagers.com/images/posts/bc2ec369d3e6cf31786544799d3088c8-2.jpg",
                             IsDeleted = false,
                             Name = "Gundark",
-                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "https://starwars.fandom.com/wiki/Gundark/Legends"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Gundark/Legends",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
                         },
                         new
                         {
                             Id = new Guid("ff04a297-c227-4f02-8b0c-772f4213e6a9"),
+                            ImageUrl = "https://oyster.ignimgs.com/mediawiki/apis.ign.com/star-wars-the-old-republic/1/15/Ss_vinecat01_800x450.jpg",
                             IsDeleted = false,
                             Name = "Vine cat",
-                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "https://starwars.fandom.com/wiki/Vine_cat"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Vine_cat",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
                         },
                         new
                         {
                             Id = new Guid("30bc967b-9c02-400b-b363-fc12f4929336"),
+                            ImageUrl = "https://pm1.aminoapps.com/6435/a93762efd24f62a2395dd82b349729d35245d004_hq.jpg",
                             IsDeleted = false,
                             Name = "Yozusk",
-                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
-                            Url = "https://starwars.fandom.com/wiki/Yozusk"
+                            SourceUrl = "https://starwars.fandom.com/wiki/Yozusk",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
                         });
                 });
 
@@ -616,6 +635,10 @@ namespace SithAcademy.Data.Migrations
                         .HasDefaultValue(false)
                         .HasComment("Boolean showing whether or not the trial can be participated in");
 
+                    b.Property<decimal>("ScoreToPass")
+                        .HasColumnType("decimal(4,2)")
+                        .HasComment("The score needed by an acolyte to complete the trial");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(25)
@@ -635,6 +658,7 @@ namespace SithAcademy.Data.Migrations
                             AcademyId = 1,
                             Description = "Dreshdae has a thriving population of underworld elements. Smugglers, bounty hunters, slavers, pirates. Mingle with them. Understand their passions. Succeed in this endeavour, and you will be able to control them.",
                             IsLocked = false,
+                            ScoreToPass = 6.5m,
                             Title = "Trial of Passion"
                         },
                         new
@@ -643,6 +667,7 @@ namespace SithAcademy.Data.Migrations
                             AcademyId = 1,
                             Description = "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories.Explore their tombs to gain an understanding of what it takes to be Sith. Beware the Valley's guardians.",
                             IsLocked = false,
+                            ScoreToPass = 7.0m,
                             Title = "Trial of Strength"
                         },
                         new
@@ -651,6 +676,7 @@ namespace SithAcademy.Data.Migrations
                             AcademyId = 2,
                             Description = "True power comes to the cunning. Remnants of a failed empire still eke out an existence amidst the endless jungles. Infiltrate one of warring clans and make them do your bidding. Do not underestimate the power of the superstitious mind.",
                             IsLocked = false,
+                            ScoreToPass = 7.5m,
                             Title = "Trial of Power"
                         },
                         new
@@ -659,6 +685,7 @@ namespace SithAcademy.Data.Migrations
                             AcademyId = 2,
                             Description = "A Sith must accept nothing less than the complete destruction of their enemies. Venture out into the wilderness. Observe the primal savagery of the beasts while taking note of their weaknesses. Return with proof of your victory over them.",
                             IsLocked = false,
+                            ScoreToPass = 8.0m,
                             Title = "Trial of Victory"
                         });
                 });

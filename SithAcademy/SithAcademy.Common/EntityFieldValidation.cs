@@ -52,6 +52,10 @@ public static class EntityFieldValidation
 
         public const int DescriptionMinLength = 25;
         public const int DescriptionMaxLength = 1000;
+
+        public const string ScoreTypeName = "decimal(4,2)";
+        public const string ScoreMinValue = "1";
+        public const string ScoreMaxValue = "10";
     }
 
     public static class Resource

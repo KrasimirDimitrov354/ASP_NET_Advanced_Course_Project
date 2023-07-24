@@ -84,13 +84,15 @@ public class TrialService : ITrialService
             {
                 Title = t.Title,
                 Description = t.Description,
+                ScoreToPass = t.ScoreToPass.ToString(),
                 IsLocked = t.IsLocked,
                 Resources = t.Resources
                             .Where(r => !r.IsDeleted)
-                            .Select(r => new ResourceDetailsViewModel()
+                            .Select(r => new ResourcePreviewViewModel()
                             {
                                 Name = r.Name,
-                                Url = r.Url
+                                SourceUrl = r.SourceUrl,
+                                ImageUrl = r.ImageUrl
                             })
                             .ToArray()
             })

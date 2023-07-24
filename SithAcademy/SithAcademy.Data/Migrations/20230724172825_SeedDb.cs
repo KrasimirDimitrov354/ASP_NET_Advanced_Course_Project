@@ -36,33 +36,33 @@ namespace SithAcademy.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Trials",
-                columns: new[] { "Id", "AcademyId", "Description", "Title" },
+                columns: new[] { "Id", "AcademyId", "Description", "ScoreToPass", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"), 1, "Dreshdae has a thriving population of underworld elements. Smugglers, bounty hunters, slavers, pirates. Mingle with them. Understand their passions. Succeed in this endeavour, and you will be able to control them.", "Trial of Passion" },
-                    { new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"), 2, "True power comes to the cunning. Remnants of a failed empire still eke out an existence amidst the endless jungles. Infiltrate one of warring clans and make them do your bidding. Do not underestimate the power of the superstitious mind.", "Trial of Power" },
-                    { new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"), 1, "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories.Explore their tombs to gain an understanding of what it takes to be Sith. Beware the Valley's guardians.", "Trial of Strength" },
-                    { new Guid("b92c1895-a6ef-422d-b760-298a0785b612"), 2, "A Sith must accept nothing less than the complete destruction of their enemies. Venture out into the wilderness. Observe the primal savagery of the beasts while taking note of their weaknesses. Return with proof of your victory over them.", "Trial of Victory" }
+                    { new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"), 1, "Dreshdae has a thriving population of underworld elements. Smugglers, bounty hunters, slavers, pirates. Mingle with them. Understand their passions. Succeed in this endeavour, and you will be able to control them.", 6.5m, "Trial of Passion" },
+                    { new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"), 2, "True power comes to the cunning. Remnants of a failed empire still eke out an existence amidst the endless jungles. Infiltrate one of warring clans and make them do your bidding. Do not underestimate the power of the superstitious mind.", 7.5m, "Trial of Power" },
+                    { new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"), 1, "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories.Explore their tombs to gain an understanding of what it takes to be Sith. Beware the Valley's guardians.", 7.0m, "Trial of Strength" },
+                    { new Guid("b92c1895-a6ef-422d-b760-298a0785b612"), 2, "A Sith must accept nothing less than the complete destruction of their enemies. Venture out into the wilderness. Observe the primal savagery of the beasts while taking note of their weaknesses. Return with proof of your victory over them.", 8.0m, "Trial of Victory" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Resources",
-                columns: new[] { "Id", "Name", "TrialId", "Url" },
+                columns: new[] { "Id", "ImageUrl", "Name", "SourceUrl", "TrialId" },
                 values: new object[,]
                 {
-                    { new Guid("1d15dbcc-67b8-4597-b32a-d9d54a91bb85"), "K'lor'slug", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"), "https://starwars.fandom.com/wiki/K'lor'slug/Legends" },
-                    { new Guid("2c529f2b-d864-4dc7-b468-c44d630ec7c4"), "Black Sun", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"), "https://starwars.fandom.com/wiki/Black_Sun/Legends" },
-                    { new Guid("30bc967b-9c02-400b-b363-fc12f4929336"), "Yozusk", new Guid("b92c1895-a6ef-422d-b760-298a0785b612"), "https://starwars.fandom.com/wiki/Yozusk" },
-                    { new Guid("479a9611-5af8-4ebf-aa05-95d3d21397f6"), "Tuk'ata", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"), "https://starwars.fandom.com/wiki/Tuk'ata/Legends" },
-                    { new Guid("559e40bd-13fa-47db-947e-0f087b3496a5"), "Spice", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"), "https://starwars.fandom.com/wiki/Spice/Legends" },
-                    { new Guid("a6def1fb-93d8-43f2-bd5c-6d3bdf220694"), "Shyrack", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"), "https://starwars.fandom.com/wiki/Shyrack/Legends" },
-                    { new Guid("b2b42c49-9fde-43cc-a409-5df9c1e7c774"), "Gundark", new Guid("b92c1895-a6ef-422d-b760-298a0785b612"), "https://starwars.fandom.com/wiki/Gundark/Legends" },
-                    { new Guid("b9da4d71-52bc-451e-951f-c46e04e8293c"), "History of the Valley of the Dark Lords", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"), "https://starwars.fandom.com/wiki/Valley_of_the_Dark_Lords/Legends" },
-                    { new Guid("de19a886-21a2-4550-ac26-34134ccf2268"), "Jurgoran", new Guid("b92c1895-a6ef-422d-b760-298a0785b612"), "https://starwars.fandom.com/wiki/Jurgoran" },
-                    { new Guid("e6d39382-06ef-47f6-887c-a6f4e7806047"), "Bounty Hunters' Guild", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"), "https://starwars.fandom.com/wiki/Bounty_Hunters'_Guild/Legends" },
-                    { new Guid("e76679a2-14a4-4e91-8a06-c972da405f05"), "Study the origins of the clans you will encounter", new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"), "https://starwars.fandom.com/wiki/Prophets_of_the_Dark_Side" },
-                    { new Guid("fc34dc68-b10e-4c14-a1d9-3ad96b73f431"), "Hutt Cartel", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"), "https://starwars.fandom.com/wiki/Hutt_Cartel" },
-                    { new Guid("ff04a297-c227-4f02-8b0c-772f4213e6a9"), "Vine cat", new Guid("b92c1895-a6ef-422d-b760-298a0785b612"), "https://starwars.fandom.com/wiki/Vine_cat" }
+                    { new Guid("1d15dbcc-67b8-4597-b32a-d9d54a91bb85"), "https://static.wikia.nocookie.net/aliens/images/b/b7/K'lor'slug.png", "K'lor'slug", "https://starwars.fandom.com/wiki/K'lor'slug/Legends", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a") },
+                    { new Guid("2c529f2b-d864-4dc7-b468-c44d630ec7c4"), "https://overmental.com/wp-content/uploads/2015/07/PrinceXizorart.png", "Black Sun", "https://starwars.fandom.com/wiki/Black_Sun/Legends", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9") },
+                    { new Guid("30bc967b-9c02-400b-b363-fc12f4929336"), "https://pm1.aminoapps.com/6435/a93762efd24f62a2395dd82b349729d35245d004_hq.jpg", "Yozusk", "https://starwars.fandom.com/wiki/Yozusk", new Guid("b92c1895-a6ef-422d-b760-298a0785b612") },
+                    { new Guid("479a9611-5af8-4ebf-aa05-95d3d21397f6"), "https://pm1.aminoapps.com/5870/1727f7e20f6ef47d8605c148ff71bdabc8c9df3f_hq.jpg", "Tuk'ata", "https://starwars.fandom.com/wiki/Tuk'ata/Legends", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a") },
+                    { new Guid("559e40bd-13fa-47db-947e-0f087b3496a5"), "https://fictionhorizon.com/wp-content/uploads/2022/01/pykes.jpg", "Spice", "https://starwars.fandom.com/wiki/Spice/Legends", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9") },
+                    { new Guid("a6def1fb-93d8-43f2-bd5c-6d3bdf220694"), "https://pm1.aminoapps.com/6935/bb60fc764e739d6da08e25ae84d038c1885192ecr1-526-493v2_hq.jpg", "Shyrack", "https://starwars.fandom.com/wiki/Shyrack/Legends", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a") },
+                    { new Guid("b2b42c49-9fde-43cc-a409-5df9c1e7c774"), "https://www.gamesmanagers.com/images/posts/bc2ec369d3e6cf31786544799d3088c8-2.jpg", "Gundark", "https://starwars.fandom.com/wiki/Gundark/Legends", new Guid("b92c1895-a6ef-422d-b760-298a0785b612") },
+                    { new Guid("b9da4d71-52bc-451e-951f-c46e04e8293c"), "https://ddx5i92cqts4o.cloudfront.net/images/1ejq0l57t_Fearful_Landscape_CotG.png", "History of the Valley of the Dark Lords", "https://starwars.fandom.com/wiki/Valley_of_the_Dark_Lords/Legends", new Guid("aa37b907-5d8b-439c-a719-2a784c07744a") },
+                    { new Guid("de19a886-21a2-4550-ac26-34134ccf2268"), "https://pm1.aminoapps.com/6435/a30efbffef3abff7d2860524cb52b48aba89181d_hq.jpg", "Jurgoran", "https://starwars.fandom.com/wiki/Jurgoran", new Guid("b92c1895-a6ef-422d-b760-298a0785b612") },
+                    { new Guid("e6d39382-06ef-47f6-887c-a6f4e7806047"), "https://www.worldanvil.com/media/cache/cover/uploads/images/e98ee0f248cd6fff599458a47aa7c1d4.jpg", "Bounty Hunters' Guild", "https://starwars.fandom.com/wiki/Bounty_Hunters'_Guild/Legends", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9") },
+                    { new Guid("e76679a2-14a4-4e91-8a06-c972da405f05"), "https://static.wikia.nocookie.net/starwars/images/b/b1/Darthmill.jpg/", "Study the origins of the clans you will encounter", "https://starwars.fandom.com/wiki/Prophets_of_the_Dark_Side", new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8") },
+                    { new Guid("fc34dc68-b10e-4c14-a1d9-3ad96b73f431"), "https://media.moddb.com/images/mods/1/19/18461/hutt_fleet_by_wrait.jpg", "Hutt Cartel", "https://starwars.fandom.com/wiki/Hutt_Cartel", new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9") },
+                    { new Guid("ff04a297-c227-4f02-8b0c-772f4213e6a9"), "https://oyster.ignimgs.com/mediawiki/apis.ign.com/star-wars-the-old-republic/1/15/Ss_vinecat01_800x450.jpg", "Vine cat", "https://starwars.fandom.com/wiki/Vine_cat", new Guid("b92c1895-a6ef-422d-b760-298a0785b612") }
                 });
         }
 

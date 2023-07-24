@@ -20,6 +20,14 @@ public class TrialController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> Add()
+    {
+
+
+        return View();
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Details(string id)
     {
         string normalizedId = id.ToLower();

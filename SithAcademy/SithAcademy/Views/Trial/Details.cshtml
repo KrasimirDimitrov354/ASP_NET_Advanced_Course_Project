@@ -10,18 +10,17 @@
 
             @if (!Model.IsLocked)
             {
-                <h2 class="text-center mt-2 mb-1">The following resources will assist you in your completion of this trial.</h2>
-
-                foreach(ResourceDetailsViewModel resource in Model.Resources)
-                {
-                    <p class="card-text">@resource.Name</p>
-                    <a href="@resource.Url" target="_blank" class="btn btn-warning mb-2">Access resource</a>
-                }
+                <partial name="_ResourcePreviewPartial" model="@Model.Resources" />
             }
             else
             {
-                <partial name="_LockedPartial" />
+                <h2 class="text-center text-danger bg-dark">[+++THIS TRIAL HAS BEEN TEMPORARILY LOCKED. AWAIT FURTHER DEVELOPMENTS+++]</h2>
             }
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

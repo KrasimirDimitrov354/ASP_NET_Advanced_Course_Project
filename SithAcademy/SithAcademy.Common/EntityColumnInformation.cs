@@ -39,6 +39,7 @@ public static class EntityColumnInformation
         public const string IdComment = "ID of the trial";
         public const string TitleComment = "Title of the trial";
         public const string DescriptionComment = "Description of the trial";
+        public const string ScoreComment = "The score needed by an acolyte to complete the trial";
         public const string IsLockedComment = "Boolean showing whether or not the trial can be participated in";
         public const string AcademyIdComment = "ID of the academy which hosts the trial";
     }
@@ -47,7 +48,8 @@ public static class EntityColumnInformation
     {
         public const string IdComment = "ID of the resource";
         public const string NameComment = "Name of the resource";
-        public const string UrlComment = "URL for the resource's location";
+        public const string SourceUrlComment = "URL leading to the resource's location";
+        public const string ImageUrlComment = "URL of the image that will be used to preview the resource";
         public const string IsDeletedComment = "Boolean showing whether or not the resource should be displayed";
     }
 

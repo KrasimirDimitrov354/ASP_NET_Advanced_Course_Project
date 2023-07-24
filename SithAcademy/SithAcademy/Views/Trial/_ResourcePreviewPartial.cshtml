@@ -1,0 +1,20 @@
+﻿@model IEnumerable<ResourcePreviewViewModel>
+
+<p class="card-text text-center h3 mt-2 mb-1">The following resources will assist you in your completion of this trial.</p>
+
+@foreach (ResourcePreviewViewModel resource in Model)
+{
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="@resource.ImageUrl" class="card-img" alt="@resource.Name Image Preview">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@resource.Name</h5>
+                    <a href="@resource.SourceUrl" target="_blank" class="btn btn-warning mb-2">Access resource</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

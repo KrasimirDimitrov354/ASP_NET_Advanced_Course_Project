@@ -1,6 +1,7 @@
 ﻿namespace SithAcademy.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +32,10 @@ public class Trial
     [Comment(DescriptionComment)]
     public string Description { get; set;} = null!;
 
-    [Required]
+    [Column(TypeName = ScoreTypeName)]
+    [Comment(ScoreComment)]
+    public decimal ScoreToPass { get; set; }
+
     [Comment(IsLockedComment)]
     public bool IsLocked { get; set; }
 

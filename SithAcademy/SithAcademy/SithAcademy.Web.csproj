@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\_ResourcePreviewPartial.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.18" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.18" />
@@ -26,6 +30,18 @@
     <ProjectReference Include="..\SithAcademy.Services.Data\SithAcademy.Services.Data.csproj" />
     <ProjectReference Include="..\SithAcademy.Web.Infrastructure\SithAcademy.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SithAcademy.Web.ViewModels\SithAcademy.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_ResourcePreviewPartial.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Shared\_ResourcePreviewPartial.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Trial\_ResourcePreviewPartial.cshtml" />
   </ItemGroup>
 
 </Project>

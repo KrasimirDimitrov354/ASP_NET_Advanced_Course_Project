@@ -122,6 +122,7 @@ namespace SithAcademy.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the trial"),
                     Title = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false, comment: "Title of the trial"),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Description of the trial"),
+                    ScoreToPass = table.Column<decimal>(type: "decimal(4,2)", nullable: false, comment: "The score needed by an acolyte to complete the trial"),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the trial can be participated in"),
                     AcademyId = table.Column<int>(type: "int", nullable: false, comment: "ID of the academy which hosts the trial")
                 },
@@ -307,7 +308,8 @@ namespace SithAcademy.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "ID of the resource"),
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false, comment: "Name of the resource"),
-                    Url = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, comment: "URL for the resource's location"),
+                    SourceUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, comment: "URL leading to the resource's location"),
+                    ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, comment: "URL of the image that will be used to preview the resource"),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false, comment: "Boolean showing whether or not the resource should be displayed"),
                     TrialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
