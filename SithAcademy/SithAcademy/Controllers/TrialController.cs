@@ -78,9 +78,9 @@ public class TrialController : Controller
         bool trialExists = await trialService.TrialExistsAsync(normalizedId);
         if (!trialExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect trial ID selected.";
+            return RedirectToAction("Index", "Home");
         }
-
 
         string userId = User.GetId();
         bool userCanAccessTrial = await trialService.UserCanAccessTrialAsync(normalizedId, userId);
@@ -103,10 +103,88 @@ public class TrialController : Controller
         }
     }
 
-    private IActionResult InaccessibleMessage()
+    [HttpGet]
+    public async Task<IActionResult> Edit(string id)
     {
-        TempData[ErrorMessage] = "Incorrect trial ID selected.";
-        return RedirectToAction("Index", "Home");
+        string normalizedId = id.ToLower();
+        bool trialExists = await trialService.TrialExistsAsync(normalizedId);
+        if (!trialExists)
+        {
+            TempData[ErrorMessage] = "Incorrect trial ID selected.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        string userId = User.GetId();
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Acolytes cannot edit a trial.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
+        string overseerId = await overseerService.GetOverseerIdAsync(userId);
+        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+        if (!overseerCanModify)
+        {
+            TempData[ErrorMessage] = "Overseers can modify trials only in academies they are assigned to.";
+            return RedirectToAction("Details", "Academy", new { id = academyId });
+        }
+
+        try
+        {
+            TrialFormViewModel viewModel = await trialService.GetTrialForModificationAsync(normalizedId);
+            return View(viewModel);
+        }
+        catch (Exception)
+        {
+            return UnknownFailureMessage();
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(string id, TrialFormViewModel viewModel)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+
+        string normalizedId = id.ToLower();
+        bool trialExists = await trialService.TrialExistsAsync(normalizedId);
+        if (!trialExists)
+        {
+            TempData[ErrorMessage] = "Incorrect trial ID selected.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        string userId = User.GetId();
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Acolytes cannot edit a trial.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
+        string overseerId = await overseerService.GetOverseerIdAsync(userId);
+        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+        if (!overseerCanModify)
+        {
+            TempData[ErrorMessage] = "Overseers can modify trials only in academies they are assigned to.";
+            return RedirectToAction("Details", "Academy", new { id = academyId });
+        }
+
+        try
+        {
+            await trialService.EditTrialAsync(normalizedId, viewModel);
+            TempData[SuccessMessage] = "Trial details have been successfully edited.";
+            return RedirectToAction("Details", "Trial", new { id = normalizedId });
+        }
+        catch (Exception)
+        {
+            return UnknownFailureMessage();
+        }
     }
 
     private IActionResult UnknownFailureMessage()

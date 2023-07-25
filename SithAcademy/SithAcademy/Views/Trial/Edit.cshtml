@@ -1,33 +1,33 @@
 ﻿@model TrialFormViewModel
 
 @{
-    ViewBag.Title = "Add Trial";
+    ViewBag.Title = "Edit Trial Details";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
-<p class="text-center">Adding a trial will automatically add it to the in progress trials of every acolyte in your current academy.</p>
 <hr />
+
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Add" method="post">
+        <form asp-action="Edit" method="post">
             <div class="mb-3">
-                <label asp-for="Title" class="form-label">Enter a trial title</label>
+                <label asp-for="Title" class="form-label">Edit trial title</label>
                 <input asp-for="Title" class="form-control" aria-required="true" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Description" class="form-label">Enter a trial description</label>
+                <label asp-for="Description" class="form-label">Edit trial description</label>
                 <input asp-for="Description" class="form-control" aria-required="true" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="ScoreToPass" class="form-label">Enter the minimum score required to pass the trial</label>
+                <label asp-for="ScoreToPass" class="form-label">Edit the minimum score required to pass the trial (does not affect acolytes who have already passed)</label>
                 <input asp-for="ScoreToPass" class="form-control" aria-required="true" />
                 <span asp-validation-for="ScoreToPass" class="text-danger"></span>
             </div>
-            <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="false" onchange="this.value=this.checked"/>Lock trial upon creation?</label>
+            <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="" onchange="this.value=this.checked" />Select this checkbox to lock the trial</label>
             <div class="mb-3">
-                <input class="btn btn-primary" type="submit" value="Add trial" />
+                <input class="btn btn-primary" type="submit" value="Edit trial details" />
             </div>
         </form>
     </div>

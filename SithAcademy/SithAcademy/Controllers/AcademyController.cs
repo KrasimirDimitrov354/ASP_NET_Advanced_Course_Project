@@ -12,7 +12,6 @@ using static SithAcademy.Common.GeneralConstants;
 //TODO: Add custom error page to replace UnknownFailure with
 //TODO: Custom error page for code 405 (Post only actions)
 //TODO: Create Academy (Get and Post methods) - only admin can do that
-//TODO: RedirectToAction for Edit() and Lock()
 
 [Authorize]
 public class AcademyController : Controller
@@ -46,6 +45,12 @@ public class AcademyController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
+        bool academyExists = await academyService.AcademyExistsAsync(id);
+        if (!academyExists)
+        {
+            return InaccessibleMessage();
+        }
+
         try
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -186,8 +191,9 @@ public class AcademyController : Controller
         if (!overseerCanModify)
         {
             TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
-            //TODO!
-            return Ok();
+
+            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            return RedirectToAction("Details", "Academy", new { id = academyId });
         }
 
         try
@@ -228,8 +234,9 @@ public class AcademyController : Controller
         if (!overseerCanModify)
         {
             TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
-            //TODO!
-            return Ok();
+
+            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            return RedirectToAction("Details", "Academy", new { id = academyId });
         }
 
         try
@@ -266,8 +273,9 @@ public class AcademyController : Controller
         if (!overseerCanModify)
         {
             TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
-            //TODO!
-            return Ok();
+
+            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            return RedirectToAction("Details", "Academy", new { id = academyId });
         }
 
         try
@@ -303,8 +311,9 @@ public class AcademyController : Controller
         if (!overseerCanModify)
         {
             TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
-            //TODO!
-            return Ok();
+
+            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            return RedirectToAction("Details", "Academy", new { id = academyId });
         }
 
         try

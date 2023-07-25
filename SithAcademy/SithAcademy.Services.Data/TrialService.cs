@@ -157,4 +157,34 @@ public class TrialService : ITrialService
 
         await dbContext.SaveChangesAsync();
     }
+
+    public async Task<TrialFormViewModel> GetTrialForModificationAsync(string trialId)
+    {
+        TrialFormViewModel viewModel = await dbContext.Trials
+            .Where(t => t.Id.ToString() == trialId)
+            .Select(t => new TrialFormViewModel()
+            {
+                Title = t.Title,
+                Description = t.Description,
+                ScoreToPass = t.ScoreToPass,
+                IsLocked = t.IsLocked
+            })
+            .FirstAsync();
+
+        return viewModel;
+    }
+
+    public async Task EditTrialAsync(string trialId, TrialFormViewModel viewModel)
+    {
+        Trial trial = await dbContext.Trials
+            .Where(t => t.Id.ToString() == trialId)
+            .FirstAsync();
+
+        trial.Title = viewModel.Title;
+        trial.Description = viewModel.Description;
+        trial.ScoreToPass = viewModel.ScoreToPass;
+        trial.IsLocked = viewModel.IsLocked;
+
+        await dbContext.SaveChangesAsync();
+    }
 }

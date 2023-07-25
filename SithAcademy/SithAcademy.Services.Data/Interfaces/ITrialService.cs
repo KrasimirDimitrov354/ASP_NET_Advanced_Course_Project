@@ -21,4 +21,8 @@ public interface ITrialService
     Task<string> AddTrialAndReturnTrialIdAsync(int academyId, TrialFormViewModel viewModel);
 
     Task AddTrialToAllAcolytesInAcademyAsync(string trialId, int academyId);
+
+    Task<TrialFormViewModel> GetTrialForModificationAsync(string trialId);
+
+    Task EditTrialAsync(string trialId, TrialFormViewModel viewModel);
 }
