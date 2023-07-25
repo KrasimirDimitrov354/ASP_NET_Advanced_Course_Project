@@ -30,6 +30,14 @@ public class OverseerService : IOverseerService
         return overseer.Id.ToString();
     }
 
+    public async Task<int> GetAcademyIdByOverseerIdAsync(string overseerId)
+    {
+        Overseer overseer = await dbContext.Overseers
+            .FirstAsync(o => o.Id.ToString() == overseerId);
+
+        return overseer.AcademyId;
+    }
+
     public async Task<bool> OverseerCanModifyAsync(int academyId, string overseerId)
     {
         Overseer? overseer = await dbContext.Overseers

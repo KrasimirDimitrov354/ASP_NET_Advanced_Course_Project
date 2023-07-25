@@ -56,6 +56,7 @@ public static class EntityFieldValidation
         public const string ScoreTypeName = "decimal(4,2)";
         public const string ScoreMinValue = "1";
         public const string ScoreMaxValue = "10";
+        public const string ScoreRangeErrorMessage = "Score must be between 1 and 10.";
     }
 
     public static class Resource

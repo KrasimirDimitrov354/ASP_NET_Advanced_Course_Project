@@ -14,7 +14,8 @@ public class TrialFormViewModel
     [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
     public string Description { get; set; } = null!;
 
-    [Range(typeof(decimal), ScoreMinValue, ScoreMaxValue)]
+    [Required]
+    [Range(typeof(decimal), ScoreMinValue, ScoreMaxValue, ErrorMessage = ScoreRangeErrorMessage)]
     [Display(Name = "Score to pass")]
     public decimal ScoreToPass { get; set; }
 

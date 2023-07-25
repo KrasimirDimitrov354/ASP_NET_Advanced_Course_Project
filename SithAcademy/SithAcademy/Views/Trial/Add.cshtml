@@ -1,0 +1,38 @@
+﻿@model TrialFormViewModel
+
+@{
+    ViewBag.Title = "Add Trial";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<p class="text-center">Adding a trial will automatically add it to the in progress trials of every acolyte in your current academy.</p>
+<hr />
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Add" method="post">
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Enter a trial title:</label>
+                <input asp-for="Title" class="form-control" aria-required="true" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Enter a trial description:</label>
+                <input asp-for="Description" class="form-control" aria-required="true" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ScoreToPass" class="form-label">Enter a trial score:</label>
+                <input asp-for="ScoreToPass" class="form-control" aria-required="true" />
+                <span asp-validation-for="ScoreToPass" class="text-danger"></span>
+            </div>
+            <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="false" onchange="this.value=this.checked"/>Lock trial upon creation?</label>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Add trial" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

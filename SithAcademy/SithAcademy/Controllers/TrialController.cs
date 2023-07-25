@@ -13,18 +13,61 @@ using static SithAcademy.Common.GeneralConstants;
 public class TrialController : Controller
 {
     private readonly ITrialService trialService;
+    private readonly IOverseerService overseerService;
 
-    public TrialController(ITrialService trialService)
+    public TrialController(ITrialService trialService, IOverseerService overseerService)
     {
         this.trialService = trialService;
+        this.overseerService = overseerService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Add()
     {
+        string userId = User.GetId();
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Acolytes cannot add a trial.";
+            return RedirectToAction("Index", "Home");
+        }
 
+        TrialFormViewModel viewModel = new TrialFormViewModel();
+        return View(viewModel);
+    }
 
-        return View();
+    [HttpPost]
+    public async Task<IActionResult> Add(TrialFormViewModel viewModel)
+    {
+        string userId = User.GetId();
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Acolytes cannot add a trial.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+
+        try
+        {
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            string trialId = await trialService.AddTrialAndReturnTrialIdAsync(academyId, viewModel);
+
+            await trialService.AddTrialToAllAcolytesInAcademyAsync(trialId, academyId);
+
+            TempData[SuccessMessage] = "Successfully added the trial to the academy.";
+            return RedirectToAction("Details", "Trial", new { id = trialId });
+        }
+        catch (Exception)
+        {
+            ModelState.AddModelError(string.Empty, "Unexpected error occured while adding a new trial! Please try again or contact the High Inquisitor.");
+            return View(viewModel);
+        }
     }
 
     [HttpGet]

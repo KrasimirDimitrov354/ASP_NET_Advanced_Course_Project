@@ -120,4 +120,41 @@ public class TrialService : ITrialService
 
         return trial.AcademyId;
     }
+
+    public async Task<string> AddTrialAndReturnTrialIdAsync(int academyId, TrialFormViewModel viewModel)
+    {
+        Trial newTrial = new Trial()
+        {
+            Title = viewModel.Title,
+            Description = viewModel.Description,
+            ScoreToPass = viewModel.ScoreToPass,
+            IsLocked = viewModel.IsLocked,
+            AcademyId = academyId
+        };
+
+        await dbContext.Trials.AddAsync(newTrial);
+        await dbContext.SaveChangesAsync();
+
+        return newTrial.Id.ToString();
+    }
+
+    public async Task AddTrialToAllAcolytesInAcademyAsync(string trialId, int academyId)
+    {
+        IEnumerable<AcademyUser> acolytes = await dbContext.Users
+            .Include(u => u.JoinedAcademies)
+            .Include(u => u.AssignedTrials)
+            .Where(u => u.JoinedAcademies.Any(a => a.AcademyId == academyId))
+            .ToArrayAsync();
+
+        foreach (AcademyUser acolyte in acolytes)
+        {
+            acolyte.AssignedTrials.Add(new TrialAcolyte()
+            {
+                TrialId = Guid.Parse(trialId),
+                AcolyteId = acolyte.Id
+            });
+        }
+
+        await dbContext.SaveChangesAsync();
+    }
 }
