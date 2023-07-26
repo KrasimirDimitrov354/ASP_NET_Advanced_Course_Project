@@ -9,8 +9,6 @@ using SithAcademy.Web.Infrastructure.Extensions;
 
 using static SithAcademy.Common.GeneralConstants;
 
-//TODO: Add custom error page to replace UnknownFailure with
-//TODO: Custom error page for code 405 (Post only actions)
 //TODO: Create Academy (Get and Post methods) - only admin can do that
 
 [Authorize]
