@@ -1,5 +1,6 @@
 namespace SithAcademy.Web;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
@@ -39,6 +40,7 @@ public class Program
             .AddMvcOptions(options =>
             {
                 options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
         WebApplication app = builder.Build();

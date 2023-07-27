@@ -53,7 +53,7 @@ public class AcademyController : Controller
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                ViewData["UserId"] = User.GetId().ToUpper();
+                ViewData["UserId"] = User.GetId()!.ToUpper();
             }
 
             AcademyDetailsViewModel academyDetails = await academyService.DisplayAcademyDetailsAsync(id);
@@ -81,7 +81,7 @@ public class AcademyController : Controller
             return RedirectToAction("Display", "Academy", new { id });
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (userIsOverseer)
         {
@@ -135,7 +135,7 @@ public class AcademyController : Controller
             return RedirectToAction("Display", "Academy", new { id });
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (userIsOverseer)
         {
@@ -176,7 +176,7 @@ public class AcademyController : Controller
             return InaccessibleMessage();
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
@@ -219,7 +219,7 @@ public class AcademyController : Controller
             return InaccessibleMessage();
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
@@ -258,7 +258,7 @@ public class AcademyController : Controller
             return InaccessibleMessage();
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
@@ -296,7 +296,7 @@ public class AcademyController : Controller
             return InaccessibleMessage();
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {

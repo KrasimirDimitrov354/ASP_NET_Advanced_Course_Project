@@ -26,11 +26,11 @@ public class HomeController : Controller
         {
             try
             {
-                string userId = User.GetId();
+                string userId = User.GetId()!;
                 bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
                 if (userIsOverseer)
                 {
-                    return View(new List<IncompleteTrialViewModel>());
+                    return RedirectToAction("Home", "Overseer");
                 }
                 else
                 {

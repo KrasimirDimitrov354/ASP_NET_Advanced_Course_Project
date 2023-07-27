@@ -1,4 +1,12 @@
-﻿@model AcademyDetailsViewModel
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
+@model AcademyDetailsViewModel
+
+@inject IOverseerService OverseerService
+@{
+    string? userId = User.GetId();
+    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+}
 
 <h2 class="text-center">@Model.Title</h2>
 <hr />
@@ -9,31 +17,61 @@
         <div class="card-body">
             <p class="card-text">@Model.Description</p>
 
-            @if (!Model.IsLocked)
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                @if (User.Identity != null && User.Identity.IsAuthenticated &&
-               Model.Acolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
+                @if (userIsOverseer)
                 {
-                    <form asp-controller="Academy" asp-action="Leave" asp-route-id="@Model.Id" method="post">
-                        <input class="btn btn-danger mb-2" type="submit" value="Leave academy" />
+                    <form asp-controller="Academy" asp-action="Edit" asp-route-id="@Model.Id" method="get">
+                        <input class="btn btn-success mb-2" type="submit" value="Edit academy details" />
                     </form>
 
-                    @foreach (TrialOverviewViewModel trial in Model.Trials)
-                    {
-                        <p class="card-text">@trial.Title</p>
-                        <a asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-warning mb-2">Trial Details</a>
-                    }
+                    string lockButtonValue = Model.IsLocked ? "Unlock academy" : "Lock academy";
+
+                    <form asp-controller="Academy" asp-action="Lock" asp-route-id="@Model.Id" method="get">
+                        <input class="btn btn-danger mb-2" type="submit" value="lockButtonValue" />
+                    </form>
                 }
                 else
                 {
-                    <form asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
-                        <input class="btn btn-danger mb-2" type="submit" value="Join academy"/>
-                    </form>
+                    if (!Model.IsLocked)
+                    {
+                        if (Model.Acolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
+                        {
+                            <form asp-controller="Academy" asp-action="Leave" asp-route-id="@Model.Id" method="post">
+                                <input class="btn btn-danger mb-2" type="submit" value="Leave academy" />
+                            </form>
+
+                            @foreach (TrialOverviewViewModel trial in Model.Trials)
+                            {
+                                <p class="card-text">@trial.Title</p>
+                                <a asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-warning mb-2">Trial Details</a>
+                            }
+                        }
+                        else
+                        {
+                            <form asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
+                                <input class="btn btn-danger mb-2" type="submit" value="Join academy" />
+                            </form>
+                        }
+                    }
+                    else
+                    {
+                        <h2 class="text-center text-danger bg-dark">[+++THIS ACADEMY HAS BEEN PLACED ON LOCKDOWN. AWAIT FURTHER DEVELOPMENTS+++]</h2>
+                    }
                 }
             }
             else
             {
-                <h2 class="text-center text-danger bg-dark">[+++THIS ACADEMY HAS BEEN PLACED ON LOCKDOWN. AWAIT FURTHER DEVELOPMENTS+++]</h2>
+                if (!Model.IsLocked)
+                {
+                    <form asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-danger mb-2" type="submit" value="Join academy" />
+                    </form>
+                }
+                else
+                {
+                    <h2 class="text-center text-danger bg-dark">[+++THIS ACADEMY HAS BEEN PLACED ON LOCKDOWN. AWAIT FURTHER DEVELOPMENTS+++]</h2>
+                }
             }
         </div>
     </div>

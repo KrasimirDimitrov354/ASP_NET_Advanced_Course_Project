@@ -24,7 +24,7 @@ public class TrialController : Controller
     [HttpGet]
     public async Task<IActionResult> Add()
     {
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
@@ -39,7 +39,7 @@ public class TrialController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(TrialFormViewModel viewModel)
     {
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
@@ -82,7 +82,7 @@ public class TrialController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userCanAccessTrial = await trialService.UserCanAccessTrialAsync(normalizedId, userId);
         if (!userCanAccessTrial)
         {
@@ -114,7 +114,7 @@ public class TrialController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
@@ -158,7 +158,7 @@ public class TrialController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        string userId = User.GetId();
+        string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {

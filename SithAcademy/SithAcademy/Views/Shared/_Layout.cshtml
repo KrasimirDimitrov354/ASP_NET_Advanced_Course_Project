@@ -1,8 +1,16 @@
-﻿@using static SithAcademy.Common.GeneralConstants;
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
+@using static SithAcademy.Common.GeneralConstants;
+
+@inject IOverseerService OverseerService
+@{
+    string? userId = User.GetId();
+    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+}
+
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,12 +39,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Location" asp-action="Display">Our Locations</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Academy" asp-action="Display">Our Academies</a>
-                        </li>
+
+                        @if (userIsOverseer)
+                        {
+                            string overseerId = await OverseerService.GetOverseerIdAsync(userId!);
+                            int academyId = await OverseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academyId">View Academy</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Location" asp-action="Display">Our Locations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Academy" asp-action="Display">Our Academies</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
