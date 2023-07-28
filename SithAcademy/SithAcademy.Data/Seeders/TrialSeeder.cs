@@ -24,7 +24,7 @@ internal class TrialSeeder
         {
             Id = Guid.Parse("aa37b907-5d8b-439c-a719-2a784c07744a"),
             Title = "Trial of Strength",
-            Description = "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories." + 
+            Description = "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories. " + 
             "Explore their tombs to gain an understanding of what it takes to be Sith. Beware the Valley's guardians.",
             ScoreToPass = 7.0m,
             AcademyId = 1

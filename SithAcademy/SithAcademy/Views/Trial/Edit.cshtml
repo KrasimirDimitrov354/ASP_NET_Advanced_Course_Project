@@ -12,17 +12,17 @@
         <form asp-action="Edit" method="post">
             <div class="mb-3">
                 <label asp-for="Title" class="form-label">Edit trial title</label>
-                <input asp-for="Title" class="form-control" aria-required="true" />
+                <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Description" class="form-label">Edit trial description</label>
-                <input asp-for="Description" class="form-control" aria-required="true" />
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="ScoreToPass" class="form-label">Edit the minimum score required to pass the trial (does not affect acolytes who have already passed)</label>
-                <input asp-for="ScoreToPass" class="form-control" aria-required="true" />
+                <input asp-for="ScoreToPass" class="form-control" />
                 <span asp-validation-for="ScoreToPass" class="text-danger"></span>
             </div>
             <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="" onchange="this.value=this.checked" />Select this checkbox to lock the trial</label>

@@ -1,6 +1,14 @@
-﻿@model IEnumerable<ResourcePreviewViewModel>
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
+@model IEnumerable<ResourcePreviewViewModel>
 
-<p class="card-text text-center h3 mt-2 mb-1">The following resources will assist you in your completion of this trial.</p>
+@inject IOverseerService OverseerService
+@{
+    string userId = User.GetId()!;
+    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+}
+
+<p class="card-text text-center h4 mt-2 mb-2">The following resources will assist you in your completion of this trial.</p>
 
 @foreach (ResourcePreviewViewModel resource in Model)
 {
@@ -13,6 +21,13 @@
                 <div class="card-body">
                     <h5 class="card-title">@resource.Name</h5>
                     <a href="@resource.SourceUrl" target="_blank" class="btn btn-warning mb-2">Access resource</a>
+
+                    @if (userIsOverseer)
+                    {
+                        <a asp-controller="Resource" asp-action="Edit" asp-route-id="@resource.Id">
+                            <input class="btn btn-success" role="button" value="Edit resource details" />
+                        </a>
+                    }
                 </div>
             </div>
         </div>

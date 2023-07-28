@@ -25,4 +25,6 @@ public interface ITrialService
     Task<TrialFormViewModel> GetTrialForModificationAsync(string trialId);
 
     Task EditTrialAsync(string trialId, TrialFormViewModel viewModel);
+
+    Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsByAcademyIdAsync(int academyId);
 }

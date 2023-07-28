@@ -1,12 +1,12 @@
 ﻿namespace SithAcademy.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Microsoft.EntityFrameworkCore;
 
 using static SithAcademy.Common.EntityFieldValidation.Homework;
 using static SithAcademy.Common.EntityColumnInformation.Homework;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class Homework
 {

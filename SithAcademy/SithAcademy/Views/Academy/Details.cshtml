@@ -21,15 +21,31 @@
             {
                 @if (userIsOverseer)
                 {
-                    <form asp-controller="Academy" asp-action="Edit" asp-route-id="@Model.Id" method="get">
-                        <input class="btn btn-success mb-2" type="submit" value="Edit academy details" />
-                    </form>
+                    string overseerId = await OverseerService.GetOverseerIdAsync(userId);
+                    bool overseerCanModify = await OverseerService.OverseerCanModifyAsync(Model.Id, overseerId);
 
-                    string lockButtonValue = Model.IsLocked ? "Unlock academy" : "Lock academy";
+                    if (overseerCanModify)
+                    {
+                        <div class="btn-group" role="group">
+                            <form asp-controller="Trial" asp-action="Add" method="get">
+                                <input class="btn btn-success mb-2 mx-2" role="button" type="submit" value="Add trial">
+                            </form>
 
-                    <form asp-controller="Academy" asp-action="Lock" asp-route-id="@Model.Id" method="get">
-                        <input class="btn btn-danger mb-2" type="submit" value="lockButtonValue" />
-                    </form>
+                            <a asp-controller="Academy" asp-action="Edit" asp-route-id="@Model.Id">
+                                <input class="btn btn-success mb-2 mx-2" role="button" value="Edit academy details" />
+                            </a>
+
+                            @{
+                                string lockButtonValue = Model.IsLocked ? "Unlock academy" : "Lock academy";
+                            }
+
+                            <form asp-controller="Academy" asp-action="Lock" asp-route-id="@Model.Id" method="get">
+                                <input class="btn btn-danger mb-2 mx-2" role="button" type="submit" value="@lockButtonValue" />
+                            </form>
+                        </div>
+
+                        <partial name="_TrialPreviewPartial" model="Model.Trials" />
+                    }
                 }
                 else
                 {
@@ -41,11 +57,7 @@
                                 <input class="btn btn-danger mb-2" type="submit" value="Leave academy" />
                             </form>
 
-                            @foreach (TrialOverviewViewModel trial in Model.Trials)
-                            {
-                                <p class="card-text">@trial.Title</p>
-                                <a asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-warning mb-2">Trial Details</a>
-                            }
+                            <partial name="_TrialPreviewPartial" model="Model.Trials" />
                         }
                         else
                         {
@@ -76,3 +88,8 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

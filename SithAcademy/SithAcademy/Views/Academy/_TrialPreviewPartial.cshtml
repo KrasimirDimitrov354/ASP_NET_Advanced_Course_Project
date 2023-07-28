@@ -1,0 +1,25 @@
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
+@model IEnumerable<TrialOverviewViewModel>
+
+@inject IOverseerService OverseerService
+@{
+    string? userId = User.GetId();
+    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+}
+
+<div class="card text-center" style="width: 18rem">
+    <div class="card-header h4">Trials</div>
+    <ul class="list-group list-group-flush">
+        @foreach (TrialOverviewViewModel trial in Model)
+        {
+            <a asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-warning">@trial.Title</a>
+
+            if (userIsOverseer)
+            {
+                <a asp-controller="Trial" asp-action="Edit" asp-route-id="@trial.Id" class="btn btn-success mb-2">Edit trial</a>
+            }
+            
+        }
+    </ul>
+</div>

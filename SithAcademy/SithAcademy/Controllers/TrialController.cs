@@ -28,7 +28,7 @@ public class TrialController : Controller
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
-            TempData[ErrorMessage] = "Acolytes cannot add a trial.";
+            TempData[ErrorMessage] = "Acolytes cannot add trials!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -43,7 +43,7 @@ public class TrialController : Controller
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
-            TempData[ErrorMessage] = "Acolytes cannot add a trial.";
+            TempData[ErrorMessage] = "Acolytes cannot add trials!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -99,7 +99,7 @@ public class TrialController : Controller
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
     }
 
@@ -118,7 +118,7 @@ public class TrialController : Controller
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
-            TempData[ErrorMessage] = "Acolytes cannot edit a trial.";
+            TempData[ErrorMessage] = "Acolytes cannot edit trials!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -138,7 +138,7 @@ public class TrialController : Controller
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
     }
 
@@ -162,7 +162,7 @@ public class TrialController : Controller
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer)
         {
-            TempData[ErrorMessage] = "Acolytes cannot edit a trial.";
+            TempData[ErrorMessage] = "Acolytes cannot edit trials!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -179,17 +179,12 @@ public class TrialController : Controller
         {
             await trialService.EditTrialAsync(normalizedId, viewModel);
             TempData[SuccessMessage] = "Trial details have been successfully edited.";
-            return RedirectToAction("Details", "Trial", new { id = normalizedId });
+
+            return RedirectToAction("Details", "Trial", new { id = id });
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
-    }
-
-    private IActionResult UnknownFailureMessage()
-    {
-        TempData[InformationMessage] = "The Dark Side has prevented your academy application from going through. Meditate upon your failure or try again later.";
-        return RedirectToAction("Index", "Home");
     }
 }

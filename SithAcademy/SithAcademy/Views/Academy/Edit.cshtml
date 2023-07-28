@@ -13,17 +13,17 @@
         <form asp-action="Edit">
             <div class="mb-3">
                 <label asp-for="Title" class="form-label">Title</label>
-                <input asp-for="Title" class="form-control" aria-required="true" />
+                <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="ImageUrl" class="form-label">Image Link</label>
-                <input asp-for="ImageUrl" class="form-control" aria-required="true" />
+                <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Description" class="form-label">Description</label>
-                <textarea asp-for="Description" class="form-control" aria-required="true"></textarea>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3">

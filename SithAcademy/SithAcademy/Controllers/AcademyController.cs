@@ -46,7 +46,8 @@ public class AcademyController : Controller
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect academy ID selected.";
+            return RedirectToAction("Display", "Academy");
         }
 
         try
@@ -61,7 +62,7 @@ public class AcademyController : Controller
         }
         catch (Exception)
         {
-            return InaccessibleMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
     }
 
@@ -71,7 +72,8 @@ public class AcademyController : Controller
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect academy ID selected.";
+            return RedirectToAction("Display", "Academy");
         }
 
         bool academyIsLocked = await academyService.AcademyIsLockedAsync(id);
@@ -110,13 +112,13 @@ public class AcademyController : Controller
             await trialService.AssignTrialsToAcolyteAsync(id, userId);
 
             TempData[SuccessMessage] = "You have successfully joined the selected academy.";
-
-            return RedirectToAction("Details", "Academy", new { id });
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            TempData[ErrorMessage] = "Republic interference has caused something to go wrong. Try again.";
         }
+
+        return RedirectToAction("Details", "Academy", new { id });
     }
 
     [HttpPost]
@@ -125,7 +127,8 @@ public class AcademyController : Controller
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect academy ID selected.";
+            return RedirectToAction("Display", "Academy");
         }
 
         bool academyIsLocked = await academyService.AcademyIsLockedAsync(id);
@@ -159,12 +162,14 @@ public class AcademyController : Controller
             await acolyteService.RemoveAcolyteFromLocationAsync(locationId, userId);
 
             TempData[SuccessMessage] = "You have successfully left the selected academy.";
-            return RedirectToAction("Details", "Academy", new { id });
+            
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            TempData[ErrorMessage] = "Republic interference has caused something to go wrong. Try again.";
         }
+
+        return RedirectToAction("Details", "Academy", new { id });
     }
 
     [HttpGet]
@@ -173,7 +178,8 @@ public class AcademyController : Controller
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect academy ID selected.";
+            return RedirectToAction("Display", "Academy");
         }
 
         string userId = User.GetId()!;
@@ -201,7 +207,7 @@ public class AcademyController : Controller
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
     }
 
@@ -216,7 +222,8 @@ public class AcademyController : Controller
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect academy ID selected.";
+            return RedirectToAction("Display", "Academy");
         }
 
         string userId = User.GetId()!;
@@ -241,11 +248,12 @@ public class AcademyController : Controller
         {
             await academyService.EditAcademyAsync(id, viewModel);
             TempData[SuccessMessage] = "Academy details have been successfully edited.";
+
             return RedirectToAction("Details", "Academy", new { id });
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
     }
 
@@ -255,7 +263,8 @@ public class AcademyController : Controller
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect academy ID selected.";
+            return RedirectToAction("Display", "Academy");
         }
 
         string userId = User.GetId()!;
@@ -283,7 +292,7 @@ public class AcademyController : Controller
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
     }
 
@@ -293,7 +302,8 @@ public class AcademyController : Controller
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)
         {
-            return InaccessibleMessage();
+            TempData[ErrorMessage] = "Incorrect academy ID selected.";
+            return RedirectToAction("Display", "Academy");
         }
 
         string userId = User.GetId()!;
@@ -318,23 +328,12 @@ public class AcademyController : Controller
         {
             await academyService.ChangeAcademyLockStatusAsync(id);
             TempData[WarningMessage] = "Academy lock status has been changed.";
+
             return RedirectToAction("Details", "Academy", new { id });
         }
         catch (Exception)
         {
-            return UnknownFailureMessage();
+            return RedirectToAction("Error", "Home", new { id = 500 });
         }
-    }
-
-    private IActionResult InaccessibleMessage()
-    {
-        TempData[ErrorMessage] = "Incorrect academy ID selected.";
-        return RedirectToAction("Display", "Academy");
-    }
-
-    private IActionResult UnknownFailureMessage()
-    {
-        TempData[InformationMessage] = "The Dark Side has prevented your academy application from going through. Meditate upon your failure or try again later.";
-        return RedirectToAction("Index", "Home");
     }
 }

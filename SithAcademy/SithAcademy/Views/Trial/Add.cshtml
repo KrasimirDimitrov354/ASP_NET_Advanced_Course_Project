@@ -5,24 +5,24 @@
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
-<p class="text-center">Adding a trial will automatically add it to the in progress trials of every acolyte in your current academy.</p>
+<p class="text-center">Adding a trial will automatically add it to the in progress trials of every acolyte in the academy.</p>
 <hr />
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-action="Add" method="post">
             <div class="mb-3">
                 <label asp-for="Title" class="form-label">Enter a trial title</label>
-                <input asp-for="Title" class="form-control" aria-required="true" />
+                <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Description" class="form-label">Enter a trial description</label>
-                <input asp-for="Description" class="form-control" aria-required="true" />
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="ScoreToPass" class="form-label">Enter the minimum score required to pass the trial</label>
-                <input asp-for="ScoreToPass" class="form-control" aria-required="true" />
+                <input asp-for="ScoreToPass" class="form-control" />
                 <span asp-validation-for="ScoreToPass" class="text-danger"></span>
             </div>
             <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="false" onchange="this.value=this.checked"/>Lock trial upon creation?</label>

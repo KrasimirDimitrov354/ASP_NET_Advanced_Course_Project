@@ -13,7 +13,7 @@ internal class LocationSeeder
         {
             Id = 1,
             Name = "Dromund Kaas",
-            Description = "Dromund Kaas was originally a colony world of the Sith Empire, and at one point its capital." +
+            Description = "Dromund Kaas was originally a colony world of the Sith Empire, and at one point its capital. " +
             "Its atmosphere is heavily charged with electricity to the point where lightning is a near-constant sight in the almost perpetually clouded sky - " + 
             "a result of ancient Sith experiments in arcane and forbidden uses of the dark side of the Force.",
             ImageUrl = "https://www.worldanvil.com/media/cache/cover/uploads/images/7c2913da4c331e69f6dfc4fd2225fb0f.jpg"

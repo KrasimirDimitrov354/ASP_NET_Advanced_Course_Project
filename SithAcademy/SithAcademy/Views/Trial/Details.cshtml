@@ -1,4 +1,12 @@
-﻿@model TrialDetailsViewModel
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
+@model TrialDetailsViewModel
+
+@inject IOverseerService OverseerService
+@{
+    string userId = User.GetId()!;
+    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+}
 
 <h2 class="text-center">@Model.Title</h2>
 <hr />
@@ -10,17 +18,42 @@
 
             @if (!Model.IsLocked)
             {
+                if (userIsOverseer)
+                {
+                    <div class="btn-group" role="group">
+                        <a asp-controller="Trial" asp-action="Edit" asp-route-id="@Model.Id">
+                            <input class="btn btn-success mb-2 mx-2" role="button" value="Edit trial details" />
+                        </a>
+                        <form asp-controller="Resource" asp-action="Add" method="get">
+                            <input class="btn btn-success mb-2 mx-2" role="button" type="submit" value="Add resource">
+                        </form>
+                    </div>
+                }
+
                 <partial name="_ResourcePreviewPartial" model="@Model.Resources" />
             }
             else
             {
-                <h2 class="text-center text-danger bg-dark">[+++THIS TRIAL HAS BEEN TEMPORARILY LOCKED. AWAIT FURTHER DEVELOPMENTS+++]</h2>
+                if (userIsOverseer)
+                {
+                    <p class="text-danger">Trial has been locked and acolytes are unable to view resources or submit homeworks.</p>
+
+                    <a asp-controller="Trial" asp-action="Edit" asp-route-id="@Model.Id">
+                        <input class="btn btn-success mb-2 mx-2" role="button" value="Edit trial details" />
+                    </a>
+
+                    <partial name="_ResourcePreviewPartial" model="@Model.Resources" />
+                }
+                else
+                {
+                    <h2 class="text-center text-danger bg-dark">[+++THIS TRIAL HAS BEEN TEMPORARILY LOCKED. AWAIT FURTHER DEVELOPMENTS+++]</h2>
+                }
             }
         </div>
     </div>
 </div>
 
 @section Scripts
-{
+    {
     <partial name="_ValidationScriptsPartial" />
 }

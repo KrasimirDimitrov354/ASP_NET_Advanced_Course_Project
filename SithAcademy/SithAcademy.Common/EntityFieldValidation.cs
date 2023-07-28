@@ -65,6 +65,8 @@ public static class EntityFieldValidation
         public const int NameMaxLength = 60;
 
         public const int UrlMaxLength = 2048;
+        public const string SourceUrlRegexPattern = @"^https:\/\/starwars\.fandom\.com\/wiki\/\S+\w{1}$";
+        public const string SourceUrlErrorMessage = "The source link must be from the Wookieepedia website.";
     }
 
     public static class Homework

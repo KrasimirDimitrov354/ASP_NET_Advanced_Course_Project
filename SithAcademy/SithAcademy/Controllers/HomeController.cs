@@ -6,8 +6,6 @@ using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
 
-using static SithAcademy.Common.GeneralConstants;
-
 public class HomeController : Controller
 {
     private readonly ITrialService trialService;
@@ -40,8 +38,7 @@ public class HomeController : Controller
             }
             catch (Exception)
             {
-                TempData[InformationMessage] = "The Dark Side has prevented your academy application from going through. Meditate upon your failure or try again later.";
-                return RedirectToAction("Index", "Home");
+                return Error(500);
             }           
         }
         else 

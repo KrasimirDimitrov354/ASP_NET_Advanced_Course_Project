@@ -1,0 +1,40 @@
+﻿@model ResourceFormViewModel
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SourceUrl"></label>
+                <input asp-for="SourceUrl" class="form-control">
+                <span asp-validation-for="SourceUrl" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" rows="4" class="form-control">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrialId"></label>
+                <select asp-for="TrialId" class="form-control">
+                    @foreach (var trial in Model.Trials)
+                    {
+                        <option value="@trial.Id">@trial.Title</option>
+                    }
+                </select>
+                <span asp-validation-for="TrialId" class="small text-danger"></span>
+            </div>
+            <label>
+                <input asp-for="IsDeleted" class="mb-2 m-lg-2" type="checkbox" value="" onchange="this.value=this.checked" />
+                Select this checkbox to soft delete the resource. WARNING: A resource can only be restored through the database.
+            </label>
+            <div class="text-center">
+                <input class="btn btn-primary mt-3" type="submit" value="Edit resource" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -82,6 +82,7 @@ public class TrialService : ITrialService
             .Where(t => t.Id.ToString() == trialId)
             .Select(t => new TrialDetailsViewModel()
             {
+                Id = t.Id.ToString(),
                 Title = t.Title,
                 Description = t.Description,
                 ScoreToPass = t.ScoreToPass.ToString(),
@@ -90,6 +91,7 @@ public class TrialService : ITrialService
                             .Where(r => !r.IsDeleted)
                             .Select(r => new ResourcePreviewViewModel()
                             {
+                                Id = r.Id.ToString(),
                                 Name = r.Name,
                                 SourceUrl = r.SourceUrl,
                                 ImageUrl = r.ImageUrl
@@ -186,5 +188,20 @@ public class TrialService : ITrialService
         trial.IsLocked = viewModel.IsLocked;
 
         await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsByAcademyIdAsync(int academyId)
+    {
+        IEnumerable<TrialOverviewViewModel> trials = await dbContext.Trials
+            .Where(t => t.AcademyId == academyId)
+            .AsNoTracking()
+            .Select(t => new TrialOverviewViewModel()
+            {
+                Id = t.Id.ToString(),
+                Title = t.Title
+            })
+            .ToArrayAsync();
+
+        return trials;
     }
 }
