@@ -236,6 +236,13 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("AcolyteId");
 
                     b.ToTable("AcademiesAcolytes");
+
+                    b.HasData(
+                        new
+                        {
+                            AcademyId = 1,
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4")
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.AcademyUser", b =>
@@ -308,6 +315,41 @@ namespace SithAcademy.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("04589b17-3b3a-4118-b34d-dbfc70cd31f0"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c4330a2e-ab0d-4860-8f80-e8994626e0c6",
+                            Email = "acolyte@acolyte.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ACOLYTE@ACOLYTE.COM",
+                            NormalizedUserName = "DEFAULTACOLYTE",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPdQbZXgY7nlbaKfaUiE3cktHomiBRYpsAE4o5HFY2+I0TVZnEpZfjijhsMnEdajwA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "13b8b855-53f7-48e5-b276-a5dc47ff3961",
+                            TwoFactorEnabled = false,
+                            UserName = "DefaultAcolyte"
+                        },
+                        new
+                        {
+                            Id = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "33b91e87-4ecd-440b-b747-515ba4bed579",
+                            Email = "overseer@overseer.com",
+                            EmailConfirmed = false,
+                            LocationId = 2,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "OVERSEER@OVERSEER.COM",
+                            NormalizedUserName = "DEFAULTOVERSEER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMyP9Mg608uVsI21oy4cuvQdZ3jt8gU9vjKf7LmLChJT0A+Sk1uPoUDdWMQxMlz12Q==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "fd5a6016-9504-40b9-a0a5-56d761d3daa0",
+                            TwoFactorEnabled = false,
+                            UserName = "DefaultOverseer"
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Homework", b =>
@@ -356,6 +398,30 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("TrialId");
 
                     b.ToTable("Homeworks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("08a54877-71fd-4582-87c3-b99ef700aa6f"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            Content = "This is user DefaultOverseer's homework for the Trial of Passion.",
+                            CreatedOn = new DateTime(2023, 7, 29, 18, 49, 11, 740, DateTimeKind.Utc).AddTicks(4062),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
+                        },
+                        new
+                        {
+                            Id = new Guid("9cc74c66-251a-44ab-b93b-a3baf9f627af"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            Content = "This is user DefaultOverseer's homework for the Trial of Strength.",
+                            CreatedOn = new DateTime(2023, 7, 29, 18, 49, 11, 740, DateTimeKind.Utc).AddTicks(4073),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Location", b =>
@@ -399,7 +465,7 @@ namespace SithAcademy.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Dromund Kaas was originally a colony world of the Sith Empire, and at one point its capital.Its atmosphere is heavily charged with electricity to the point where lightning is a near-constant sight in the almost perpetually clouded sky - a result of ancient Sith experiments in arcane and forbidden uses of the dark side of the Force.",
+                            Description = "Dromund Kaas was originally a colony world of the Sith Empire, and at one point its capital. Its atmosphere is heavily charged with electricity to the point where lightning is a near-constant sight in the almost perpetually clouded sky - a result of ancient Sith experiments in arcane and forbidden uses of the dark side of the Force.",
                             ImageUrl = "https://www.worldanvil.com/media/cache/cover/uploads/images/7c2913da4c331e69f6dfc4fd2225fb0f.jpg",
                             IsLocked = false,
                             Name = "Dromund Kaas"
@@ -450,6 +516,15 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Overseers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("257d9119-875f-46b8-b205-a3b447cc6661"),
+                            AcademyId = 1,
+                            Title = "Insert Very Cool Title Here",
+                            UserId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4")
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Resource", b =>
@@ -665,7 +740,7 @@ namespace SithAcademy.Data.Migrations
                         {
                             Id = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
                             AcademyId = 1,
-                            Description = "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories.Explore their tombs to gain an understanding of what it takes to be Sith. Beware the Valley's guardians.",
+                            Description = "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories. Explore their tombs to gain an understanding of what it takes to be Sith. Beware the Valley's guardians.",
                             IsLocked = false,
                             ScoreToPass = 7.0m,
                             Title = "Trial of Strength"
@@ -711,6 +786,20 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("AcolyteId");
 
                     b.ToTable("TrialsAcolytes");
+
+                    b.HasData(
+                        new
+                        {
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            IsCompleted = true
+                        },
+                        new
+                        {
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            IsCompleted = true
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

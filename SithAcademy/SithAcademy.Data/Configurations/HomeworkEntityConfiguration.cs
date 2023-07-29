@@ -4,9 +4,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using SithAcademy.Data.Models;
+using SithAcademy.Data.Seeders;
 
 public class HomeworkEntityConfiguration : IEntityTypeConfiguration<Homework>
 {
+    private readonly HomeworkSeeder homeworkSeeder;
+
+    public HomeworkEntityConfiguration()
+    {
+        homeworkSeeder = new HomeworkSeeder();
+    }
+
     public void Configure(EntityTypeBuilder<Homework> builder)
     {
         builder
@@ -20,5 +28,7 @@ public class HomeworkEntityConfiguration : IEntityTypeConfiguration<Homework>
             .WithMany(a => a.PublishedHomeworks)
             .HasForeignKey(h => h.AcolyteId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasData(homeworkSeeder.GenerateHomeworks());
     }
 }
