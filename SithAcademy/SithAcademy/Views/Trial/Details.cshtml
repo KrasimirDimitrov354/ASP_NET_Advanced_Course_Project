@@ -29,6 +29,12 @@
                         </form>
                     </div>
                 }
+                else
+                {
+                    <a asp-controller="Homework" asp-action="Submit" asp-route-id="@Model.Id">
+                        <input class="btn btn-success mb-2 mx-2" role="button" value="Submit homework" />
+                    </a>
+                }
 
                 <partial name="_ResourcePreviewPartial" model="@Model.Resources" />
             }

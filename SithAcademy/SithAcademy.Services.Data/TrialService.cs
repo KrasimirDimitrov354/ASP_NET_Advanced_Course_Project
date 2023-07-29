@@ -248,4 +248,19 @@ public class TrialService : ITrialService
             Trials = allTrials
         };
     }
+
+    public async Task<Trial_InfoViewModel> GetTrialInfoForHomeworkAsync(string trialId)
+    {
+        Trial_InfoViewModel trial = await dbContext.Trials
+            .Where(t => t.Id.ToString() == trialId)
+            .Select(t => new Trial_InfoViewModel()
+            {
+                Id = t.Id.ToString(),
+                Title = t.Title,
+                Description = t.Description
+            })
+            .FirstAsync();
+
+        return trial;
+    }
 }

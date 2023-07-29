@@ -1,0 +1,29 @@
+﻿@model SubmitHomeworkViewModel
+
+@{
+    ViewBag.Title = $"Submit Homework to {Model.TrialInfo.Title}";
+}
+
+<h3 class="text-center text-danger">@ViewBag.Title</h3>
+<h5 class="text-start">@Model.TrialInfo.Description</h5>
+<p class="text-center text-primary">(If you need help you can always consult with a trial's resources.)</p>
+<hr />
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Submit" method="post">
+            <div class="mb-3">
+                <label asp-for="Content" class="form-label">Enter your homework in the form below.</label>
+                <textarea asp-for="Content" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Submit homework" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts 
+{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -30,4 +30,6 @@ public interface ITrialService
     Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId);
 
     Task<AllTrialsFilteredAndPagedServiceModel> GetAllTrialsAsync(AllTrialsQueryModel queryModel);
+
+    Task<Trial_InfoViewModel> GetTrialInfoForHomeworkAsync(string trialId);
 }
