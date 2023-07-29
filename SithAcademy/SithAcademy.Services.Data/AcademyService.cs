@@ -169,4 +169,13 @@ public class AcademyService : IAcademyService
         
         await dbContext.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<string>> GetAllAcademyNamesForQuerySelectAsync()
+    {
+        IEnumerable<string> allAcademies = await dbContext.Academies
+            .Select(a => a.Title)
+            .ToArrayAsync();
+
+        return allAcademies;
+    }
 }

@@ -43,7 +43,7 @@ public class ResourceController : Controller
 
             ResourceFormViewModel viewModel = new ResourceFormViewModel()
             {
-                Trials = await trialService.GetAllTrialsByAcademyIdAsync(academyId)
+                Trials = await trialService.GetAllTrialsForSelectByAcademyIdAsync(academyId)
             };
             return View(viewModel);
         }
@@ -75,7 +75,7 @@ public class ResourceController : Controller
 
         if (!ModelState.IsValid)
         {
-            viewModel.Trials = await trialService.GetAllTrialsByAcademyIdAsync(academyId);
+            viewModel.Trials = await trialService.GetAllTrialsForSelectByAcademyIdAsync(academyId);
             return View(viewModel);
         }
 
@@ -90,7 +90,7 @@ public class ResourceController : Controller
         {
             ModelState.AddModelError(string.Empty, "Unexpected error occured while trying to add the resource. Please try again later.");
 
-            viewModel.Trials = await trialService.GetAllTrialsByAcademyIdAsync(academyId);
+            viewModel.Trials = await trialService.GetAllTrialsForSelectByAcademyIdAsync(academyId);
             return View(viewModel);
         }
     }
@@ -127,7 +127,7 @@ public class ResourceController : Controller
         try
         {
             ResourceFormViewModel resourceToEdit = await resourceService.GetResourceForModificationAsync(normalizedId);
-            resourceToEdit.Trials = await trialService.GetAllTrialsByAcademyIdAsync(academyId);
+            resourceToEdit.Trials = await trialService.GetAllTrialsForSelectByAcademyIdAsync(academyId);
             return View(resourceToEdit);
         }
         catch (Exception)
@@ -157,7 +157,7 @@ public class ResourceController : Controller
         int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
         if (!ModelState.IsValid)
         {
-            viewModel.Trials = await trialService.GetAllTrialsByAcademyIdAsync(academyId);
+            viewModel.Trials = await trialService.GetAllTrialsForSelectByAcademyIdAsync(academyId);
             return View(viewModel);
         }
 
@@ -188,7 +188,7 @@ public class ResourceController : Controller
         {
             ModelState.AddModelError(string.Empty, "Unexpected error occured while trying to edit the resource. Please try again.");
 
-            viewModel.Trials = await trialService.GetAllTrialsByAcademyIdAsync(academyId);
+            viewModel.Trials = await trialService.GetAllTrialsForSelectByAcademyIdAsync(academyId);
             return View(viewModel);
         }
     }

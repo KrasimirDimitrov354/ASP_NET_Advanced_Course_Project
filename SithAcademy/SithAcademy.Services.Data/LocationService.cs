@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
-using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Academy;
 using SithAcademy.Web.ViewModels.Location;
 using SithAcademy.Services.Data.Interfaces;

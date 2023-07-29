@@ -9,7 +9,9 @@ using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.ViewModels.Resource;
+using SithAcademy.Web.ViewModels.Trial.Enums;
 using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Services.Data.Models.Trial;
 
 public class TrialService : ITrialService
 {
@@ -190,7 +192,7 @@ public class TrialService : ITrialService
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsByAcademyIdAsync(int academyId)
+    public async Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId)
     {
         IEnumerable<TrialOverviewViewModel> trials = await dbContext.Trials
             .Where(t => t.AcademyId == academyId)
@@ -203,5 +205,47 @@ public class TrialService : ITrialService
             .ToArrayAsync();
 
         return trials;
+    }
+
+    public async Task<AllTrialsFilteredAndPagedServiceModel> GetAllTrialsAsync(AllTrialsQueryModel queryModel)
+    {
+        IQueryable<Trial> trialsQuery = dbContext.Trials.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(queryModel.Academy))
+        {
+            trialsQuery = trialsQuery.Where(t => t.Academy.Title == queryModel.Academy);
+        }
+
+        if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
+        {
+            string wildCard = $"%{queryModel.SearchTerm.ToLower()}%";
+
+            trialsQuery = trialsQuery.Where(t => EF.Functions.Like(t.Title, wildCard) ||
+                                                 EF.Functions.Like(t.Description, wildCard));
+        }
+
+        trialsQuery = queryModel.TrialSelect switch
+        {
+            TrialSelect.Locked => trialsQuery.Where(t => t.IsLocked),
+            TrialSelect.Unlocked => trialsQuery.Where(t => !t.IsLocked),
+            _ => trialsQuery.Where(t => t.IsLocked || !t.IsLocked)
+        };
+
+        IEnumerable<TrialSortingViewModel> allTrials = await trialsQuery
+            .Skip((queryModel.CurrentPage - 1) * queryModel.TrialsPerPage)
+            .Take(queryModel.TrialsPerPage)
+            .Select(t => new TrialSortingViewModel()
+            {
+                Id = t.Id.ToString(),
+                Title = t.Title,
+                IsLocked = t.IsLocked
+            })
+            .ToArrayAsync();
+
+        return new AllTrialsFilteredAndPagedServiceModel()
+        {
+            TotalTrialsCount = trialsQuery.Count(),
+            Trials = allTrials
+        };
     }
 }

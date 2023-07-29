@@ -1,6 +1,7 @@
 ﻿namespace SithAcademy.Services.Data.Interfaces;
 
 using SithAcademy.Web.ViewModels.Trial;
+using SithAcademy.Services.Data.Models.Trial;
 
 public interface ITrialService
 {
@@ -26,5 +27,7 @@ public interface ITrialService
 
     Task EditTrialAsync(string trialId, TrialFormViewModel viewModel);
 
-    Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsByAcademyIdAsync(int academyId);
+    Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId);
+
+    Task<AllTrialsFilteredAndPagedServiceModel> GetAllTrialsAsync(AllTrialsQueryModel queryModel);
 }

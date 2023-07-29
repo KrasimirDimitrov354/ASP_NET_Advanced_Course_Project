@@ -27,6 +27,7 @@
     <ProjectReference Include="..\SithAcademy.Common\SithAcademy.Common.csproj" />
     <ProjectReference Include="..\SithAcademy.Data.Models\SithAcademy.Data.Models.csproj" />
     <ProjectReference Include="..\SithAcademy.Data\SithAcademy.Data.csproj" />
+    <ProjectReference Include="..\SithAcademy.Services.Data.Models\SithAcademy.Services.Data.Models.csproj" />
     <ProjectReference Include="..\SithAcademy.Services.Data\SithAcademy.Services.Data.csproj" />
     <ProjectReference Include="..\SithAcademy.Web.Infrastructure\SithAcademy.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SithAcademy.Web.ViewModels\SithAcademy.Web.ViewModels.csproj" />

@@ -8,17 +8,35 @@ using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
 
 using static SithAcademy.Common.GeneralConstants;
+using SithAcademy.Services.Data.Models.Trial;
 
 [Authorize]
 public class TrialController : Controller
 {
     private readonly ITrialService trialService;
     private readonly IOverseerService overseerService;
+    private readonly IAcademyService academyService;
 
-    public TrialController(ITrialService trialService, IOverseerService overseerService)
+    public TrialController(ITrialService trialService, 
+        IOverseerService overseerService, 
+        IAcademyService academyService)
     {
         this.trialService = trialService;
         this.overseerService = overseerService;
+        this.academyService = academyService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> All([FromQuery]AllTrialsQueryModel queryModel)
+    {
+        //Only admin can access this, implement check later
+        AllTrialsFilteredAndPagedServiceModel serviceModel = await trialService.GetAllTrialsAsync(queryModel);
+
+        queryModel.Trials = serviceModel.Trials;
+        queryModel.TotalTrials = serviceModel.TotalTrialsCount;
+        queryModel.Academies = await academyService.GetAllAcademyNamesForQuerySelectAsync();
+
+        return View(queryModel);
     }
 
     [HttpGet]

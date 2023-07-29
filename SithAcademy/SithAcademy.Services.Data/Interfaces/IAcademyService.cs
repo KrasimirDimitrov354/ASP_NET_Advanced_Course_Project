@@ -25,4 +25,6 @@ public interface IAcademyService
     Task AddAcolyteToAcademyAsync(int academyId, string acolyteId);
 
     Task RemoveAcolyteFromAcademyAsync(int academyId, string acolyteId);
+
+    Task<IEnumerable<string>> GetAllAcademyNamesForQuerySelectAsync();
 }
