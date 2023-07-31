@@ -48,7 +48,7 @@ public class AcolyteService : IAcolyteService
             .Include(u => u.JoinedAcademies)
             .FirstAsync(u => u.Id.ToString() == acolyteId);
 
-        if (!acolyte.JoinedAcademies.Any())
+        if (!acolyte.JoinedAcademies.Any() && !location.IsLocked)
         {
             location.Acolytes.Remove(acolyte);
             await dbContext.SaveChangesAsync();

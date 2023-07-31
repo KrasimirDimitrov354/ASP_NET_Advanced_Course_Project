@@ -110,6 +110,13 @@ public class TrialService : ITrialService
         return await dbContext.Trials.AnyAsync(t => t.Id.ToString() == trialId);
     }
 
+    public async Task<bool> TrialIsLockedAsync(string trialId)
+    {
+        Trial trial = await dbContext.Trials.FirstAsync(t => t.Id.ToString() == trialId);
+
+        return trial.IsLocked;
+    }
+
     public async Task<bool> UserCanAccessTrialAsync(string trialId, string userId)
     {
         return await dbContext.TrialsAcolytes
@@ -257,7 +264,8 @@ public class TrialService : ITrialService
             {
                 Id = t.Id.ToString(),
                 Title = t.Title,
-                Description = t.Description
+                Description = t.Description,
+                ScoreToPass = t.ScoreToPass
             })
             .FirstAsync();
 

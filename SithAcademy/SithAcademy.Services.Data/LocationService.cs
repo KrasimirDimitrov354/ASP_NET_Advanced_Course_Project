@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
+using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Academy;
 using SithAcademy.Web.ViewModels.Location;
 using SithAcademy.Services.Data.Interfaces;
@@ -55,5 +56,13 @@ public class LocationService : ILocationService
             .FirstAsync();
 
         return location;
+    }
+
+    public async Task<bool> LocationIsLockedAsync(int locationId)
+    {
+        Location location = await dbContext.Locations
+            .FirstAsync(l => l.Id == locationId);
+
+        return location.IsLocked;
     }
 }

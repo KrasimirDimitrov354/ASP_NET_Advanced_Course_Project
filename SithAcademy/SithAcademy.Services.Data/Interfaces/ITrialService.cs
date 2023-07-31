@@ -15,6 +15,8 @@ public interface ITrialService
 
     Task<bool> TrialExistsAsync(string trialId);
 
+    Task<bool> TrialIsLockedAsync(string trialId);
+
     Task<bool> UserCanAccessTrialAsync(string trialId, string userId);
 
     Task<int> GetAcademyIdByTrialIdAsync(string trialId);

@@ -7,4 +7,6 @@ public interface ILocationService
     Task<IEnumerable<LocationOverviewViewModel>> GetAllLocationsAsync();
 
     Task<LocationDetailsViewModel> DisplayLocationDetailsAsync(int locationId);
+
+    Task<bool> LocationIsLockedAsync(int locationId);
 }

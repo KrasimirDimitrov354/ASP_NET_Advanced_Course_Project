@@ -3,9 +3,11 @@
 @model TrialDetailsViewModel
 
 @inject IOverseerService OverseerService
+@inject IHomeworkService HomeworkService
 @{
     string userId = User.GetId()!;
     bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+    string homeworkId = await HomeworkService.GetHomeworkIdByAcolyteIdAndTrialId(userId, Model.Id);
 }
 
 <h2 class="text-center">@Model.Title</h2>
@@ -27,13 +29,25 @@
                         <form asp-controller="Resource" asp-action="Add" method="get">
                             <input class="btn btn-success mb-2 mx-2" role="button" type="submit" value="Add resource">
                         </form>
+                        <a asp-controller="Homework" asp-action="Details" asp-route-id="@homeworkId">
+                            <input class="btn btn-success mb-2 mx-2" role="button" value="View your homework" />
+                        </a>
                     </div>
                 }
                 else
                 {
-                    <a asp-controller="Homework" asp-action="Submit" asp-route-id="@Model.Id">
-                        <input class="btn btn-success mb-2 mx-2" role="button" value="Submit homework" />
-                    </a>
+                    if (string.IsNullOrEmpty(homeworkId))
+                    {
+                        <a asp-controller="Homework" asp-action="Submit" asp-route-id="@Model.Id">
+                            <input class="btn btn-success mb-2 mx-2" role="button" value="Submit homework" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Homework" asp-action="Details" asp-route-id="@homeworkId">
+                            <input class="btn btn-success mb-2 mx-2" role="button" value="View your homework" />
+                        </a>
+                    }
                 }
 
                 <partial name="_ResourcePreviewPartial" model="@Model.Resources" />
@@ -44,14 +58,26 @@
                 {
                     <p class="text-danger">Trial has been locked and acolytes are unable to view resources or submit homeworks.</p>
 
-                    <a asp-controller="Trial" asp-action="Edit" asp-route-id="@Model.Id">
-                        <input class="btn btn-success mb-2 mx-2" role="button" value="Edit trial details" />
-                    </a>
+                    <div class="btn-group" role="group">
+                        <a asp-controller="Trial" asp-action="Edit" asp-route-id="@Model.Id">
+                            <input class="btn btn-success mb-2 mx-2" role="button" value="Edit trial details" />
+                        </a>
+                        <form asp-controller="Resource" asp-action="Add" method="get">
+                            <input class="btn btn-success mb-2 mx-2" role="button" type="submit" value="Add resource">
+                        </form>
+                        <a asp-controller="Homework" asp-action="Details" asp-route-id="@homeworkId">
+                            <input class="btn btn-success mb-2 mx-2" role="button" value="View your homework" />
+                        </a>
+                    </div>
 
                     <partial name="_ResourcePreviewPartial" model="@Model.Resources" />
                 }
                 else
                 {
+                    <a asp-controller="Homework" asp-action="Details" asp-route-id="@homeworkId">
+                        <input class="btn btn-success mb-2 mx-2" role="button" value="View your homework" />
+                    </a>
+
                     <h2 class="text-center text-danger bg-dark">[+++THIS TRIAL HAS BEEN TEMPORARILY LOCKED. AWAIT FURTHER DEVELOPMENTS+++]</h2>
                 }
             }

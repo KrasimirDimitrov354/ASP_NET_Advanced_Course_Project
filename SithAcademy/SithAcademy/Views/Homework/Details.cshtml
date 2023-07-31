@@ -1,0 +1,27 @@
+﻿@model DisplayHomeworkViewModel
+
+@{
+    ViewData["Title"] = $"Homework for {Model.TrialInfo!.Title}";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 50rem;">
+        <div class="card-body">
+            <p class="card-text">@Model.Content</p>
+            <p class="card-text">Created on: @Model.CreatedOn</p>
+            @if (Model.Score != 0)
+            {
+                <p class="card-text text-primary">Score: @Model.Score</p>
+                <p class="card-text text-primary">Reviewed by: @Model.Reviewer</p>
+                <p class="card-text text-primary">Feedback: @Model.Feedback</p>
+            }
+            else
+            {
+                <p class="card-text text-warning">Homework has not yet been reviewed.</p>
+            }
+        </div>
+    </div>
+</div>

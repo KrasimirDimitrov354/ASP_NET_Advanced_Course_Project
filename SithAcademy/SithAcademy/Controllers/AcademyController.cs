@@ -15,16 +15,19 @@ using static SithAcademy.Common.GeneralConstants;
 public class AcademyController : Controller
 {
     private readonly IAcademyService academyService;
+    private readonly ILocationService locationService;
     private readonly IOverseerService overseerService;
     private readonly IAcolyteService acolyteService;
     private readonly ITrialService trialService;
 
     public AcademyController(IAcademyService academyService, 
+        ILocationService locationService,
         IOverseerService overseerService,
         IAcolyteService acolyteService,
         ITrialService trialService)
     {
         this.academyService = academyService;
+        this.locationService = locationService;
         this.overseerService = overseerService;
         this.acolyteService = acolyteService;
         this.trialService = trialService;
@@ -92,6 +95,13 @@ public class AcademyController : Controller
         }
 
         int locationId = await academyService.GetLocationIdByAcademyIdAsync(id);
+        bool locationIsLocked = await locationService.LocationIsLockedAsync(locationId);
+        if (locationIsLocked)
+        {
+            TempData[WarningMessage] = "The location is currently under lockdown. You cannot join any of its academies.";
+            return RedirectToAction("Details", "Location", new { id = locationId });
+        }
+
         bool acolyteIsInLocation = await acolyteService.AcolyteIsInLocationAsync(locationId, userId);
         if (!acolyteIsInLocation)
         {

@@ -12,5 +12,5 @@ public class SubmitHomeworkViewModel
     [StringLength(ContentMaxLength, MinimumLength = ContentMinLength)]
     public string Content { get; set; } = null!;
 
-    public Trial_InfoViewModel TrialInfo { get; set; } = null!;
+    public virtual Trial_InfoViewModel? TrialInfo { get; set; }
 }
