@@ -24,7 +24,7 @@ The AcademyUser entity represents a student (or acolyte in Sith terminology). Ac
 - the location is not locked by an admin
 The same requirements apply when an acolyte wants to leave an academy. If an acolyte successfully leaves every academy in a location, they can then join an academy in a different location.
 
-There are two users seeded by default - DefaultAcolyte and DefaultOverseer.
+There are two users seeded by default - DefaultAcolyte (password is 123) and DefaultOverseer (password is 456).
 
 ### :man_teacher::woman_teacher: **[Overseer](https://github.com/KrasimirDimitrov354/ASP_NET_Advanced_Course_Project/blob/main/SithAcademy/SithAcademy.Data.Models/Overseer.cs)**
 The Overseer entity represents a teacher. An overseer is restricted to one academy, but they have access to much more functionality compared to an an acolyte. An overseer can:
