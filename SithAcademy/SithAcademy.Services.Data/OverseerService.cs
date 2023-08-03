@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Web.ViewModels.Homework;
 
 public class OverseerService : IOverseerService
 {
@@ -50,5 +51,18 @@ public class OverseerService : IOverseerService
         }
 
         return true;
+    }
+
+    public async Task GradeHomeworkAsync(string overseerId, GradeHomeworkViewModel viewModel)
+    {
+        Overseer overseer = await dbContext.Overseers.FirstAsync(o => o.Id.ToString() == overseerId);
+
+        Homework homework = await dbContext.Homeworks.FirstAsync(h => h.Id.ToString() == viewModel.Id);
+
+        homework.ReviewerName = overseer.Title;
+        homework.ReviewerFeedback = viewModel.Feedback;
+        homework.Score = viewModel.Score;
+
+        await dbContext.SaveChangesAsync();
     }
 }

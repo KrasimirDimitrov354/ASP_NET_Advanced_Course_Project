@@ -1,0 +1,39 @@
+﻿@using SithAcademy.Services.Data.Interfaces;
+@model GradeHomeworkViewModel
+
+@inject IHomeworkService HomeworkService
+@{
+    string trialTitle = await HomeworkService.GetTrialTitleByHomeworkIdAsync(Model.Id);
+    ViewData["Title"] = $"Grading homework for {trialTitle}";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<div class="row mt-3">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Grade" method="post">
+
+            <partial name="_GradeHomeworkDetailsPartial" 
+                model="await HomeworkService.GetHomeworkDetailsForGradingFormAsync(Model.Id)"/>
+
+            <div class="mb-3">
+                <label asp-for="Feedback" class="form-label">Providing constructive feedback will assist acolytes with the completion of their trials.</label>
+                <textarea asp-for="Feedback" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Feedback" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Score" class="form-label">Enter your score for the acolyte's homework.</label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Grade homework" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

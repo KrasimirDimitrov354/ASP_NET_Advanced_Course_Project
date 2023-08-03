@@ -14,7 +14,8 @@
             <p class="card-text">Created on: @Model.CreatedOn</p>
             @if (Model.Score != 0)
             {
-                <p class="card-text text-primary">Score: @Model.Score</p>
+                <p class="card-text text-primary">Your score: @Model.Score</p>
+                <p class="card-text">Score to pass: @Model.TrialInfo.ScoreToPass</p>
                 <p class="card-text text-primary">Reviewed by: @Model.Reviewer</p>
                 <p class="card-text text-primary">Feedback: @Model.Feedback</p>
             }

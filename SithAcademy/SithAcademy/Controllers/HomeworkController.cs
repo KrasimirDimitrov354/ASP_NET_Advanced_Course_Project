@@ -147,7 +147,7 @@ public class HomeworkController : Controller
 
         string userId = User.GetId()!;
         string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
-        bool homeworkBelongsToUser = await homeworkService.TrialHasHomeworkAsync(trialId, userId);
+        bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
         if (!homeworkBelongsToUser)
         {
             TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
@@ -179,7 +179,7 @@ public class HomeworkController : Controller
 
         string userId = User.GetId()!;
         string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
-        bool homeworkBelongsToUser = await homeworkService.TrialHasHomeworkAsync(trialId, userId);
+        bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
         if (!homeworkBelongsToUser)
         {
             TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
@@ -217,7 +217,7 @@ public class HomeworkController : Controller
 
         string userId = User.GetId()!;
         string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
-        bool homeworkBelongsToUser = await homeworkService.TrialHasHomeworkAsync(trialId, userId);
+        bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
         if (!homeworkBelongsToUser)
         {
             TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
@@ -248,5 +248,112 @@ public class HomeworkController : Controller
         }
 
         return RedirectToAction("Details", "Homework", new { id });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Grade(string id)
+    {
+        string userId = User.GetId()!;
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Acolytes cannot grade homeworks.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
+        if (!homeworkExists)
+        {
+            TempData[ErrorMessage] = "No homework with such ID found.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
+        int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+        string overseerId = await overseerService.GetOverseerIdAsync(userId);
+
+        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+        if (!overseerCanModify)
+        {
+            TempData[ErrorMessage] = "You don't have access to this homework.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        bool homeworkCanBeGraded = await homeworkService.HomeworkCanBeGradedAsync(id);
+        if (!homeworkCanBeGraded)
+        {
+            TempData[WarningMessage] = "This homework has already been graded as sufficient for trial completion.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        try
+        {
+            GradeHomeworkViewModel homeworkToGrade = await homeworkService.GetHomeworkForGradingAsync(id);
+
+            return View(homeworkToGrade);
+        }
+        catch (Exception)
+        {
+            TempData[ErrorMessage] = "Unexpected error occured while trying to get homework details, please try again later.";
+            return RedirectToAction("Details", "Homework", new { id });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Grade(string id, GradeHomeworkViewModel viewModel)
+    {
+        string userId = User.GetId()!;
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "Acolytes cannot grade homeworks.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
+        if (!homeworkExists)
+        {
+            TempData[ErrorMessage] = "No homework with such ID found.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
+        int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+        string overseerId = await overseerService.GetOverseerIdAsync(userId);
+
+        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+        if (!overseerCanModify)
+        {
+            TempData[ErrorMessage] = "You don't have access to this homework.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        bool homeworkCanBeGraded = await homeworkService.HomeworkCanBeGradedAsync(id);
+        if (!homeworkCanBeGraded)
+        {
+            TempData[WarningMessage] = "This homework has already been graded as sufficient for trial completion.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+
+        try
+        {
+            await overseerService.GradeHomeworkAsync(overseerId, viewModel);
+
+            string acolyteId = await homeworkService.GetUserIdByHomeworkIdAsync(id);
+            await trialService.CompleteTrialAsync(trialId, acolyteId, viewModel.Score);
+
+            TempData[SuccessMessage] = "You have succesfully reviewed and graded the chosen homework.";
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception)
+        {
+            TempData[ErrorMessage] = "Unexpected error occured while grading homework, please try again.";
+            return View(viewModel);
+        }
     }
 }

@@ -31,6 +31,8 @@ public interface ITrialService
 
     Task EditTrialAsync(string trialId, TrialFormViewModel viewModel);
 
+    Task CompleteTrialAsync(string trialId, string userId, decimal trialScore);
+
     Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId);
 
     Task<AllTrialsFilteredAndPagedServiceModel> GetAllTrialsAsync(AllTrialsQueryModel queryModel);

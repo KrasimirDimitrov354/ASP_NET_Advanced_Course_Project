@@ -209,6 +209,23 @@ public class TrialService : ITrialService
         await dbContext.SaveChangesAsync();
     }
 
+    public async Task CompleteTrialAsync(string trialId, string userId, decimal currentScore)
+    {
+        Trial trial = await dbContext.Trials
+            .FirstAsync(t => t.Id.ToString() == trialId);
+
+        if (currentScore >= trial.ScoreToPass)
+        {
+            TrialAcolyte trialAcolyte = await dbContext.TrialsAcolytes
+                .FirstAsync(t => t.TrialId.ToString() == trialId &&
+                                 t.AcolyteId.ToString() == userId);
+
+            trialAcolyte.IsCompleted = true;
+
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
     public async Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId)
     {
         IEnumerable<TrialOverviewViewModel> trials = await dbContext.Trials

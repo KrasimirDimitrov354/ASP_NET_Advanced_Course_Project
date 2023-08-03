@@ -37,7 +37,7 @@ public class Homework
     public string? ReviewerName { get; set; }
 
     [Comment(ReviewerFeedbackComment)]
-    [MaxLength(ReviewerFeedbackMaxLength)]
+    [MaxLength(FeedbackMaxLength)]
     public string? ReviewerFeedback { get; set; }
 
     [Required]

@@ -307,7 +307,7 @@ public class AcademyController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Lock(int id, AcademyFormViewModel academyToLock)
+    public async Task<IActionResult> Lock(int id, AcademyFormViewModel viewModel)
     {
         bool academyExists = await academyService.AcademyExistsAsync(id);
         if (!academyExists)

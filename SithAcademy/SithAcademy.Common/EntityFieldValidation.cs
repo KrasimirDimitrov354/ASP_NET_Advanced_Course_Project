@@ -1,5 +1,7 @@
 ﻿namespace SithAcademy.Common;
 
+using System.Data;
+
 public static class EntityFieldValidation
 {
     public static class User
@@ -77,11 +79,12 @@ public static class EntityFieldValidation
         public const string ScoreTypeName = "decimal(4,2)";
         public const string ScoreMinValue = "1";
         public const string ScoreMaxValue = "10";
+        public const string ScoreRangeErrorMessage = "Score must be between 1 and 10.";
 
         public const int ReviewerNameMinLength = 3;
         public const int ReviewerNameMaxLength = 30;
 
-        public const int ReviewerFeedbackMinLength = 10;
-        public const int ReviewerFeedbackMaxLength = 100;
+        public const int FeedbackMinLength = 10;
+        public const int FeedbackMaxLength = 100;
     }
 }
