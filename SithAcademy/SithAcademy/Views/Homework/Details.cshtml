@@ -22,6 +22,14 @@
             {
                 <p class="card-text text-warning">Homework has not yet been reviewed.</p>
             }
+
+            @if (Model.Score < Model.TrialInfo.ScoreToPass)
+            {
+                <a asp-controller="Homework" asp-action="Edit" asp-route-id="@Model.Id">
+                    <input class="btn btn-success mb-2 mx-2" role="button" value="Edit your homework" />
+                </a>
+            }
+
         </div>
     </div>
 </div>

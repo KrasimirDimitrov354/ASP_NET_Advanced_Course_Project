@@ -7,7 +7,7 @@
 @{
     string userId = User.GetId()!;
     bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
-    string homeworkId = await HomeworkService.GetHomeworkIdByAcolyteIdAndTrialId(userId, Model.Id);
+    string homeworkId = await HomeworkService.GetHomeworkIdByAcolyteIdAndTrialIdAsync(userId, Model.Id);
 }
 
 <h2 class="text-center">@Model.Title</h2>

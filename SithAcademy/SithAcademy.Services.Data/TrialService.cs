@@ -124,6 +124,16 @@ public class TrialService : ITrialService
                       trial.AcolyteId.ToString() == userId);
     }
 
+    public async Task<bool> UserHasCompletedTrialAsync(string trialId, string userId)
+    {
+        TrialAcolyte trial = await dbContext.TrialsAcolytes
+            .Where(t => t.TrialId.ToString() == trialId &&
+                        t.AcolyteId.ToString() == userId)
+            .FirstAsync();
+
+        return trial.IsCompleted;
+    }
+
     public async Task<int> GetAcademyIdByTrialIdAsync(string trialId)
     {
         Trial trial = await dbContext.Trials

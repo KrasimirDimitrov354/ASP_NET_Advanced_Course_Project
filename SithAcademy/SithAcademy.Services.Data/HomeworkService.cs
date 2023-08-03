@@ -18,7 +18,7 @@ public class HomeworkService : IHomeworkService
         this.dbContext = dbContext;
     }
 
-    public async Task<bool> TrialHasHomework(string trialId, string acolyteId)
+    public async Task<bool> TrialHasHomeworkAsync(string trialId, string acolyteId)
     {
         return await dbContext.Homeworks
             .AnyAsync(h => h.TrialId.ToString() == trialId && 
@@ -30,11 +30,11 @@ public class HomeworkService : IHomeworkService
         return await dbContext.Homeworks.AnyAsync(h => h.Id.ToString() == homeworkdId);
     }
 
-    public async Task<string> GetHomeworkIdByAcolyteIdAndTrialId(string acolyteId, string trialId)
+    public async Task<string> GetHomeworkIdByAcolyteIdAndTrialIdAsync(string acolyteId, string trialId)
     {
         Homework? homework = await dbContext.Homeworks
             .FirstOrDefaultAsync(h => h.AcolyteId.ToString() == acolyteId &&
-                             h.TrialId.ToString() == trialId);
+                                      h.TrialId.ToString() == trialId);
 
         if (homework != null)
         {
@@ -42,6 +42,19 @@ public class HomeworkService : IHomeworkService
         }
 
         return string.Empty;
+    }
+
+    public async Task<SubmitHomeworkViewModel> GetHomeworkForEditAsync(string homeworkId)
+    {
+        SubmitHomeworkViewModel homeworkToEdit = await dbContext.Homeworks
+            .Where(h => h.Id.ToString() == homeworkId)
+            .Select(h => new SubmitHomeworkViewModel()
+            {
+                Content = h.Content
+            })
+            .FirstAsync();
+
+        return homeworkToEdit;
     }
 
     public async Task<string> SubmitHomeworkAndReturnIdAsync(string acolyteId, SubmitHomeworkViewModel homeworkModel)
@@ -83,5 +96,15 @@ public class HomeworkService : IHomeworkService
             .FirstAsync();
 
         return homework;
+    }
+
+    public async Task EditHomeworkAsync(string homeworkId, SubmitHomeworkViewModel viewModel)
+    {
+        Homework homework = await dbContext.Homeworks
+            .FirstAsync(h => h.Id.ToString() == homeworkId);
+
+        homework.Content = viewModel.Content;
+
+        await dbContext.SaveChangesAsync();
     }
 }

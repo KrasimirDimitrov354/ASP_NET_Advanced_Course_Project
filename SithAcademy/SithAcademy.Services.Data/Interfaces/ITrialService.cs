@@ -19,6 +19,8 @@ public interface ITrialService
 
     Task<bool> UserCanAccessTrialAsync(string trialId, string userId);
 
+    Task<bool> UserHasCompletedTrialAsync(string trialId, string userId);
+
     Task<int> GetAcademyIdByTrialIdAsync(string trialId);
 
     Task<string> AddTrialAndReturnTrialIdAsync(int academyId, TrialFormViewModel viewModel);

@@ -57,12 +57,12 @@ public class HomeworkController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        bool trialHasHomework = await homeworkService.TrialHasHomework(id, userId);
+        bool trialHasHomework = await homeworkService.TrialHasHomeworkAsync(id, userId);
         if (trialHasHomework)
         {
             TempData[WarningMessage] = "You have already submitted a homework for this trial.";
 
-            string homeworkId = await homeworkService.GetHomeworkIdByAcolyteIdAndTrialId(userId, id);
+            string homeworkId = await homeworkService.GetHomeworkIdByAcolyteIdAndTrialIdAsync(userId, id);
             return RedirectToAction("Details", "Homework", new { id = homeworkId });
         }
 
@@ -108,12 +108,12 @@ public class HomeworkController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        bool trialHasHomework = await homeworkService.TrialHasHomework(id, userId);
+        bool trialHasHomework = await homeworkService.TrialHasHomeworkAsync(id, userId);
         if (trialHasHomework)
         {
             TempData[WarningMessage] = "You have already submitted a homework for this trial.";
 
-            string homeworkId = await homeworkService.GetHomeworkIdByAcolyteIdAndTrialId(userId, id);
+            string homeworkId = await homeworkService.GetHomeworkIdByAcolyteIdAndTrialIdAsync(userId, id);
             return RedirectToAction("Details", "Homework", new { id = homeworkId });
         }
 
@@ -147,7 +147,7 @@ public class HomeworkController : Controller
 
         string userId = User.GetId()!;
         string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
-        bool homeworkBelongsToUser = await homeworkService.TrialHasHomework(trialId, userId);
+        bool homeworkBelongsToUser = await homeworkService.TrialHasHomeworkAsync(trialId, userId);
         if (!homeworkBelongsToUser)
         {
             TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
@@ -165,5 +165,88 @@ public class HomeworkController : Controller
         {
             return RedirectToAction("Error", "Home", new { id = 500 });
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(string id)
+    {
+        bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
+        if (!homeworkExists)
+        {
+            TempData[ErrorMessage] = "No homework with such ID found.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        string userId = User.GetId()!;
+        string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
+        bool homeworkBelongsToUser = await homeworkService.TrialHasHomeworkAsync(trialId, userId);
+        if (!homeworkBelongsToUser)
+        {
+            TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
+            return RedirectToAction("Details", "Trial", new { id = trialId });
+        }
+
+        bool trialIsCompleted = await trialService.UserHasCompletedTrialAsync(trialId, userId);
+        if (trialIsCompleted)
+        {
+            TempData[WarningMessage] = "You cannot edit a homework for a trial which you have already completed.";
+            return RedirectToAction("Details", "Homework", new { id });
+        }
+
+        try
+        {
+            SubmitHomeworkViewModel homeworkToEdit = await homeworkService.GetHomeworkForEditAsync(id);
+            homeworkToEdit.TrialInfo = await trialService.GetTrialInfoForHomeworkAsync(trialId);
+            return View(homeworkToEdit);
+        }
+        catch (Exception)
+        {
+            return RedirectToAction("Error", "Home", new { id = 500 });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(string id, SubmitHomeworkViewModel homeworkToEdit)
+    {
+        bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
+        if (!homeworkExists)
+        {
+            TempData[ErrorMessage] = "No homework with such ID found.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        string userId = User.GetId()!;
+        string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
+        bool homeworkBelongsToUser = await homeworkService.TrialHasHomeworkAsync(trialId, userId);
+        if (!homeworkBelongsToUser)
+        {
+            TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
+            return RedirectToAction("Details", "Trial", new { id = trialId });
+        }
+
+        bool trialIsCompleted = await trialService.UserHasCompletedTrialAsync(trialId, userId);
+        if (trialIsCompleted)
+        {
+            TempData[WarningMessage] = "You cannot edit a homework for a trial which you have already completed.";
+            return RedirectToAction("Details", "Homework", new { id });
+        }
+
+        if (!ModelState.IsValid)
+        {
+            homeworkToEdit.TrialInfo = await trialService.GetTrialInfoForHomeworkAsync(id);
+            return View(homeworkToEdit);
+        }
+
+        try
+        {
+            await homeworkService.EditHomeworkAsync(id, homeworkToEdit);
+            TempData[SuccessMessage] = "Homework has been edited successfully."; 
+        }
+        catch (Exception)
+        {
+            TempData[ErrorMessage] = "Unexpected error occured while trying to edit your homework details, please try again later.";
+        }
+
+        return RedirectToAction("Details", "Homework", new { id });
     }
 }
