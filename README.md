@@ -8,8 +8,7 @@ Below you can find more information about each entity, their purpose and their f
 
 :construction: **THIS PROJECT IS STILL A WORK IN PROGRESS** :construction:\
 Missing functionality:
-- Acolytes editing their homeworks
-- Overseers grading homeworks
+- Overseers grading homeworks - (functionality added, missing Overseer front page which provides access to all homeworks in their academy)
 - Admin area - the admin can create academies, promote acolytes to overseers and perform CRUD operations on locations, as well as perform any other functionality an overseer can perform
 - Unit testing
 - Prevention of XSS attacks
