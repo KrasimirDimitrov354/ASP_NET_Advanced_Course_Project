@@ -18,12 +18,12 @@
                 model="await HomeworkService.GetHomeworkDetailsForGradingFormAsync(Model.Id)"/>
 
             <div class="mb-3">
-                <label asp-for="Feedback" class="form-label">Providing constructive feedback will assist acolytes with the completion of their trials.</label>
+                <label asp-for="Feedback" class="form-label text-danger">Providing constructive feedback will assist acolytes with the completion of their trials.</label>
                 <textarea asp-for="Feedback" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Feedback" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Score" class="form-label">Enter your score for the acolyte's homework.</label>
+                <label asp-for="Score" class="form-label text-danger">Enter your score for the acolyte's homework.</label>
                 <input asp-for="Score" class="form-control" />
                 <span asp-validation-for="Score" class="text-danger"></span>
             </div>

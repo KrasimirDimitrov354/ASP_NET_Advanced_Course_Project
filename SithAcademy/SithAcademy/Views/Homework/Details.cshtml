@@ -1,6 +1,12 @@
-﻿@model DisplayHomeworkViewModel
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
+@model DisplayHomeworkViewModel
 
+@inject IOverseerService OverseerService
 @{
+    string userId = User.GetId()!;
+    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+
     ViewData["Title"] = $"Homework for {Model.TrialInfo!.Title}";
 }
 
@@ -12,9 +18,10 @@
         <div class="card-body">
             <p class="card-text">@Model.Content</p>
             <p class="card-text">Created on: @Model.CreatedOn</p>
+
             @if (Model.Score != 0)
             {
-                <p class="card-text text-primary">Your score: @Model.Score</p>
+                <p class="card-text text-primary">Current score: @Model.Score</p>
                 <p class="card-text">Score to pass: @Model.TrialInfo.ScoreToPass</p>
                 <p class="card-text text-primary">Reviewed by: @Model.Reviewer</p>
                 <p class="card-text text-primary">Feedback: @Model.Feedback</p>
@@ -26,11 +33,19 @@
 
             @if (Model.Score < Model.TrialInfo.ScoreToPass)
             {
-                <a asp-controller="Homework" asp-action="Edit" asp-route-id="@Model.Id">
-                    <input class="btn btn-success mb-2 mx-2" role="button" value="Edit your homework" />
-                </a>
+                if (userIsOverseer)
+                {
+                    <a asp-controller="Homework" asp-action="Grade" asp-route-id="@Model.Id">
+                        <input class="btn btn-success mb-2 mx-2" role="button" value="Grade homework" />
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Homework" asp-action="Edit" asp-route-id="@Model.Id">
+                        <input class="btn btn-success mb-2 mx-2" role="button" value="Edit your homework" />
+                    </a>
+                }
             }
-
         </div>
     </div>
 </div>

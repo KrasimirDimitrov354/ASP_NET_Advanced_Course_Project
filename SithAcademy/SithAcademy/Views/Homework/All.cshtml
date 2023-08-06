@@ -1,6 +1,6 @@
-﻿@model AllTrialsQueryModel
+﻿@model AllHomeworksQueryModel
 @{
-    ViewBag.Title = "All Trials";
+    ViewBag.Title = "All Homeworks";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -10,22 +10,25 @@
     <div class="row">
         <div class="form-group col-md-3 row-cols-2 d-flex justify-content-between">
             <div class="form-group">
-                <label asp-for="Academy"></label>
-                <select asp-for="Academy" class="form-control">
+                <label asp-for="Trial">Select trial</label>
+                <select asp-for="Trial" class="form-control">
                     <option value="">All</option>
-                    @foreach (string academy in Model.Academies)
+                    @foreach (string trial in Model.Trials)
                     {
-                        <option value="@academy">@academy</option>
+                        <option value="@trial">@trial</option>
                     }
                 </select>
             </div>
 
             <div class="form-group">
-                <label asp-for="TrialSelect"></label>
-                <select asp-for="TrialSelect" class="form-control">
-                    <option value="0">All</option>
-                    <option value="1">Locked</option>
-                    <option value="2">Unlocked</option>
+                <label asp-for="HomeworkSorting">Order by</label>
+                <select asp-for="HomeworkSorting" class="form-control">
+                    <option value="0">Date (newest first)</option>
+                    <option value="1">Date (oldest first)</option>
+                    <option value="2">Score (high to low)</option>
+                    <option value="3">Score (low to high)</option>
+                    <option value="4">Passed</option>
+                    <option value="5">Not Passed</option>
                 </select>
             </div>
 
@@ -67,12 +70,12 @@
 <div class="row mb-5">
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
         <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
-           asp-controller="Trial"
+           asp-controller="Homework"
            asp-action="All"
            asp-route-currentPage="@previousPage"
-           asp-route-category="@Model.Academy"
+           asp-route-category="@Model.Trial"
            asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@((int)Model.TrialSelect)">Previous Page</a>
+           asp-route-sorting="@((int)Model.HomeworkSorting)">Previous Page</a>
     </div>
 
     @{
@@ -83,23 +86,23 @@
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-primary
            @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
-           asp-controller="Trial"
+           asp-controller="Homework"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-category="@Model.Academy"
+           asp-route-category="@Model.Trial"
            asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@((int)Model.TrialSelect)">Next Page</a>
+           asp-route-sorting="@((int)Model.HomeworkSorting)">Next Page</a>
     </div>
 </div>
 
-@if (!Model.Trials.Any())
+@if (!Model.Homeworks.Any())
 {
-    <h2 class="text-center">No trials found by the given criteria!</h2>
+    <h2 class="text-center">No homeworks found by the given criteria!</h2>
 }
 
 <div class="row">
-    @foreach (TrialSortingViewModel trial in Model.Trials)
+    @foreach (HomeworkSortingViewModel homework in Model.Homeworks)
     {
-        <partial name="_TrialPartial" model="@trial" />
+        <partial name="_HomeworkPartial" model="@homework" />
     }
 </div>

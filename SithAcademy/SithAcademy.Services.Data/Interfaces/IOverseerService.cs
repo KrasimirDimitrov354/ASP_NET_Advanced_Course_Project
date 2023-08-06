@@ -8,6 +8,8 @@ public interface IOverseerService
 
     Task<string> GetOverseerIdAsync(string userId);
 
+    Task<string> GetOverseerTitleAsync(string overseerId);
+
     Task<int> GetAcademyIdByOverseerIdAsync(string overseerId);
 
     Task<bool> OverseerCanModifyAsync(int academyId, string overseerId);

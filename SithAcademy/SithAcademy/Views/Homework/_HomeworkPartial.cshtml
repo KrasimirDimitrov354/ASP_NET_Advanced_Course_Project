@@ -1,0 +1,15 @@
+﻿@model HomeworkSortingViewModel
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <div class="card-body text-center">
+            <h4>Submitted by: @Model.Submitter</h4>
+            <h6>Date of submission: @Model.SubmittedOn</h6>
+            <h6>Submitted for trial: @Model.TrialTitle</h6>
+            <h6>Score: @Model.HomeworkScore</h6>
+            <h6>Score needed to pass: @Model.TrialScore</h6>
+
+            <a asp-controller="Homework" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">View Details</a>
+        </div>
+    </div>
+</div>

@@ -1,13 +1,17 @@
 ﻿namespace SithAcademy.Services.Data;
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
+using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Homework;
+using SithAcademy.Web.ViewModels.Query.Enums;
 using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Services.Data.Models.Homework;
 
 public class HomeworkService : IHomeworkService
 {
@@ -21,14 +25,14 @@ public class HomeworkService : IHomeworkService
     public async Task<bool> TrialHasHomeworkAsync(string trialId, string acolyteId)
     {
         return await dbContext.Homeworks
-            .AnyAsync(h => h.TrialId.ToString() == trialId && 
+            .AnyAsync(h => h.TrialId.ToString() == trialId &&
                            h.AcolyteId.ToString() == acolyteId);
     }
 
     public async Task<bool> HomeworkBelongsToUserAsync(string homeworkId, string userId)
     {
         Homework? homework = await dbContext.Homeworks
-            .FirstOrDefaultAsync(h => h.Id.ToString() == homeworkId && 
+            .FirstOrDefaultAsync(h => h.Id.ToString() == homeworkId &&
                                       h.AcolyteId.ToString() == userId);
 
         if (homework == null)
@@ -181,5 +185,67 @@ public class HomeworkService : IHomeworkService
             .FirstAsync();
 
         return homeworkDetails;
+    }
+
+    public async Task<AllHomeworksFilteredAndPagedServiceModel> GetAllHomeworksAsync(AllHomeworksQueryModel queryModel, string overseerId = "")
+    {
+        IQueryable<Homework> homeworksQuery;
+
+        if (!string.IsNullOrWhiteSpace(overseerId))
+        {
+            homeworksQuery = dbContext.Homeworks
+                .Where(h => h.Trial.Academy.Overseers.Any(o => o.Id.ToString() == overseerId))
+                .AsQueryable();
+        }
+        else
+        {
+            homeworksQuery = dbContext.Homeworks.AsQueryable();
+        }
+
+        if (!string.IsNullOrWhiteSpace(queryModel.Trial))
+        {
+            homeworksQuery = homeworksQuery.Where(h => h.Trial.Title == queryModel.Trial);
+        }
+
+        if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
+        {
+            string wildcard = $"%{queryModel.SearchTerm.ToLower()}%";
+
+            homeworksQuery = homeworksQuery.Where(h => EF.Functions.Like(h.Acolyte.UserName, wildcard) ||
+                                                       EF.Functions.Like(h.ReviewerName, wildcard));
+        }
+
+        homeworksQuery = queryModel.HomeworkSorting switch
+        {
+            HomeworkSorting.Newest => homeworksQuery.OrderByDescending(h => h.CreatedOn),
+            HomeworkSorting.Oldest => homeworksQuery.OrderBy(h => h.CreatedOn),
+            HomeworkSorting.HighestScoring => homeworksQuery.OrderByDescending(h => h.Score),
+            HomeworkSorting.LowestScoring => homeworksQuery.OrderBy(h => h.Score),
+            HomeworkSorting.Passed => homeworksQuery.OrderByDescending(h => h.Score >= h.Trial.ScoreToPass),
+            HomeworkSorting.NotPassed => homeworksQuery.OrderByDescending(h => h.Score < h.Trial.ScoreToPass),
+            _ => homeworksQuery
+                    .OrderBy(h => h.ReviewerName == null)
+                    .ThenByDescending(h => h.CreatedOn),
+        };
+
+        IEnumerable<HomeworkSortingViewModel> allHomeworks = await homeworksQuery
+            .Skip((queryModel.CurrentPage - 1) * queryModel.RecordsPerPage)
+            .Take(queryModel.RecordsPerPage)
+            .Select(h => new HomeworkSortingViewModel()
+            {
+                Id = h.Id.ToString(),
+                Submitter = h.Acolyte.UserName,
+                SubmittedOn = h.CreatedOn.ToString("dddd, dd MMMM yyyy HH:mm:ss"),
+                TrialTitle = h.Trial.Title,
+                HomeworkScore = h.Score,
+                TrialScore = h.Trial.ScoreToPass
+            })
+            .ToArrayAsync();
+
+        return new AllHomeworksFilteredAndPagedServiceModel()
+        {
+            HomeworksCount = allHomeworks.Count(),
+            Homeworks = allHomeworks,
+        };
     }
 }

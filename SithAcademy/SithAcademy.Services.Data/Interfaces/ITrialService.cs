@@ -2,6 +2,7 @@
 
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Services.Data.Models.Trial;
+using SithAcademy.Web.ViewModels.Query;
 
 public interface ITrialService
 {
@@ -34,6 +35,8 @@ public interface ITrialService
     Task CompleteTrialAsync(string trialId, string userId, decimal trialScore);
 
     Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId);
+
+    Task<IEnumerable<string>> GetAllTrialTitlesForQuerySelectAsync(int academyId = 0);
 
     Task<AllTrialsFilteredAndPagedServiceModel> GetAllTrialsAsync(AllTrialsQueryModel queryModel);
 

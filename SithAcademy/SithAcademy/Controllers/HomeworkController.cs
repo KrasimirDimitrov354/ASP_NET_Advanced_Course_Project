@@ -3,11 +3,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Homework;
 using SithAcademy.Web.Infrastructure.Extensions;
+using SithAcademy.Services.Data.Interfaces;
 
 using static SithAcademy.Common.GeneralConstants;
+using SithAcademy.Services.Data.Models.Homework;
 
 [Authorize]
 public class HomeworkController : Controller
@@ -147,11 +149,28 @@ public class HomeworkController : Controller
 
         string userId = User.GetId()!;
         string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
-        bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
-        if (!homeworkBelongsToUser)
+
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (userIsOverseer)
         {
-            TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
-            return RedirectToAction("Details", "Trial", new { id = trialId });
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[WarningMessage] = "You cannot view details of homeworks not submitted to your academy";
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            } 
+        }
+        else
+        {
+            bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
+            if (!homeworkBelongsToUser)
+            {
+                TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
+                return RedirectToAction("Details", "Trial", new { id = trialId });
+            }
         }
 
         try
@@ -355,5 +374,32 @@ public class HomeworkController : Controller
             TempData[ErrorMessage] = "Unexpected error occured while grading homework, please try again.";
             return View(viewModel);
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> All([FromQuery]AllHomeworksQueryModel queryModel)
+    {
+        string userId = User.GetId()!;
+        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+        if (!userIsOverseer)
+        {
+            TempData[ErrorMessage] = "You do not have access to this page.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        AllHomeworksFilteredAndPagedServiceModel serviceModel;
+        
+        //TODO: Implement a check if user is admin
+        string overseerId = await overseerService.GetOverseerIdAsync(userId);
+        serviceModel = await homeworkService.GetAllHomeworksAsync(queryModel, overseerId);
+
+        int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+        queryModel.Trials = await trialService.GetAllTrialTitlesForQuerySelectAsync(academyId);
+
+
+        queryModel.Homeworks = serviceModel.Homeworks;
+        queryModel.TotalRecords = serviceModel.HomeworksCount;
+
+        return View(queryModel);
     }
 }

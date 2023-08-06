@@ -1,6 +1,8 @@
 ﻿namespace SithAcademy.Services.Data.Interfaces;
 
+using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Homework;
+using SithAcademy.Services.Data.Models.Homework;
 
 public interface IHomeworkService
 {
@@ -30,5 +32,7 @@ public interface IHomeworkService
 
     Task<GradeHomeworkViewModel> GetHomeworkForGradingAsync(string homeworkId);
 
-    Task<GradeHomeworkDetailsViewModel> GetHomeworkDetailsForGradingFormAsync(string homeworkId); 
+    Task<GradeHomeworkDetailsViewModel> GetHomeworkDetailsForGradingFormAsync(string homeworkId);
+
+    Task<AllHomeworksFilteredAndPagedServiceModel> GetAllHomeworksAsync(AllHomeworksQueryModel queryModel, string overseerId = "");
 }

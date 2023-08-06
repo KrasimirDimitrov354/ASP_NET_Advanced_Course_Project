@@ -1,14 +1,8 @@
 ﻿@model GradeHomeworkDetailsViewModel
 
 <div class="mb-3">
-    <label class="form-label">Submitted by:</label>
-    <p class="form-control" disabled="disabled">@Model.Submitter</p>
-</div>
-<div class="mb-3">
-    <label class="form-label">Created on:</label>
-    <p class="form-control" disabled="disabled">@Model.CreatedOn</p>
-</div>
-<div class="mb-3">
+    <p>Submitted by: @Model.Submitter</p>
+    <p>Created on: @Model.CreatedOn</p>
     <label class="form-label">Homework content:</label>
     <textarea class="form-control" rows="4" disabled="disabled">@Model.Content</textarea>
 </div>
@@ -16,14 +10,8 @@
 @if (Model.CurrentScore != 0)
 {
     <div class="mb-3">
-        <label class="form-label">Current score:</label>
-        <p class="form-control" disabled="disabled">@Model.CurrentScore</p>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Last Graded By:</label>
-        <p class="form-control" disabled="disabled">@Model.LastReviewer</p>
-    </div>
-    <div class="mb-3">
+        <p>Current score: @Model.CurrentScore</p>
+        <p>Last Reviewed By: Lord @Model.LastReviewer</p>
         <label class="form-label">Latest Feedback:</label>
         <textarea class="form-control" rows="4" disabled="disabled">@Model.LastFeedback</textarea>
     </div>

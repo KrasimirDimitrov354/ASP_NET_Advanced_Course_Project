@@ -9,9 +9,10 @@ using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.ViewModels.Resource;
-using SithAcademy.Web.ViewModels.Trial.Enums;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Services.Data.Models.Trial;
+using SithAcademy.Web.ViewModels.Query;
+using SithAcademy.Web.ViewModels.Query.Enums;
 
 public class TrialService : ITrialService
 {
@@ -241,6 +242,27 @@ public class TrialService : ITrialService
         return trials;
     }
 
+    public async Task<IEnumerable<string>> GetAllTrialTitlesForQuerySelectAsync(int academyId = 0)
+    {
+        IEnumerable<string> allTitles = new List<string>();
+
+        if (academyId == 0)
+        {
+            allTitles = await dbContext.Trials
+                .Select(t => t.Title)
+                .ToArrayAsync();
+        }
+        else
+        {
+            allTitles = await dbContext.Trials
+                .Where(t => t.AcademyId == academyId)
+                .Select(t => t.Title)
+                .ToArrayAsync();
+        }
+
+        return allTitles;
+    }
+
     public async Task<AllTrialsFilteredAndPagedServiceModel> GetAllTrialsAsync(AllTrialsQueryModel queryModel)
     {
         IQueryable<Trial> trialsQuery = dbContext.Trials.AsQueryable();
@@ -266,8 +288,8 @@ public class TrialService : ITrialService
         };
 
         IEnumerable<TrialSortingViewModel> allTrials = await trialsQuery
-            .Skip((queryModel.CurrentPage - 1) * queryModel.TrialsPerPage)
-            .Take(queryModel.TrialsPerPage)
+            .Skip((queryModel.CurrentPage - 1) * queryModel.RecordsPerPage)
+            .Take(queryModel.RecordsPerPage)
             .Select(t => new TrialSortingViewModel()
             {
                 Id = t.Id.ToString(),

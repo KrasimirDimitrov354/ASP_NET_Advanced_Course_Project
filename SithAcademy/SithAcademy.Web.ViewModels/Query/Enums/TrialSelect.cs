@@ -1,4 +1,4 @@
-﻿namespace SithAcademy.Web.ViewModels.Trial.Enums;
+﻿namespace SithAcademy.Web.ViewModels.Query.Enums;
 
 public enum TrialSelect
 {

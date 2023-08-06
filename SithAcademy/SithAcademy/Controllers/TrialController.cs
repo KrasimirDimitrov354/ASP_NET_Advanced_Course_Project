@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using SithAcademy.Web.ViewModels.Trial;
-using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.Infrastructure.Extensions;
+using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Services.Data.Models.Trial;
 
 using static SithAcademy.Common.GeneralConstants;
-using SithAcademy.Services.Data.Models.Trial;
 
 [Authorize]
 public class TrialController : Controller
@@ -33,7 +34,7 @@ public class TrialController : Controller
         AllTrialsFilteredAndPagedServiceModel serviceModel = await trialService.GetAllTrialsAsync(queryModel);
 
         queryModel.Trials = serviceModel.Trials;
-        queryModel.TotalTrials = serviceModel.TotalTrialsCount;
+        queryModel.TotalRecords = serviceModel.TotalTrialsCount;
         queryModel.Academies = await academyService.GetAllAcademyNamesForQuerySelectAsync();
 
         return View(queryModel);
