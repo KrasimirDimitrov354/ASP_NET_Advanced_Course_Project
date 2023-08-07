@@ -15,7 +15,7 @@
         {
             <a asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-warning">@trial.Title</a>
 
-            if (userIsOverseer)
+            if (userIsOverseer || User.IsAdmin())
             {
                 <a asp-controller="Trial" asp-action="Edit" asp-route-id="@trial.Id" class="btn btn-success mb-2">Edit trial</a>
             }

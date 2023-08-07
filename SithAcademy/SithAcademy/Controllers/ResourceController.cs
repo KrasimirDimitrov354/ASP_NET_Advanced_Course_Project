@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using SithAcademy.Web.ViewModels.Resource;
-using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
+using SithAcademy.Services.Data.Interfaces;
 
 using static SithAcademy.Common.GeneralConstants;
 

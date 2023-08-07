@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using SithAcademy.Web.ViewModels.Academy;
-using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
+using SithAcademy.Services.Data.Interfaces;
 
 using static SithAcademy.Common.GeneralConstants;
 
@@ -192,22 +192,25 @@ public class AcademyController : Controller
             return RedirectToAction("Display", "Academy");
         }
 
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
-            return RedirectToAction("Display", "Academy");
-        }
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
+                return RedirectToAction("Display", "Academy");
+            }
 
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
-        if (!overseerCanModify)
-        {
-            TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
 
-            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+                int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try
@@ -236,22 +239,25 @@ public class AcademyController : Controller
             return RedirectToAction("Display", "Academy");
         }
 
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
-            return RedirectToAction("Display", "Academy");
-        }
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
+                return RedirectToAction("Display", "Academy");
+            }
 
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
-        if (!overseerCanModify)
-        {
-            TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
 
-            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+                int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try
@@ -277,22 +283,25 @@ public class AcademyController : Controller
             return RedirectToAction("Display", "Academy");
         }
 
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
-            return RedirectToAction("Display", "Academy");
-        }
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
+                return RedirectToAction("Display", "Academy");
+            }
 
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
-        if (!overseerCanModify)
-        {
-            TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
 
-            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+                int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try
@@ -316,22 +325,25 @@ public class AcademyController : Controller
             return RedirectToAction("Display", "Academy");
         }
 
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
-            return RedirectToAction("Display", "Academy");
-        }
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot change an academy's details.";
+                return RedirectToAction("Display", "Academy");
+            }
 
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
-        if (!overseerCanModify)
-        {
-            TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(id, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can only modify academies they are assigned to.";
 
-            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+                int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try
