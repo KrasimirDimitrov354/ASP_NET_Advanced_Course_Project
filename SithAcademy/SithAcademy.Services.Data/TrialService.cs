@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
+using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.ViewModels.Resource;
+using SithAcademy.Web.ViewModels.Query.Enums;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Services.Data.Models.Trial;
-using SithAcademy.Web.ViewModels.Query;
-using SithAcademy.Web.ViewModels.Query.Enums;
 
 public class TrialService : ITrialService
 {
@@ -121,7 +121,7 @@ public class TrialService : ITrialService
     public async Task<bool> UserCanAccessTrialAsync(string trialId, string userId)
     {
         return await dbContext.TrialsAcolytes
-            .AnyAsync(trial => trial.TrialId.ToString() == trialId && 
+            .AnyAsync(trial => trial.TrialId.ToString() == trialId &&
                       trial.AcolyteId.ToString() == userId);
     }
 
@@ -227,17 +227,33 @@ public class TrialService : ITrialService
         }
     }
 
-    public async Task<IEnumerable<TrialDropdownViewModel>> GetAllTrialsForDropdownSelectByAcademyIdAsync(int academyId)
+    public async Task<IEnumerable<TrialDropdownViewModel>> GetAllTrialsForDropdownSelectByAcademyIdAsync(int academyId = 0)
     {
-        IEnumerable<TrialDropdownViewModel> trials = await dbContext.Trials
-            .Where(t => t.AcademyId == academyId)
-            .AsNoTracking()
-            .Select(t => new TrialDropdownViewModel()
-            {
-                Id = t.Id.ToString(),
-                Title = t.Title
-            })
-            .ToArrayAsync();
+        IEnumerable<TrialDropdownViewModel> trials;
+
+        if (academyId == 0)
+        {
+            trials = await dbContext.Trials
+                .AsNoTracking()
+                .Select(t => new TrialDropdownViewModel()
+                {
+                    Id = t.Id.ToString(),
+                    Title = t.Title
+                })
+                .ToArrayAsync();
+        }
+        else
+        {
+            trials = await dbContext.Trials
+                .Where(t => t.AcademyId == academyId)
+                .AsNoTracking()
+                .Select(t => new TrialDropdownViewModel()
+                {
+                    Id = t.Id.ToString(),
+                    Title = t.Title
+                })
+                .ToArrayAsync();
+        }
 
         return trials;
     }

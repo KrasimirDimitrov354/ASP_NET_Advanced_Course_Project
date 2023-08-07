@@ -34,7 +34,7 @@ public interface ITrialService
 
     Task CompleteTrialAsync(string trialId, string userId, decimal trialScore);
 
-    Task<IEnumerable<TrialDropdownViewModel>> GetAllTrialsForDropdownSelectByAcademyIdAsync(int academyId);
+    Task<IEnumerable<TrialDropdownViewModel>> GetAllTrialsForDropdownSelectByAcademyIdAsync(int academyId = 0);
 
     Task<IEnumerable<string>> GetAllTrialTitlesForQuerySelectAsync(int academyId = 0);
 

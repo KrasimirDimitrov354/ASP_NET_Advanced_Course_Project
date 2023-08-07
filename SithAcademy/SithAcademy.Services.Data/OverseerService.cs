@@ -46,8 +46,13 @@ public class OverseerService : IOverseerService
 
     public async Task<int> GetAcademyIdByOverseerIdAsync(string overseerId)
     {
-        Overseer overseer = await dbContext.Overseers
-            .FirstAsync(o => o.Id.ToString() == overseerId);
+        Overseer? overseer = await dbContext.Overseers
+            .FirstOrDefaultAsync(o => o.Id.ToString() == overseerId);
+
+        if (overseer == null)
+        {
+            return 0;
+        }
 
         return overseer.AcademyId;
     }

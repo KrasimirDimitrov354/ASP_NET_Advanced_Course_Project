@@ -30,7 +30,7 @@ public class ResourceController : Controller
     {
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer) 
+        if (!userIsOverseer && !User.IsAdmin()) 
         {
             TempData[ErrorMessage] = "Acolytes cannot add resources!";
             return RedirectToAction("Index", "Home");
@@ -38,13 +38,19 @@ public class ResourceController : Controller
 
         try
         {
-            string overseerId = await overseerService.GetOverseerIdAsync(userId);
-            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            ResourceFormViewModel viewModel = new ResourceFormViewModel();
 
-            ResourceFormViewModel viewModel = new ResourceFormViewModel()
+            if (User.IsAdmin())
             {
-                Trials = await trialService.GetAllTrialsForDropdownSelectByAcademyIdAsync(academyId)
-            };
+                viewModel.Trials = await trialService.GetAllTrialsForDropdownSelectByAcademyIdAsync();
+            }
+            else
+            {
+                string overseerId = await overseerService.GetOverseerIdAsync(userId);
+                int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+                viewModel.Trials = await trialService.GetAllTrialsForDropdownSelectByAcademyIdAsync(academyId);
+            }
+
             return View(viewModel);
         }
         catch (Exception)
@@ -58,7 +64,7 @@ public class ResourceController : Controller
     {
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!userIsOverseer && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "Acolytes cannot add resources!";
             return RedirectToAction("Index", "Home");
@@ -98,14 +104,6 @@ public class ResourceController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(string id)
     {
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
-        {
-            TempData[ErrorMessage] = "Acolytes cannot edit resources!";
-            return RedirectToAction("Index", "Home");
-        }
-
         string normalizedId = id.ToLower();
         string trialId = await resourceService.GetTrialIdByResourceIdAsync(normalizedId);
         bool resourceExists = await resourceService.ResourceExistsAsync(normalizedId);
@@ -115,13 +113,26 @@ public class ResourceController : Controller
             return RedirectToAction("Details", "Trial", new { id = trialId });
         }
 
-        int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-        if(!overseerCanModify)
+        int academyId = 0;
+
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Overseers can modify resources only in academies they are assigned to.";
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot edit resources!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can modify resources only in academies they are assigned to.";
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try
@@ -153,28 +164,33 @@ public class ResourceController : Controller
         {
             ModelState.AddModelError(nameof(viewModel.TrialId), "Selected trial does not exist!");
         }
+
+        int academyId = 0;
         
-        int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+        if (!User.IsAdmin())
+        {
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot edit resources!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can modify resources only in academies they are assigned to.";
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
+        }
+
         if (!ModelState.IsValid)
         {
             viewModel.Trials = await trialService.GetAllTrialsForDropdownSelectByAcademyIdAsync(academyId);
             return View(viewModel);
-        }
-
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
-        {
-            TempData[ErrorMessage] = "Acolytes cannot edit resources!";
-            return RedirectToAction("Index", "Home");
-        }
-
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-        if (!overseerCanModify)
-        {
-            TempData[ErrorMessage] = "Overseers can modify resources only in academies they are assigned to.";
-            return RedirectToAction("Details", "Academy", new { id = academyId });
         }
 
         try

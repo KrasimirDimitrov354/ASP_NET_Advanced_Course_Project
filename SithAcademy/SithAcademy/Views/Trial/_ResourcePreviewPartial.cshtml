@@ -22,7 +22,7 @@
                     <h5 class="card-title">@resource.Name</h5>
                     <a href="@resource.SourceUrl" target="_blank" class="btn btn-warning mb-2">Access resource</a>
 
-                    @if (userIsOverseer)
+                    @if (userIsOverseer || User.IsAdmin())
                     {
                         <a asp-area="" asp-controller="Resource" asp-action="Edit" asp-route-id="@resource.Id">
                             <input class="btn btn-success" role="button" value="Edit resource details" />
