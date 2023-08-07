@@ -6,6 +6,8 @@ using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
 
+//TODO: Add redirection if user is admin
+
 public class HomeController : Controller
 {
     private readonly ITrialService trialService;

@@ -33,7 +33,7 @@
 
             @if (Model.Score < Model.TrialInfo.ScoreToPass)
             {
-                if (userIsOverseer)
+                if (userIsOverseer || User.IsAdmin())
                 {
                     <a asp-controller="Homework" asp-action="Grade" asp-route-id="@Model.Id">
                         <input class="btn btn-success mb-2 mx-2" role="button" value="Grade homework" />

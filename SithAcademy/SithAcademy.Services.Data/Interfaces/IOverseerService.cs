@@ -14,5 +14,5 @@ public interface IOverseerService
 
     Task<bool> OverseerCanModifyAsync(int academyId, string overseerId);
 
-    Task GradeHomeworkAsync(string overseerId, GradeHomeworkViewModel viewModel);
+    Task GradeHomeworkAsync(GradeHomeworkViewModel viewModel, string overseerId = "");
 }

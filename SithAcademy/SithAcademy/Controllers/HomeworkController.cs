@@ -7,9 +7,9 @@ using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Homework;
 using SithAcademy.Web.Infrastructure.Extensions;
 using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Services.Data.Models.Homework;
 
 using static SithAcademy.Common.GeneralConstants;
-using SithAcademy.Services.Data.Models.Homework;
 
 [Authorize]
 public class HomeworkController : Controller
@@ -30,6 +30,12 @@ public class HomeworkController : Controller
     [HttpGet]
     public async Task<IActionResult> Submit(string id)
     {
+        if (User.IsAdmin())
+        {
+            TempData[ErrorMessage] = "The High Inquisitor does not waste his time with submitting homeworks!";
+            return RedirectToAction("Index", "Home");
+        }
+
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (userIsOverseer)
@@ -76,6 +82,12 @@ public class HomeworkController : Controller
     [HttpPost]
     public async Task<IActionResult> Submit(string id, SubmitHomeworkViewModel homeworkModel)
     {
+        if (User.IsAdmin())
+        {
+            TempData[ErrorMessage] = "The High Inquisitor does not waste his time with submitting homeworks!";
+            return RedirectToAction("Index", "Home");
+        }
+
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (userIsOverseer)
@@ -150,26 +162,29 @@ public class HomeworkController : Controller
         string userId = User.GetId()!;
         string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
 
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (userIsOverseer)
+        if (!User.IsAdmin())
         {
-            string overseerId = await overseerService.GetOverseerIdAsync(userId);
-            int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (userIsOverseer)
+            {
+                string overseerId = await overseerService.GetOverseerIdAsync(userId);
+                int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
 
-            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-            if (!overseerCanModify)
+                bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+                if (!overseerCanModify)
+                {
+                    TempData[WarningMessage] = "You cannot view details of homeworks not submitted to your academy";
+                    return RedirectToAction("Details", "Academy", new { id = academyId });
+                }
+            }
+            else
             {
-                TempData[WarningMessage] = "You cannot view details of homeworks not submitted to your academy";
-                return RedirectToAction("Details", "Academy", new { id = academyId });
-            } 
-        }
-        else
-        {
-            bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
-            if (!homeworkBelongsToUser)
-            {
-                TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
-                return RedirectToAction("Details", "Trial", new { id = trialId });
+                bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
+                if (!homeworkBelongsToUser)
+                {
+                    TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
+                    return RedirectToAction("Details", "Trial", new { id = trialId });
+                }
             }
         }
 
@@ -274,7 +289,7 @@ public class HomeworkController : Controller
     {
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!userIsOverseer && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "Acolytes cannot grade homeworks.";
             return RedirectToAction("Index", "Home");
@@ -292,7 +307,7 @@ public class HomeworkController : Controller
         string overseerId = await overseerService.GetOverseerIdAsync(userId);
 
         bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-        if (!overseerCanModify)
+        if (!overseerCanModify && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "You don't have access to this homework.";
             return RedirectToAction("Index", "Home");
@@ -308,7 +323,6 @@ public class HomeworkController : Controller
         try
         {
             GradeHomeworkViewModel homeworkToGrade = await homeworkService.GetHomeworkForGradingAsync(id);
-
             return View(homeworkToGrade);
         }
         catch (Exception)
@@ -323,7 +337,7 @@ public class HomeworkController : Controller
     {
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!userIsOverseer && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "Acolytes cannot grade homeworks.";
             return RedirectToAction("Index", "Home");
@@ -341,7 +355,7 @@ public class HomeworkController : Controller
         string overseerId = await overseerService.GetOverseerIdAsync(userId);
 
         bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-        if (!overseerCanModify)
+        if (!overseerCanModify && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "You don't have access to this homework.";
             return RedirectToAction("Index", "Home");
@@ -361,7 +375,14 @@ public class HomeworkController : Controller
 
         try
         {
-            await overseerService.GradeHomeworkAsync(overseerId, viewModel);
+            if (User.IsAdmin())
+            {
+                await overseerService.GradeHomeworkAsync(viewModel);
+            }
+            else
+            {
+                await overseerService.GradeHomeworkAsync(viewModel, overseerId);
+            }
 
             string acolyteId = await homeworkService.GetUserIdByHomeworkIdAsync(id);
             await trialService.CompleteTrialAsync(trialId, acolyteId, viewModel.Score);
@@ -381,21 +402,27 @@ public class HomeworkController : Controller
     {
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!userIsOverseer && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "You do not have access to this page.";
             return RedirectToAction("Index", "Home");
         }
 
         AllHomeworksFilteredAndPagedServiceModel serviceModel;
-        
-        //TODO: Implement a check if user is admin
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        serviceModel = await homeworkService.GetAllHomeworksAsync(queryModel, overseerId);
 
-        int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
-        queryModel.Trials = await trialService.GetAllTrialTitlesForQuerySelectAsync(academyId);
+        if (User.IsAdmin())
+        {
+            serviceModel = await homeworkService.GetAllHomeworksAsync(queryModel);
+            queryModel.Trials = await trialService.GetAllTrialTitlesForQuerySelectAsync();
+        }
+        else
+        {
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            serviceModel = await homeworkService.GetAllHomeworksAsync(queryModel, overseerId);
 
+            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            queryModel.Trials = await trialService.GetAllTrialTitlesForQuerySelectAsync(academyId);
+        }
 
         queryModel.Homeworks = serviceModel.Homeworks;
         queryModel.TotalRecords = serviceModel.HomeworksCount;

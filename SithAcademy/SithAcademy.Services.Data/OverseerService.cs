@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
-using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.ViewModels.Homework;
+using SithAcademy.Services.Data.Interfaces;
 
 public class OverseerService : IOverseerService
 {
@@ -25,8 +25,13 @@ public class OverseerService : IOverseerService
 
     public async Task<string> GetOverseerIdAsync(string userId)
     {
-        Overseer overseer = await dbContext.Overseers
-            .FirstAsync(o => o.UserId.ToString() == userId);
+        Overseer? overseer = await dbContext.Overseers
+            .FirstOrDefaultAsync(o => o.UserId.ToString() == userId);
+
+        if (overseer == null)
+        {
+            return string.Empty;
+        }
 
         return overseer.Id.ToString();
     }
@@ -61,13 +66,20 @@ public class OverseerService : IOverseerService
         return true;
     }
 
-    public async Task GradeHomeworkAsync(string overseerId, GradeHomeworkViewModel viewModel)
+    public async Task GradeHomeworkAsync(GradeHomeworkViewModel viewModel, string overseerId = "")
     {
-        Overseer overseer = await dbContext.Overseers.FirstAsync(o => o.Id.ToString() == overseerId);
-
         Homework homework = await dbContext.Homeworks.FirstAsync(h => h.Id.ToString() == viewModel.Id);
 
-        homework.ReviewerName = overseer.Title;
+        if (string.IsNullOrWhiteSpace(overseerId))
+        {
+            homework.ReviewerName = "High Inquisitor";
+        }
+        else 
+        {
+            Overseer overseer = await dbContext.Overseers.FirstAsync(o => o.Id.ToString() == overseerId);
+            homework.ReviewerName = overseer.Title;
+        }
+        
         homework.ReviewerFeedback = viewModel.Feedback;
         homework.Score = viewModel.Score;
 
