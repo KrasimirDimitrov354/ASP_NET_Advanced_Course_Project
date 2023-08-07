@@ -1,6 +1,6 @@
 ﻿namespace SithAcademy.Web.ViewModels.Trial;
 
-public class IncompleteTrialViewModel : TrialOverviewViewModel
+public class IncompleteTrialViewModel : TrialDropdownViewModel
 {
     public int AcademyId { get; set; }
 

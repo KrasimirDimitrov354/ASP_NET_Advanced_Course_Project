@@ -1,7 +1,10 @@
-﻿@model TrialFormViewModel
+﻿@using SithAcademy.Web.Infrastructure.Extensions;
+@model TrialFormViewModel
 
 @{
     ViewBag.Title = "Add Trial";
+
+    bool userIsAdmin = User.IsAdmin();
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -10,7 +13,7 @@
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Add" method="post">
+        <form asp-area="" asp-controller="Trial" asp-action="Add" method="post">
             <div class="mb-3">
                 <label asp-for="Title" class="form-label">Enter a trial title</label>
                 <input asp-for="Title" class="form-control" />
@@ -27,7 +30,22 @@
                 <span asp-validation-for="ScoreToPass" class="text-danger"></span>
             </div>
             <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="false" onchange="this.value=this.checked"/>Lock trial upon creation?</label>
-            <div class="mb-3">
+
+            @if (userIsAdmin)
+            {
+                <div class="form-group">
+                    <label asp-for="AcademyId"></label>
+                    <select asp-for="AcademyId" class="form-control">
+                        @foreach (AcademyDropdownViewModel academy in Model.Academies)
+                        {
+                            <option value="@academy.Id">@academy.Title</option>
+                        }
+                    </select>
+                    <span asp-validation-for="AcademyId" class="small text-danger"></span>
+                </div>
+            }
+
+            <div class="mb-3 mt-3">
                 <input class="btn btn-primary" type="submit" value="Add trial" />
             </div>
         </form>

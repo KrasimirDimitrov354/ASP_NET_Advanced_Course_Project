@@ -7,7 +7,7 @@ public class AcademyDetailsViewModel : AcademySummaryViewModel
 {
     public AcademyDetailsViewModel()
     {
-        Trials = new HashSet<TrialOverviewViewModel>();
+        Trials = new HashSet<TrialDropdownViewModel>();
         Acolytes = new HashSet<AcolyteViewModel>();
     }
 
@@ -15,7 +15,7 @@ public class AcademyDetailsViewModel : AcademySummaryViewModel
 
     public bool IsLocked { get; set; }
 
-    public virtual IEnumerable<TrialOverviewViewModel> Trials { get; set; }
+    public virtual IEnumerable<TrialDropdownViewModel> Trials { get; set; }
 
     public virtual IEnumerable<AcolyteViewModel> Acolytes { get; set; }
 }

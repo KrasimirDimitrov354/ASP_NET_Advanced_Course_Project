@@ -227,12 +227,12 @@ public class TrialService : ITrialService
         }
     }
 
-    public async Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId)
+    public async Task<IEnumerable<TrialDropdownViewModel>> GetAllTrialsForDropdownSelectByAcademyIdAsync(int academyId)
     {
-        IEnumerable<TrialOverviewViewModel> trials = await dbContext.Trials
+        IEnumerable<TrialDropdownViewModel> trials = await dbContext.Trials
             .Where(t => t.AcademyId == academyId)
             .AsNoTracking()
-            .Select(t => new TrialOverviewViewModel()
+            .Select(t => new TrialDropdownViewModel()
             {
                 Id = t.Id.ToString(),
                 Title = t.Title

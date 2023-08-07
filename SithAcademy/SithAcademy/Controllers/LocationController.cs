@@ -1,12 +1,16 @@
 ﻿namespace SithAcademy.Web.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.ViewModels.Location;
+using SithAcademy.Services.Data.Interfaces;
 
 using static SithAcademy.Common.GeneralConstants;
 
+//TODO: Add CRUD operations (can be performed only by admin)
+
+[Authorize]
 public class LocationController : Controller
 {
     private readonly ILocationService locationService;
@@ -17,6 +21,7 @@ public class LocationController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Display()
     {
         IEnumerable<LocationOverviewViewModel> locations = await locationService.GetAllLocationsAsync();
@@ -25,6 +30,7 @@ public class LocationController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
         try

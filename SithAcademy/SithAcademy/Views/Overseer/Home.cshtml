@@ -3,17 +3,13 @@
 @inject IOverseerService OverseerService
 @{
     string userId = User.GetId()!;
-    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
-}
-
-@if (userIsOverseer)
-{
     string overseerId = await OverseerService.GetOverseerIdAsync(userId);
     string overseerTitle = await OverseerService.GetOverseerTitleAsync(overseerId);
-
-    <h3 class="mb-4">Welcome, @overseerTitle</h3>
-    <div class="container text-start">
-        <p class="mb-2">You can modify your academy's details from the Academy Panel section.</p>
-        <p class="mb-2">You can review homeworks from the Homeworks section.</p>
-    </div>
 }
+
+<h3 class="mb-4">Welcome, @overseerTitle</h3>
+<div class="container text-start">
+    <p class="mb-2">You can modify your academy's details from the Academy Panel section.</p>
+    <p class="mb-2">You can review homeworks from the Homeworks Panel section.</p>
+</div>
+

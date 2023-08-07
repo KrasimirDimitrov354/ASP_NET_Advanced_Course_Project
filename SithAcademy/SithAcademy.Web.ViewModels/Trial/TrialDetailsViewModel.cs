@@ -2,7 +2,7 @@
 
 using SithAcademy.Web.ViewModels.Resource;
 
-public class TrialDetailsViewModel : TrialOverviewViewModel
+public class TrialDetailsViewModel : TrialDropdownViewModel
 {
     public TrialDetailsViewModel()
     {

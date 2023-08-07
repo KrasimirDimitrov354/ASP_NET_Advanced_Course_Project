@@ -19,19 +19,19 @@
 
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                @if (userIsOverseer)
+                @if (userIsOverseer || User.IsAdmin())
                 {
                     string overseerId = await OverseerService.GetOverseerIdAsync(userId);
                     bool overseerCanModify = await OverseerService.OverseerCanModifyAsync(Model.Id, overseerId);
 
-                    if (overseerCanModify)
+                    if (overseerCanModify || User.IsAdmin())
                     {
                         <div class="btn-group" role="group">
-                            <form asp-controller="Trial" asp-action="Add" method="get">
+                            <form asp-area="" asp-controller="Trial" asp-action="Add" method="get">
                                 <input class="btn btn-success mb-2 mx-2" role="button" type="submit" value="Add trial">
                             </form>
 
-                            <a asp-controller="Academy" asp-action="Edit" asp-route-id="@Model.Id">
+                            <a asp-area="" asp-controller="Academy" asp-action="Edit" asp-route-id="@Model.Id">
                                 <input class="btn btn-success mb-2 mx-2" role="button" value="Edit academy details" />
                             </a>
 
@@ -39,7 +39,7 @@
                                 string lockButtonValue = Model.IsLocked ? "Unlock academy" : "Lock academy";
                             }
 
-                            <form asp-controller="Academy" asp-action="Lock" asp-route-id="@Model.Id" method="get">
+                            <form asp-area="" asp-controller="Academy" asp-action="Lock" asp-route-id="@Model.Id" method="get">
                                 <input class="btn btn-danger mb-2 mx-2" role="button" type="submit" value="@lockButtonValue" />
                             </form>
                         </div>
@@ -53,7 +53,7 @@
                     {
                         if (Model.Acolytes.Any(a => a.Id == (string)ViewData["UserId"]!))
                         {
-                            <form asp-controller="Academy" asp-action="Leave" asp-route-id="@Model.Id" method="post">
+                            <form asp-area="" asp-controller="Academy" asp-action="Leave" asp-route-id="@Model.Id" method="post">
                                 <input class="btn btn-danger mb-2" type="submit" value="Leave academy" />
                             </form>
 
@@ -61,7 +61,7 @@
                         }
                         else
                         {
-                            <form asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
+                            <form asp-area="" asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
                                 <input class="btn btn-danger mb-2" type="submit" value="Join academy" />
                             </form>
                         }
@@ -76,7 +76,7 @@
             {
                 if (!Model.IsLocked)
                 {
-                    <form asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
+                    <form asp-area="" asp-controller="Academy" asp-action="Join" asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-danger mb-2" type="submit" value="Join academy" />
                     </form>
                 }

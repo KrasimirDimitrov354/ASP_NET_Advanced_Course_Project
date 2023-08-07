@@ -9,7 +9,7 @@ public class ResourceFormViewModel
 {
     public ResourceFormViewModel()
     {
-        Trials = new HashSet<TrialOverviewViewModel>();
+        Trials = new HashSet<TrialDropdownViewModel>();
     }
 
     [Required]
@@ -33,5 +33,5 @@ public class ResourceFormViewModel
 
     public bool IsDeleted { get; set; }
 
-    public virtual IEnumerable<TrialOverviewViewModel> Trials { get; set; }
+    public virtual IEnumerable<TrialDropdownViewModel> Trials { get; set; }
 }

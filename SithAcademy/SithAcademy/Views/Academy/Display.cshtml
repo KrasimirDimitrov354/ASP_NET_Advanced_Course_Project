@@ -19,9 +19,9 @@
                         <div class="card-body">
                             <h3 class="card-title">@academy.Title</h3>
                             <h5 class="card-title">@academy.LocationName</h5>
-                            <a asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
+                            <a asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
                             <span></span>
-                            <a asp-controller="Location" asp-action="Details" asp-route-id="@academy.LocationId" class="btn btn-danger mb-2">Location Details</a>
+                            <a asp-area="" asp-controller="Location" asp-action="Details" asp-route-id="@academy.LocationId" class="btn btn-danger mb-2">Location Details</a>
                         </div>
                     </div>
                 </div>

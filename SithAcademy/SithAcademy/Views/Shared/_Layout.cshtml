@@ -8,7 +8,6 @@
     bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
 }
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +39,16 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
 
-                        @if (userIsOverseer)
+                        @if(User.IsAdmin())
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Trial" asp-action="All">Trials Panel</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Homework" asp-action="All">Homeworks Panel</a>
+                            </li>
+                        }
+                        else if (userIsOverseer)
                         {
                             string overseerId = await OverseerService.GetOverseerIdAsync(userId!);
                             int academyId = await OverseerService.GetAcademyIdByOverseerIdAsync(overseerId);
@@ -49,7 +57,7 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academyId">Academy Panel</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Homework" asp-action="All">Homeworks</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Homework" asp-action="All">Homeworks Panel</a>
                             </li>
                         }
                         else

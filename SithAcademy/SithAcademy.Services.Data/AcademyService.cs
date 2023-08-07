@@ -53,7 +53,7 @@ public class AcademyService : IAcademyService
                 Description = a.Description,
                 IsLocked = a.IsLocked,
                 Trials = a.Trials
-                        .Select(t => new TrialOverviewViewModel()
+                        .Select(t => new TrialDropdownViewModel()
                         {
                             Id = t.Id.ToString(),
                             Title = t.Title,
@@ -174,6 +174,19 @@ public class AcademyService : IAcademyService
     {
         IEnumerable<string> allAcademies = await dbContext.Academies
             .Select(a => a.Title)
+            .ToArrayAsync();
+
+        return allAcademies;
+    }
+
+    public async Task<IEnumerable<AcademyDropdownViewModel>> GetAllAcademiesForDropdownSelectAsync()
+    {
+        IEnumerable<AcademyDropdownViewModel> allAcademies = await dbContext.Academies
+            .Select(a => new AcademyDropdownViewModel()
+            {
+                Id = a.Id,
+                Title = a.Title
+            })
             .ToArrayAsync();
 
         return allAcademies;

@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <h3 class="card-title text-danger">@trial.Title</h3>
                         <h5 class="card-title">@trial.AcademyTitle</h5>
-                        <a asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>
+                        <a asp-area="" asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-danger mb-2">Trial Details</a>
                     </div>
                 </div>
             </div>
@@ -26,5 +26,5 @@
 else
 {
     <h4 class="mb-2">You have no incomplete trials to display.</h4>
-    <a class="text-danger m-0 pt-0 h4" asp-controller="Academy" asp-action="Display">Explore what our academies have to offer!</a>
+    <a class="text-danger m-0 pt-0 h4" asp-area="" asp-controller="Academy" asp-action="Display">Explore what our academies have to offer!</a>
 }

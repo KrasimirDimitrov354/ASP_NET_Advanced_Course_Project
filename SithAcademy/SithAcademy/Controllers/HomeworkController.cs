@@ -152,6 +152,12 @@ public class HomeworkController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string id)
     {
+        if (User.IsAdmin())
+        {
+            TempData[ErrorMessage] = "The High Inquisitor does not waste his time with submitting homeworks!";
+            return RedirectToAction("Index", "Home");
+        }
+
         bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
         if (!homeworkExists)
         {
@@ -287,14 +293,6 @@ public class HomeworkController : Controller
     [HttpGet]
     public async Task<IActionResult> Grade(string id)
     {
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer && !User.IsAdmin())
-        {
-            TempData[ErrorMessage] = "Acolytes cannot grade homeworks.";
-            return RedirectToAction("Index", "Home");
-        }
-
         bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
         if (!homeworkExists)
         {
@@ -302,15 +300,25 @@ public class HomeworkController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
-        int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-        if (!overseerCanModify && !User.IsAdmin())
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "You don't have access to this homework.";
-            return RedirectToAction("Index", "Home");
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot grade homeworks.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
+            int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "You don't have access to this homework.";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         bool homeworkCanBeGraded = await homeworkService.HomeworkCanBeGradedAsync(id);
@@ -335,6 +343,13 @@ public class HomeworkController : Controller
     [HttpPost]
     public async Task<IActionResult> Grade(string id, GradeHomeworkViewModel viewModel)
     {
+        bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
+        if (!homeworkExists)
+        {
+            TempData[ErrorMessage] = "No homework with such ID found.";
+            return RedirectToAction("Index", "Home");
+        }
+
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
         if (!userIsOverseer && !User.IsAdmin())
@@ -343,17 +358,9 @@ public class HomeworkController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        bool homeworkExists = await homeworkService.HomeworkExistsByIdAsync(id);
-        if (!homeworkExists)
-        {
-            TempData[ErrorMessage] = "No homework with such ID found.";
-            return RedirectToAction("Index", "Home");
-        }
-
         string trialId = await homeworkService.GetTrialIdByHomeworkIdAsync(id);
         int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
         string overseerId = await overseerService.GetOverseerIdAsync(userId);
-
         bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
         if (!overseerCanModify && !User.IsAdmin())
         {

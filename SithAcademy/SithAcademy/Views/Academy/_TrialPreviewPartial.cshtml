@@ -1,6 +1,6 @@
 ﻿@using SithAcademy.Services.Data.Interfaces;
 @using SithAcademy.Web.Infrastructure.Extensions;
-@model IEnumerable<TrialOverviewViewModel>
+@model IEnumerable<TrialDropdownViewModel>
 
 @inject IOverseerService OverseerService
 @{
@@ -11,7 +11,7 @@
 <div class="card text-center" style="width: 18rem">
     <div class="card-header h4">Trials</div>
     <ul class="list-group list-group-flush">
-        @foreach (TrialOverviewViewModel trial in Model)
+        @foreach (TrialDropdownViewModel trial in Model)
         {
             <a asp-controller="Trial" asp-action="Details" asp-route-id="@trial.Id" class="btn btn-warning">@trial.Title</a>
 

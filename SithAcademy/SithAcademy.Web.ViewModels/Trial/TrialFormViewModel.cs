@@ -1,11 +1,17 @@
 ﻿namespace SithAcademy.Web.ViewModels.Trial;
 
+using SithAcademy.Web.ViewModels.Academy;
 using System.ComponentModel.DataAnnotations;
 
 using static SithAcademy.Common.EntityFieldValidation.Trial;
 
 public class TrialFormViewModel
 {
+    public TrialFormViewModel()
+    {
+        Academies = new HashSet<AcademyDropdownViewModel>();
+    }
+
     [Required]
     [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
     public string Title { get; set; } = null!;
@@ -20,4 +26,9 @@ public class TrialFormViewModel
     public decimal ScoreToPass { get; set; }
 
     public bool IsLocked { get; set; }
+
+    [Display(Name = "Academy")]
+    public int? AcademyId { get; set; }
+
+    public virtual IEnumerable<AcademyDropdownViewModel> Academies { get; set; }
 }

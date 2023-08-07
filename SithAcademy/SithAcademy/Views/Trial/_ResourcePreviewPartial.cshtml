@@ -24,7 +24,7 @@
 
                     @if (userIsOverseer)
                     {
-                        <a asp-controller="Resource" asp-action="Edit" asp-route-id="@resource.Id">
+                        <a asp-area="" asp-controller="Resource" asp-action="Edit" asp-route-id="@resource.Id">
                             <input class="btn btn-success" role="button" value="Edit resource details" />
                         </a>
                     }

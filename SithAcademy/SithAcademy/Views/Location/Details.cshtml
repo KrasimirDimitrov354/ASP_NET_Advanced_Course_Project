@@ -18,7 +18,7 @@
                 foreach (AcademySummaryViewModel academy in Model.Academies)
                 {
                     <h3 class="card-text">@academy.Title</h3>
-                    <a asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
+                    <a asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
                 }
             }
             else

@@ -1,6 +1,6 @@
 ﻿namespace SithAcademy.Web.ViewModels.Trial;
 
-public class TrialOverviewViewModel
+public class TrialDropdownViewModel
 {
     public string Id { get; set; } = null!;
 

@@ -30,7 +30,12 @@ public class TrialController : Controller
     [HttpGet]
     public async Task<IActionResult> All([FromQuery]AllTrialsQueryModel queryModel)
     {
-        //Only admin can access this, implement check later
+        if (!User.IsAdmin())
+        {
+            TempData[ErrorMessage] = "You do not have access to this page.";
+            return RedirectToAction("Index", "Home");
+        }
+
         AllTrialsFilteredAndPagedServiceModel serviceModel = await trialService.GetAllTrialsAsync(queryModel);
 
         queryModel.Trials = serviceModel.Trials;
@@ -43,15 +48,24 @@ public class TrialController : Controller
     [HttpGet]
     public async Task<IActionResult> Add()
     {
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Acolytes cannot add trials!";
-            return RedirectToAction("Index", "Home");
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot add trials!";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         TrialFormViewModel viewModel = new TrialFormViewModel();
+
+        if (User.IsAdmin())
+        {
+            viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
+        }
+
         return View(viewModel);
     }
 
@@ -60,7 +74,7 @@ public class TrialController : Controller
     {
         string userId = User.GetId()!;
         bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!userIsOverseer && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "Acolytes cannot add trials!";
             return RedirectToAction("Index", "Home");
@@ -68,15 +82,25 @@ public class TrialController : Controller
 
         if (!ModelState.IsValid)
         {
+            viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
             return View(viewModel);
         }
 
         try
         {
-            string overseerId = await overseerService.GetOverseerIdAsync(userId);
-            int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
-            string trialId = await trialService.AddTrialAndReturnTrialIdAsync(academyId, viewModel);
+            int academyId;
 
+            if (User.IsAdmin())
+            {
+                academyId = (int)viewModel.AcademyId!;
+            }
+            else
+            {
+                string overseerId = await overseerService.GetOverseerIdAsync(userId);
+                academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
+            }
+            
+            string trialId = await trialService.AddTrialAndReturnTrialIdAsync(academyId, viewModel);
             await trialService.AddTrialToAllAcolytesInAcademyAsync(trialId, academyId);
 
             TempData[SuccessMessage] = "Successfully added the trial to the academy.";
@@ -85,6 +109,7 @@ public class TrialController : Controller
         catch (Exception)
         {
             ModelState.AddModelError(string.Empty, "Unexpected error occured while adding a new trial! Please try again or contact the High Inquisitor.");
+            viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
             return View(viewModel);
         }
     }
@@ -101,14 +126,17 @@ public class TrialController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        string userId = User.GetId()!;
-        bool userCanAccessTrial = await trialService.UserCanAccessTrialAsync(normalizedId, userId);
-        if (!userCanAccessTrial)
+        if (!User.IsAdmin())
         {
-            TempData[WarningMessage] = "You can only access the trials of academies you are part of.";
+            string userId = User.GetId()!;
+            bool userCanAccessTrial = await trialService.UserCanAccessTrialAsync(normalizedId, userId);
+            if (!userCanAccessTrial)
+            {
+                TempData[WarningMessage] = "You can only access the trials of academies you are part of.";
 
-            int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+                int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try
@@ -133,21 +161,24 @@ public class TrialController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Acolytes cannot edit trials!";
-            return RedirectToAction("Index", "Home");
-        }
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot edit trials!";
+                return RedirectToAction("Index", "Home");
+            }
 
-        int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-        if (!overseerCanModify)
-        {
-            TempData[ErrorMessage] = "Overseers can modify trials only in academies they are assigned to.";
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+            int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can modify trials only in academies they are assigned to.";
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try
@@ -177,21 +208,24 @@ public class TrialController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        string userId = User.GetId()!;
-        bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-        if (!userIsOverseer)
+        if (!User.IsAdmin())
         {
-            TempData[ErrorMessage] = "Acolytes cannot edit trials!";
-            return RedirectToAction("Index", "Home");
-        }
+            string userId = User.GetId()!;
+            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+            if (!userIsOverseer)
+            {
+                TempData[ErrorMessage] = "Acolytes cannot edit trials!";
+                return RedirectToAction("Index", "Home");
+            }
 
-        int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
-        string overseerId = await overseerService.GetOverseerIdAsync(userId);
-        bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-        if (!overseerCanModify)
-        {
-            TempData[ErrorMessage] = "Overseers can modify trials only in academies they are assigned to.";
-            return RedirectToAction("Details", "Academy", new { id = academyId });
+            int academyId = await trialService.GetAcademyIdByTrialIdAsync(normalizedId);
+            string overseerId = await overseerService.GetOverseerIdAsync(userId);
+            bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+            if (!overseerCanModify)
+            {
+                TempData[ErrorMessage] = "Overseers can modify trials only in academies they are assigned to.";
+                return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
         }
 
         try

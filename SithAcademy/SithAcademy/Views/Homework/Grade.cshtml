@@ -12,7 +12,7 @@
 
 <div class="row mt-3">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Grade" method="post">
+        <form asp-area="" asp-controller="Homework" asp-action="Grade" method="post">
 
             <partial name="_GradeHomeworkDetailsPartial" 
                 model="await HomeworkService.GetHomeworkDetailsForGradingFormAsync(Model.Id)"/>

@@ -20,7 +20,7 @@
 
             @if (!Model.IsLocked)
             {
-                if (userIsOverseer)
+                if (userIsOverseer || User.IsAdmin())
                 {
                     <div class="btn-group" role="group">
                         <a asp-controller="Trial" asp-action="Edit" asp-route-id="@Model.Id">
@@ -54,7 +54,7 @@
             }
             else
             {
-                if (userIsOverseer)
+                if (userIsOverseer || User.IsAdmin())
                 {
                     <p class="text-danger">Trial has been locked and acolytes are unable to view resources or submit homeworks.</p>
 

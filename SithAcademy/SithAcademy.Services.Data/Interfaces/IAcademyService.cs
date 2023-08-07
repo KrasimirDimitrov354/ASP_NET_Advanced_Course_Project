@@ -26,5 +26,7 @@ public interface IAcademyService
 
     Task RemoveAcolyteFromAcademyAsync(int academyId, string acolyteId);
 
+    Task<IEnumerable<AcademyDropdownViewModel>> GetAllAcademiesForDropdownSelectAsync();
+
     Task<IEnumerable<string>> GetAllAcademyNamesForQuerySelectAsync();
 }

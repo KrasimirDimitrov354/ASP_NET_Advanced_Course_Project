@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Submit" method="post">
+        <form asp-area="" asp-controller="Homework" asp-action="Submit" method="post">
             <div class="mb-3">
                 <label asp-for="Content" class="form-label">Enter your homework in the form below.</label>
                 <textarea asp-for="Content" class="form-control" rows="4"></textarea>

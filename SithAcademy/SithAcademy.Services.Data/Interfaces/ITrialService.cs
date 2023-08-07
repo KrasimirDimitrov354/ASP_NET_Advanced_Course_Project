@@ -1,8 +1,8 @@
 ﻿namespace SithAcademy.Services.Data.Interfaces;
 
 using SithAcademy.Web.ViewModels.Trial;
-using SithAcademy.Services.Data.Models.Trial;
 using SithAcademy.Web.ViewModels.Query;
+using SithAcademy.Services.Data.Models.Trial;
 
 public interface ITrialService
 {
@@ -34,7 +34,7 @@ public interface ITrialService
 
     Task CompleteTrialAsync(string trialId, string userId, decimal trialScore);
 
-    Task<IEnumerable<TrialOverviewViewModel>> GetAllTrialsForSelectByAcademyIdAsync(int academyId);
+    Task<IEnumerable<TrialDropdownViewModel>> GetAllTrialsForDropdownSelectByAcademyIdAsync(int academyId);
 
     Task<IEnumerable<string>> GetAllTrialTitlesForQuerySelectAsync(int academyId = 0);
 

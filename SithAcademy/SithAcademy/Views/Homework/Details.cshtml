@@ -35,13 +35,13 @@
             {
                 if (userIsOverseer || User.IsAdmin())
                 {
-                    <a asp-controller="Homework" asp-action="Grade" asp-route-id="@Model.Id">
+                    <a asp-area="" asp-controller="Homework" asp-action="Grade" asp-route-id="@Model.Id">
                         <input class="btn btn-success mb-2 mx-2" role="button" value="Grade homework" />
                     </a>
                 }
                 else
                 {
-                    <a asp-controller="Homework" asp-action="Edit" asp-route-id="@Model.Id">
+                    <a asp-area="" asp-controller="Homework" asp-action="Edit" asp-route-id="@Model.Id">
                         <input class="btn btn-success mb-2 mx-2" role="button" value="Edit your homework" />
                     </a>
                 }
