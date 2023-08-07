@@ -22,7 +22,7 @@ The AcademyUser entity represents a student (or acolyte in Sith terminology). Ac
 - the location is not locked by an admin
 The same requirements apply when an acolyte wants to leave an academy. If an acolyte successfully leaves every academy in a location, they can then join an academy in a different location.
 
-There are two users seeded by default - DefaultAcolyte (password is 123) and DefaultOverseer (password is 456).
+There are four users seeded by default - DefaultAcolyte (password is 123), DreshdaeOverseer (password is 456), DarkTempleOverseer (password is 789) and Administrator (password is admin).
 
 ### :man_teacher::woman_teacher: **[Overseer](https://github.com/KrasimirDimitrov354/ASP_NET_Advanced_Course_Project/blob/main/SithAcademy/SithAcademy.Data.Models/Overseer.cs)**
 The Overseer entity represents a teacher. An overseer is restricted to one academy, but they have access to much more functionality compared to an an acolyte. An overseer can:
@@ -31,6 +31,8 @@ The Overseer entity represents a teacher. An overseer is restricted to one acade
 - add a course (trial) to the academy they are assigned to
 - edit a trial's details, lock status and resources
 - grade an acolyte's homework
+
+Only the admin can promote acolytes to overseers and vice versa. The admin can also assign overseers to a different academy.
 
 ### :ringed_planet: **[Location](https://github.com/KrasimirDimitrov354/ASP_NET_Advanced_Course_Project/blob/main/SithAcademy/SithAcademy.Data.Models/Location.cs)**
 The Location entity represent a city. Only the admin can perform CRUD operations on a location. Each location can host multiple academies, and when a location is locked, so is every academy in it.
