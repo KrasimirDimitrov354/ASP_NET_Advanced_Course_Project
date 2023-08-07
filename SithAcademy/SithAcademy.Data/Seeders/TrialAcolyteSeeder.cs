@@ -25,6 +25,22 @@ internal class TrialAcolyteSeeder
         };
         trialsAcolytes.Add(trialAcolyte);
 
+        trialAcolyte = new TrialAcolyte()
+        {
+            TrialId = Guid.Parse("9595a701-973a-4d7c-819d-93efcfbf9fa8"),
+            AcolyteId = Guid.Parse("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+            IsCompleted = true,
+        };
+        trialsAcolytes.Add(trialAcolyte);
+
+        trialAcolyte = new TrialAcolyte()
+        {
+            TrialId = Guid.Parse("b92c1895-a6ef-422d-b760-298a0785b612"),
+            AcolyteId = Guid.Parse("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+            IsCompleted = true,
+        };
+        trialsAcolytes.Add(trialAcolyte);
+
         return trialsAcolytes.ToArray();
     }
 }

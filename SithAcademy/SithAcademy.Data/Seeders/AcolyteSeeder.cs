@@ -31,8 +31,8 @@ internal class AcolyteSeeder
         acolyte = new AcademyUser()
         {
             Id = Guid.Parse("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
-            UserName = "DefaultOverseer",
-            NormalizedUserName = "DEFAULTOVERSEER",
+            UserName = "DreshdaeOverseer",
+            NormalizedUserName = "DRESHDAEOVERSEER",
             Email = "overseer@overseer.com",
             NormalizedEmail = "OVERSEER@OVERSEER.COM",
             EmailConfirmed = false,
@@ -40,8 +40,39 @@ internal class AcolyteSeeder
             SecurityStamp = Guid.NewGuid().ToString(),
             LocationId = 2
         };
-        string overseerHash = hasher.HashPassword(acolyte, "456");
-        acolyte.PasswordHash = overseerHash;
+        string dreshdaeHash = hasher.HashPassword(acolyte, "456");
+        acolyte.PasswordHash = dreshdaeHash;
+        acolytes.Add(acolyte);
+
+        acolyte = new AcademyUser()
+        {
+            Id = Guid.Parse("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+            UserName = "DarkTempleOverseer",
+            NormalizedUserName = "DARKTEMPLEOVERSEER",
+            Email = "overseer@overseer.com",
+            NormalizedEmail = "OVERSEER@OVERSEER.COM",
+            EmailConfirmed = false,
+            LockoutEnabled = true,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            LocationId = 1
+        };
+        string darkTempleHash = hasher.HashPassword(acolyte, "789");
+        acolyte.PasswordHash = darkTempleHash;
+        acolytes.Add(acolyte);
+
+        acolyte = new AcademyUser()
+        {
+            Id = Guid.Parse("a7fba81f-237e-4c59-8fe5-7a5e2c40e403"),
+            UserName = "Administrator",
+            NormalizedUserName = "ADMINISTRATOR",
+            Email = "admin@sithacademy.com",
+            NormalizedEmail = "ADMIN@SITHACADEMY.COM",
+            EmailConfirmed = false,
+            LockoutEnabled = true,
+            SecurityStamp = Guid.NewGuid().ToString(),
+        };
+        string adminHash = hasher.HashPassword(acolyte, "admin");
+        acolyte.PasswordHash = adminHash;
         acolytes.Add(acolyte);
 
         return acolytes.ToArray();

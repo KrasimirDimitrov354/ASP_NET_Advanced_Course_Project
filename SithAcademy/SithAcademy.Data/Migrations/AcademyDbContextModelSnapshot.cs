@@ -242,6 +242,11 @@ namespace SithAcademy.Data.Migrations
                         {
                             AcademyId = 1,
                             AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4")
+                        },
+                        new
+                        {
+                            AcademyId = 2,
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8")
                         });
                 });
 
@@ -321,15 +326,15 @@ namespace SithAcademy.Data.Migrations
                         {
                             Id = new Guid("04589b17-3b3a-4118-b34d-dbfc70cd31f0"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4330a2e-ab0d-4860-8f80-e8994626e0c6",
+                            ConcurrencyStamp = "cca0224a-d754-409a-9688-58b4698cad59",
                             Email = "acolyte@acolyte.com",
                             EmailConfirmed = false,
                             LockoutEnabled = true,
                             NormalizedEmail = "ACOLYTE@ACOLYTE.COM",
                             NormalizedUserName = "DEFAULTACOLYTE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPdQbZXgY7nlbaKfaUiE3cktHomiBRYpsAE4o5HFY2+I0TVZnEpZfjijhsMnEdajwA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEhUV1c6DcCbezDCymxI5CTat+Cy+li70M7PQI3O5ohvSN1FOuNMnMyitzI70c2Guw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "13b8b855-53f7-48e5-b276-a5dc47ff3961",
+                            SecurityStamp = "29f98652-c84f-481c-9993-057f275e1d8f",
                             TwoFactorEnabled = false,
                             UserName = "DefaultAcolyte"
                         },
@@ -337,18 +342,51 @@ namespace SithAcademy.Data.Migrations
                         {
                             Id = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "33b91e87-4ecd-440b-b747-515ba4bed579",
+                            ConcurrencyStamp = "b6d75686-755e-4e1a-a4ba-82d473259295",
                             Email = "overseer@overseer.com",
                             EmailConfirmed = false,
                             LocationId = 2,
                             LockoutEnabled = true,
                             NormalizedEmail = "OVERSEER@OVERSEER.COM",
-                            NormalizedUserName = "DEFAULTOVERSEER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMyP9Mg608uVsI21oy4cuvQdZ3jt8gU9vjKf7LmLChJT0A+Sk1uPoUDdWMQxMlz12Q==",
+                            NormalizedUserName = "DRESHDAEOVERSEER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFmCJzWd7Rl2XbuP3So2S8QSafn42yTkgD0N5S7j12elfUgVpvz3gtxfwSaNZJ3h4A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fd5a6016-9504-40b9-a0a5-56d761d3daa0",
+                            SecurityStamp = "47a3ae3c-b670-4eb8-bd57-f4b332cbb951",
                             TwoFactorEnabled = false,
-                            UserName = "DefaultOverseer"
+                            UserName = "DreshdaeOverseer"
+                        },
+                        new
+                        {
+                            Id = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2ee622a4-fdf6-474f-aebd-d89ab3fb2369",
+                            Email = "overseer@overseer.com",
+                            EmailConfirmed = false,
+                            LocationId = 1,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "OVERSEER@OVERSEER.COM",
+                            NormalizedUserName = "DARKTEMPLEOVERSEER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAfdutnO68extW9t7Omq9JsIa8BFv8eoXXcMu2B+DaAvz0l4yjwMSd1dPfRsetN+QQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "13cfb343-779b-4031-82c5-8d0fbda7851a",
+                            TwoFactorEnabled = false,
+                            UserName = "DarkTempleOverseer"
+                        },
+                        new
+                        {
+                            Id = new Guid("a7fba81f-237e-4c59-8fe5-7a5e2c40e403"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fd52e766-4de8-43f1-b9ec-6d23f6b8eda6",
+                            Email = "admin@sithacademy.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ADMIN@SITHACADEMY.COM",
+                            NormalizedUserName = "ADMINISTRATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEZvfGVOPXtdKnOurdvR6OraC0uUBiRAYdJ654zvR7e9Ut4AxQ3Xa5jWGTu6r9/m6w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d2cce644-0b69-48b9-931d-365e7e530932",
+                            TwoFactorEnabled = false,
+                            UserName = "Administrator"
                         });
                 });
 
@@ -402,10 +440,10 @@ namespace SithAcademy.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("08a54877-71fd-4582-87c3-b99ef700aa6f"),
+                            Id = new Guid("487248b1-3d9d-4165-b005-eeb7d3fa56a0"),
                             AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
-                            Content = "This is user DefaultOverseer's homework for the Trial of Passion.",
-                            CreatedOn = new DateTime(2023, 7, 29, 18, 49, 11, 740, DateTimeKind.Utc).AddTicks(4062),
+                            Content = "This is user DreshdaeOverseer's homework for the Trial of Passion.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1749),
                             ReviewerFeedback = "Very good and excellent homework!",
                             ReviewerName = "The Dark Side itself",
                             Score = 10.0m,
@@ -413,14 +451,36 @@ namespace SithAcademy.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9cc74c66-251a-44ab-b93b-a3baf9f627af"),
+                            Id = new Guid("701c939f-774a-46ce-91fb-c747d98ed4b3"),
                             AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
-                            Content = "This is user DefaultOverseer's homework for the Trial of Strength.",
-                            CreatedOn = new DateTime(2023, 7, 29, 18, 49, 11, 740, DateTimeKind.Utc).AddTicks(4073),
+                            Content = "This is user DreshdaeOverseer's homework for the Trial of Strength.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1761),
                             ReviewerFeedback = "Very good and excellent homework!",
                             ReviewerName = "The Dark Side itself",
                             Score = 10.0m,
                             TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
+                        },
+                        new
+                        {
+                            Id = new Guid("6fe2e8be-cf3a-467d-b760-a2dd7e426dc4"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            Content = "This is user DarkTempleOverseer's homework for the Trial of Power.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1770),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8")
+                        },
+                        new
+                        {
+                            Id = new Guid("aa92f0ed-de04-4bf1-97b4-aa048c05fd61"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            Content = "This is user DarkTempleOverseer's homework for the Trial of Victory.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1774),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
                         });
                 });
 
@@ -522,8 +582,15 @@ namespace SithAcademy.Data.Migrations
                         {
                             Id = new Guid("257d9119-875f-46b8-b205-a3b447cc6661"),
                             AcademyId = 1,
-                            Title = "Insert Very Cool Title Here",
+                            Title = "Lord Korriban",
                             UserId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4")
+                        },
+                        new
+                        {
+                            Id = new Guid("d3b5555f-4b88-47fe-b55a-8e1d92562cac"),
+                            AcademyId = 2,
+                            Title = "Lord Kaas",
+                            UserId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8")
                         });
                 });
 
@@ -798,6 +865,18 @@ namespace SithAcademy.Data.Migrations
                         {
                             TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
                             AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            IsCompleted = true
+                        },
+                        new
+                        {
+                            TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            IsCompleted = true
+                        },
+                        new
+                        {
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
                             IsCompleted = true
                         });
                 });

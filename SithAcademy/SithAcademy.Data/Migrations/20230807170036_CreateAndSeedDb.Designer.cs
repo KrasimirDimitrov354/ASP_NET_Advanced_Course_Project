@@ -12,8 +12,8 @@ using SithAcademy.Data;
 namespace SithAcademy.Data.Migrations
 {
     [DbContext(typeof(AcademyDbContext))]
-    [Migration("20230729184753_CreateDb")]
-    partial class CreateDb
+    [Migration("20230807170036_CreateAndSeedDb")]
+    partial class CreateAndSeedDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -201,6 +201,26 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Academies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "The facility known today as Dreshdae Academy was originally established by the disciples of Exar Kun during the Great Sith War. It has been abandoned and rebuilt several times throughout the millennia, each time emerging as a more prestigious school of Sith studies.",
+                            ImageUrl = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/73e29da9-1d35-4f3b-976c-29aa9e2e11f0/dce4e87-9372d1cf-1921-4eba-bb39-4af28ffdb86f.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzczZTI5ZGE5LTFkMzUtNGYzYi05NzZjLTI5YWE5ZTJlMTFmMFwvZGNlNGU4Ny05MzcyZDFjZi0xOTIxLTRlYmEtYmIzOS00YWYyOGZmZGI4NmYuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vuR2MPGfi8YudSSvkO-OltPr8bd_zDICvhu9DAWRnDk",
+                            IsLocked = false,
+                            LocationId = 2,
+                            Title = "Dreshdae Academy"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "The current-day Dark Temple complex is positioned close to the original structure of the same name, which has been fully destroyed during the last major war with the Galactic Republic. The wilderness surrounding the complex is home to a great deal of deadly predators, which provides a natural training ground for acolytes and overseers alike.",
+                            ImageUrl = "https://cdnb.artstation.com/p/assets/images/images/013/314/009/large/micah-brown-sith-temple-2.jpg?1539039990",
+                            IsLocked = false,
+                            LocationId = 1,
+                            Title = "The Dark Temple"
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.AcademyAcolyte", b =>
@@ -218,6 +238,18 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("AcolyteId");
 
                     b.ToTable("AcademiesAcolytes");
+
+                    b.HasData(
+                        new
+                        {
+                            AcademyId = 1,
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4")
+                        },
+                        new
+                        {
+                            AcademyId = 2,
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8")
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.AcademyUser", b =>
@@ -290,6 +322,74 @@ namespace SithAcademy.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("04589b17-3b3a-4118-b34d-dbfc70cd31f0"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "cca0224a-d754-409a-9688-58b4698cad59",
+                            Email = "acolyte@acolyte.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ACOLYTE@ACOLYTE.COM",
+                            NormalizedUserName = "DEFAULTACOLYTE",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEhUV1c6DcCbezDCymxI5CTat+Cy+li70M7PQI3O5ohvSN1FOuNMnMyitzI70c2Guw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "29f98652-c84f-481c-9993-057f275e1d8f",
+                            TwoFactorEnabled = false,
+                            UserName = "DefaultAcolyte"
+                        },
+                        new
+                        {
+                            Id = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b6d75686-755e-4e1a-a4ba-82d473259295",
+                            Email = "overseer@overseer.com",
+                            EmailConfirmed = false,
+                            LocationId = 2,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "OVERSEER@OVERSEER.COM",
+                            NormalizedUserName = "DRESHDAEOVERSEER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFmCJzWd7Rl2XbuP3So2S8QSafn42yTkgD0N5S7j12elfUgVpvz3gtxfwSaNZJ3h4A==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "47a3ae3c-b670-4eb8-bd57-f4b332cbb951",
+                            TwoFactorEnabled = false,
+                            UserName = "DreshdaeOverseer"
+                        },
+                        new
+                        {
+                            Id = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2ee622a4-fdf6-474f-aebd-d89ab3fb2369",
+                            Email = "overseer@overseer.com",
+                            EmailConfirmed = false,
+                            LocationId = 1,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "OVERSEER@OVERSEER.COM",
+                            NormalizedUserName = "DARKTEMPLEOVERSEER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAfdutnO68extW9t7Omq9JsIa8BFv8eoXXcMu2B+DaAvz0l4yjwMSd1dPfRsetN+QQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "13cfb343-779b-4031-82c5-8d0fbda7851a",
+                            TwoFactorEnabled = false,
+                            UserName = "DarkTempleOverseer"
+                        },
+                        new
+                        {
+                            Id = new Guid("a7fba81f-237e-4c59-8fe5-7a5e2c40e403"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fd52e766-4de8-43f1-b9ec-6d23f6b8eda6",
+                            Email = "admin@sithacademy.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ADMIN@SITHACADEMY.COM",
+                            NormalizedUserName = "ADMINISTRATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEZvfGVOPXtdKnOurdvR6OraC0uUBiRAYdJ654zvR7e9Ut4AxQ3Xa5jWGTu6r9/m6w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d2cce644-0b69-48b9-931d-365e7e530932",
+                            TwoFactorEnabled = false,
+                            UserName = "Administrator"
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Homework", b =>
@@ -338,6 +438,52 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("TrialId");
 
                     b.ToTable("Homeworks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("487248b1-3d9d-4165-b005-eeb7d3fa56a0"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            Content = "This is user DreshdaeOverseer's homework for the Trial of Passion.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1749),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
+                        },
+                        new
+                        {
+                            Id = new Guid("701c939f-774a-46ce-91fb-c747d98ed4b3"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            Content = "This is user DreshdaeOverseer's homework for the Trial of Strength.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1761),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
+                        },
+                        new
+                        {
+                            Id = new Guid("6fe2e8be-cf3a-467d-b760-a2dd7e426dc4"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            Content = "This is user DarkTempleOverseer's homework for the Trial of Power.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1770),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8")
+                        },
+                        new
+                        {
+                            Id = new Guid("aa92f0ed-de04-4bf1-97b4-aa048c05fd61"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            Content = "This is user DarkTempleOverseer's homework for the Trial of Victory.",
+                            CreatedOn = new DateTime(2023, 8, 7, 17, 0, 35, 982, DateTimeKind.Utc).AddTicks(1774),
+                            ReviewerFeedback = "Very good and excellent homework!",
+                            ReviewerName = "The Dark Side itself",
+                            Score = 10.0m,
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Location", b =>
@@ -376,6 +522,32 @@ namespace SithAcademy.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Dromund Kaas was originally a colony world of the Sith Empire, and at one point its capital. Its atmosphere is heavily charged with electricity to the point where lightning is a near-constant sight in the almost perpetually clouded sky - a result of ancient Sith experiments in arcane and forbidden uses of the dark side of the Force.",
+                            ImageUrl = "https://www.worldanvil.com/media/cache/cover/uploads/images/7c2913da4c331e69f6dfc4fd2225fb0f.jpg",
+                            IsLocked = false,
+                            Name = "Dromund Kaas"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Korriban was the original homeworld of the Sith species and a sacred planet for the Sith Order, housing the tombs of many ancient and powerful Dark Lords. Even to this day those tombs hold immense power and unfanthomable secrets, as well as untold horrors and the bleached bones of unlucky explorers.",
+                            ImageUrl = "https://cdnb.artstation.com/p/assets/images/images/053/512/833/large/shiny-man-korriban-icon-01.jpg?1662395808",
+                            IsLocked = false,
+                            Name = "Korriban"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Ziost was originally covered with vast thick forests and possessed a warm climate, however a sudden ice age experienced during the initial Sith colonization leveled the vast woodlands as well as most evidence of the pre-existing civilization. As a result, the planet was transformed into a bitterly cold tundra with an arid climate, its surface covered with rocky terrain, ice-encrusted mountains and titanic glaciers.",
+                            ImageUrl = "https://cdnb.artstation.com/p/assets/images/images/020/733/493/4k/brian-hagan-ziost.jpg?1568947978",
+                            IsLocked = true,
+                            Name = "Ziost"
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Overseer", b =>
@@ -406,6 +578,22 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Overseers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("257d9119-875f-46b8-b205-a3b447cc6661"),
+                            AcademyId = 1,
+                            Title = "Lord Korriban",
+                            UserId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4")
+                        },
+                        new
+                        {
+                            Id = new Guid("d3b5555f-4b88-47fe-b55a-8e1d92562cac"),
+                            AcademyId = 2,
+                            Title = "Lord Kaas",
+                            UserId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8")
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Resource", b =>
@@ -447,6 +635,125 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("TrialId");
 
                     b.ToTable("Resources");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fc34dc68-b10e-4c14-a1d9-3ad96b73f431"),
+                            ImageUrl = "https://media.moddb.com/images/mods/1/19/18461/hutt_fleet_by_wrait.jpg",
+                            IsDeleted = false,
+                            Name = "Hutt Cartel",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Hutt_Cartel",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
+                        },
+                        new
+                        {
+                            Id = new Guid("2c529f2b-d864-4dc7-b468-c44d630ec7c4"),
+                            ImageUrl = "https://overmental.com/wp-content/uploads/2015/07/PrinceXizorart.png",
+                            IsDeleted = false,
+                            Name = "Black Sun",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Black_Sun/Legends",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
+                        },
+                        new
+                        {
+                            Id = new Guid("e6d39382-06ef-47f6-887c-a6f4e7806047"),
+                            ImageUrl = "https://www.worldanvil.com/media/cache/cover/uploads/images/e98ee0f248cd6fff599458a47aa7c1d4.jpg",
+                            IsDeleted = false,
+                            Name = "Bounty Hunters' Guild",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Bounty_Hunters'_Guild/Legends",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
+                        },
+                        new
+                        {
+                            Id = new Guid("559e40bd-13fa-47db-947e-0f087b3496a5"),
+                            ImageUrl = "https://fictionhorizon.com/wp-content/uploads/2022/01/pykes.jpg",
+                            IsDeleted = false,
+                            Name = "Spice",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Spice/Legends",
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9")
+                        },
+                        new
+                        {
+                            Id = new Guid("b9da4d71-52bc-451e-951f-c46e04e8293c"),
+                            ImageUrl = "https://ddx5i92cqts4o.cloudfront.net/images/1ejq0l57t_Fearful_Landscape_CotG.png",
+                            IsDeleted = false,
+                            Name = "History of the Valley of the Dark Lords",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Valley_of_the_Dark_Lords/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
+                        },
+                        new
+                        {
+                            Id = new Guid("1d15dbcc-67b8-4597-b32a-d9d54a91bb85"),
+                            ImageUrl = "https://static.wikia.nocookie.net/aliens/images/b/b7/K'lor'slug.png",
+                            IsDeleted = false,
+                            Name = "K'lor'slug",
+                            SourceUrl = "https://starwars.fandom.com/wiki/K'lor'slug/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
+                        },
+                        new
+                        {
+                            Id = new Guid("a6def1fb-93d8-43f2-bd5c-6d3bdf220694"),
+                            ImageUrl = "https://pm1.aminoapps.com/6935/bb60fc764e739d6da08e25ae84d038c1885192ecr1-526-493v2_hq.jpg",
+                            IsDeleted = false,
+                            Name = "Shyrack",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Shyrack/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
+                        },
+                        new
+                        {
+                            Id = new Guid("479a9611-5af8-4ebf-aa05-95d3d21397f6"),
+                            ImageUrl = "https://pm1.aminoapps.com/5870/1727f7e20f6ef47d8605c148ff71bdabc8c9df3f_hq.jpg",
+                            IsDeleted = false,
+                            Name = "Tuk'ata",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Tuk'ata/Legends",
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a")
+                        },
+                        new
+                        {
+                            Id = new Guid("e76679a2-14a4-4e91-8a06-c972da405f05"),
+                            ImageUrl = "https://static.wikia.nocookie.net/starwars/images/b/b1/Darthmill.jpg/",
+                            IsDeleted = false,
+                            Name = "Study the origins of the clans you will encounter",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Prophets_of_the_Dark_Side",
+                            TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8")
+                        },
+                        new
+                        {
+                            Id = new Guid("de19a886-21a2-4550-ac26-34134ccf2268"),
+                            ImageUrl = "https://pm1.aminoapps.com/6435/a30efbffef3abff7d2860524cb52b48aba89181d_hq.jpg",
+                            IsDeleted = false,
+                            Name = "Jurgoran",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Jurgoran",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
+                        },
+                        new
+                        {
+                            Id = new Guid("b2b42c49-9fde-43cc-a409-5df9c1e7c774"),
+                            ImageUrl = "https://www.gamesmanagers.com/images/posts/bc2ec369d3e6cf31786544799d3088c8-2.jpg",
+                            IsDeleted = false,
+                            Name = "Gundark",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Gundark/Legends",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
+                        },
+                        new
+                        {
+                            Id = new Guid("ff04a297-c227-4f02-8b0c-772f4213e6a9"),
+                            ImageUrl = "https://oyster.ignimgs.com/mediawiki/apis.ign.com/star-wars-the-old-republic/1/15/Ss_vinecat01_800x450.jpg",
+                            IsDeleted = false,
+                            Name = "Vine cat",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Vine_cat",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
+                        },
+                        new
+                        {
+                            Id = new Guid("30bc967b-9c02-400b-b363-fc12f4929336"),
+                            ImageUrl = "https://pm1.aminoapps.com/6435/a93762efd24f62a2395dd82b349729d35245d004_hq.jpg",
+                            IsDeleted = false,
+                            Name = "Yozusk",
+                            SourceUrl = "https://starwars.fandom.com/wiki/Yozusk",
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612")
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.Trial", b =>
@@ -487,6 +794,44 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("AcademyId");
 
                     b.ToTable("Trials");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
+                            AcademyId = 1,
+                            Description = "Dreshdae has a thriving population of underworld elements. Smugglers, bounty hunters, slavers, pirates. Mingle with them. Understand their passions. Succeed in this endeavour, and you will be able to control them.",
+                            IsLocked = false,
+                            ScoreToPass = 6.5m,
+                            Title = "Trial of Passion"
+                        },
+                        new
+                        {
+                            Id = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
+                            AcademyId = 1,
+                            Description = "Only the strongest of Sith earn the honour of resting in the Valley of the Dark Lords. Study their feats and histories. Explore their tombs to gain an understanding of what it takes to be Sith. Beware the Valley's guardians.",
+                            IsLocked = false,
+                            ScoreToPass = 7.0m,
+                            Title = "Trial of Strength"
+                        },
+                        new
+                        {
+                            Id = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"),
+                            AcademyId = 2,
+                            Description = "True power comes to the cunning. Remnants of a failed empire still eke out an existence amidst the endless jungles. Infiltrate one of warring clans and make them do your bidding. Do not underestimate the power of the superstitious mind.",
+                            IsLocked = false,
+                            ScoreToPass = 7.5m,
+                            Title = "Trial of Power"
+                        },
+                        new
+                        {
+                            Id = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
+                            AcademyId = 2,
+                            Description = "A Sith must accept nothing less than the complete destruction of their enemies. Venture out into the wilderness. Observe the primal savagery of the beasts while taking note of their weaknesses. Return with proof of your victory over them.",
+                            IsLocked = false,
+                            ScoreToPass = 8.0m,
+                            Title = "Trial of Victory"
+                        });
                 });
 
             modelBuilder.Entity("SithAcademy.Data.Models.TrialAcolyte", b =>
@@ -510,6 +855,32 @@ namespace SithAcademy.Data.Migrations
                     b.HasIndex("AcolyteId");
 
                     b.ToTable("TrialsAcolytes");
+
+                    b.HasData(
+                        new
+                        {
+                            TrialId = new Guid("1ad699ea-450b-48fe-8b3a-59e4f4ed61a9"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            IsCompleted = true
+                        },
+                        new
+                        {
+                            TrialId = new Guid("aa37b907-5d8b-439c-a719-2a784c07744a"),
+                            AcolyteId = new Guid("e1cd947b-04b7-4a29-a2c2-d5383dd294e4"),
+                            IsCompleted = true
+                        },
+                        new
+                        {
+                            TrialId = new Guid("9595a701-973a-4d7c-819d-93efcfbf9fa8"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            IsCompleted = true
+                        },
+                        new
+                        {
+                            TrialId = new Guid("b92c1895-a6ef-422d-b760-298a0785b612"),
+                            AcolyteId = new Guid("94ee6c77-02d6-44b4-8ef0-99d313d30bb8"),
+                            IsCompleted = true
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

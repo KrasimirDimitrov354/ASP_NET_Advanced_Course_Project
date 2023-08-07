@@ -1,6 +1,7 @@
 namespace SithAcademy.Web;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
@@ -8,6 +9,8 @@ using SithAcademy.Data.Models;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
 using SithAcademy.Web.Infrastructure.ModelBinders;
+
+using static SithAcademy.Common.GeneralConstants;
 
 public class Program
 {
@@ -31,6 +34,7 @@ public class Program
                 options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
+            .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<AcademyDbContext>();
 
         builder.Services.AddApplicationServices(typeof(ITrialService));
@@ -65,6 +69,11 @@ public class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.SeedAdministrator(AdminEmail);
+        }
 
         app.MapControllerRoute(
             name: "default",

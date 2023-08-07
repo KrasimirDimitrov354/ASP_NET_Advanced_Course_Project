@@ -16,6 +16,13 @@ internal class AcademyAcolyteSeeder
         };
         academiesAcolytes.Add(academyAcolyte);
 
+        academyAcolyte = new AcademyAcolyte()
+        {
+            AcademyId = 2,
+            AcolyteId = Guid.Parse("94ee6c77-02d6-44b4-8ef0-99d313d30bb8")
+        };
+        academiesAcolytes.Add(academyAcolyte);
+
         return academiesAcolytes.ToArray();
     }
 }

@@ -2,7 +2,13 @@
 
 using System.Reflection;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+
+using SithAcademy.Data.Models;
+
+using static SithAcademy.Common.GeneralConstants;
 
 public static class WebApplicationBuilderExtensions
 {
@@ -36,5 +42,38 @@ public static class WebApplicationBuilderExtensions
 
             services.AddScoped(interfaceType, implementationType);
         }
+    }
+
+    /// <summary>
+    /// This method seeds admin role if it does not exist. Provided email should be of an existing user.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    public static IApplicationBuilder SeedAdministrator(this IApplicationBuilder app, string email)
+    {
+        using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
+
+        IServiceProvider serviceProvider = scopedServices.ServiceProvider;
+        UserManager<AcademyUser> userManager = serviceProvider.GetRequiredService<UserManager<AcademyUser>>();
+        RoleManager<IdentityRole<Guid>> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+        Task.Run(async () =>
+        {
+            if (await roleManager.RoleExistsAsync(AdminRoleName))
+            {
+                return;
+            }
+
+            IdentityRole<Guid> role = new IdentityRole<Guid>(AdminRoleName);
+            await roleManager.CreateAsync(role);
+
+            AcademyUser adminUser = await userManager.FindByEmailAsync(email);
+            await userManager.AddToRoleAsync(adminUser, AdminRoleName);
+        })
+        .GetAwaiter()
+        .GetResult();
+
+        return app;
     }
 }
