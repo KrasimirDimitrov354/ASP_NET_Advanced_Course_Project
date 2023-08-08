@@ -8,7 +8,7 @@ Below you can find more information about each entity, their purpose and their f
 
 :construction: **THIS PROJECT IS STILL A WORK IN PROGRESS** :construction:\
 Missing functionality:
-- Admin area - the admin can create academies, promote acolytes to overseers and perform CRUD operations on locations, as well as perform any other functionality an overseer can perform
+- Admin area - the admin can create academies (ADDED), promote acolytes to overseers and perform CRUD operations on locations, as well as perform any other functionality an overseer can perform (ADDED)
 - Unit testing
 - Prevention of XSS attacks
 - Usage of file storage API for storing images 
