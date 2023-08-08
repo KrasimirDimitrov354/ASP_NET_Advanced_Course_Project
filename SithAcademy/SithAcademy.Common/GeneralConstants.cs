@@ -12,6 +12,7 @@ public static class GeneralConstants
     public const string WarningMessage = "WarnMessage";
     public const string ErrorMessage = "ErrorMessage";
 
+    public const string AdminAreaName = "Admin";
     public const string AdminRoleName = "Administrator";
     public const string AdminEmail = "admin@sithacademy.com";
 }

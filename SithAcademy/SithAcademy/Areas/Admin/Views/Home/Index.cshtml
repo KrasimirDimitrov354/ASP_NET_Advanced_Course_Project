@@ -1,0 +1,13 @@
+﻿﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="mt-4 p-5 bg-light text-center">
+    <h2 class="display-4">Greetings, High Inquisitor!</h2>
+    <p class="lead mb-1 mt-3">Below you will see the available options for adding new content for aspiring acolytes. From the section above you can navigate and modify existing content.</p>
+    <hr class="my-4">
+    <a asp-area="" asp-controller="Trial" asp-action="Add"
+       class="btn btn-success btn-lg">Add Trial</a>
+    <a asp-area="" asp-controller="Resource" asp-action="Add"
+       class="btn btn-success btn-lg">Add Resource</a>
+</div>

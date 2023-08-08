@@ -6,7 +6,7 @@ using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.Infrastructure.Extensions;
 using SithAcademy.Services.Data.Interfaces;
 
-//TODO: Add redirection if user is admin
+using static SithAcademy.Common.GeneralConstants;
 
 public class HomeController : Controller
 {
@@ -31,6 +31,10 @@ public class HomeController : Controller
                 if (userIsOverseer)
                 {
                     return RedirectToAction("Home", "Overseer");
+                }
+                else if (User.IsAdmin())
+                {
+                    return RedirectToAction("Index", "Home", new { Area = AdminAreaName });
                 }
                 else
                 {
