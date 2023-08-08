@@ -25,6 +25,11 @@ public class Location
     public string Name { get; set; } = null!;
 
     [Required]
+    [MaxLength(DescriptionMaxLength)]
+    [Comment(DescriptionComment)]
+    public string Description { get; set; } = null!;
+
+    [Required]
     [MaxLength(UrlMaxLength)]
     [Comment(ImageUrlComment)]
     public string ImageUrl { get; set; } = null!;
@@ -32,11 +37,6 @@ public class Location
     [Required]
     [Comment(IsLockedComment)]
     public bool IsLocked { get; set; }
-
-    [Required]
-    [MaxLength(DescriptionMaxLength)]
-    [Comment(DescriptionComment)]
-    public string Description { get; set; } = null!;
 
     public virtual ICollection<Academy> Academies { get; set; }
     public virtual ICollection<AcademyUser> Acolytes { get; set; }

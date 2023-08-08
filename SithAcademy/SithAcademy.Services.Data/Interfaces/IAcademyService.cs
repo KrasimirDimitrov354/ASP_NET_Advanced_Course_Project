@@ -10,6 +10,8 @@ public interface IAcademyService
 
     Task<int> GetLocationIdByAcademyIdAsync(int academyId);
 
+    Task<int> AddAcademyAndReturnIdAsync(AddAcademyViewModel viewModel);
+
     Task<AcademyFormViewModel> GetAcademyForModificationAsync(int academyId);
 
     Task EditAcademyAsync(int academyId, AcademyFormViewModel viewModel);

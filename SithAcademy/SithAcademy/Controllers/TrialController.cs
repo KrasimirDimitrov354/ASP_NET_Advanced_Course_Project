@@ -80,6 +80,15 @@ public class TrialController : Controller
             return RedirectToAction("Index", "Home");
         }
 
+        if (User.IsAdmin())
+        {
+            bool academyIsValid = await academyService.AcademyExistsAsync((int)viewModel.AcademyId!);
+            if (!academyIsValid)
+            {
+                ModelState.AddModelError(nameof(viewModel.AcademyId), "Selected academy does not exist!");
+            }
+        }
+
         if (!ModelState.IsValid)
         {
             viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
@@ -109,6 +118,7 @@ public class TrialController : Controller
         catch (Exception)
         {
             ModelState.AddModelError(string.Empty, "Unexpected error occured while adding a new trial! Please try again or contact the High Inquisitor.");
+
             viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
             return View(viewModel);
         }

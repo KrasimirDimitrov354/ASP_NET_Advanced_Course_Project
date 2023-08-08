@@ -2,14 +2,17 @@
 @using SithAcademy.Web.Infrastructure.Extensions;
 @inject IOverseerService OverseerService
 @{
+    ViewData["Title"] = "Overseer Page";
+
     string userId = User.GetId()!;
     string overseerId = await OverseerService.GetOverseerIdAsync(userId);
     string overseerTitle = await OverseerService.GetOverseerTitleAsync(overseerId);
 }
 
-<h3 class="mb-4">Welcome, @overseerTitle</h3>
-<div class="container text-start">
-    <p class="mb-2">You can modify your academy's details from the Academy Panel section.</p>
-    <p class="mb-2">You can review homeworks from the Homeworks Panel section.</p>
+<div class="mt-4 p-5 bg-light text-center">
+    <h2 class="display-4">Greetings, @overseerTitle!</h2>
+    <p class="lead mb-1 mt-3">You can modify your academy's details from the Academy Panel section.</p>
+    <p class="lead mb-1 mt-3">You can review homeworks from the Homeworks Panel section.</p>
+    <hr class="my-4">
 </div>
 

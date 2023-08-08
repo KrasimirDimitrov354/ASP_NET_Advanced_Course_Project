@@ -11,6 +11,7 @@ public class AcademyFormViewModel
     public string Title { get; set; } = null!;
 
     [Required]
+    [Display(Name = "Image Link")]
     [MaxLength(UrlMaxLength)]
     public string ImageUrl { get; set; } = null!;
 
@@ -18,5 +19,6 @@ public class AcademyFormViewModel
     [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
     public string Description { get; set; } = null!;
 
+    [Display(Name = "Lock status")]
     public bool IsLocked { get; set; }
 }

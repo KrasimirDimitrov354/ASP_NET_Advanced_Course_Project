@@ -15,25 +15,23 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-area="" asp-controller="Trial" asp-action="Add" method="post">
             <div class="mb-3">
-                <label asp-for="Title" class="form-label">Enter a trial title</label>
+                <label asp-for="Title" class="form-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Description" class="form-label">Enter a trial description</label>
+                <label asp-for="Description" class="form-label"></label>
                 <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="ScoreToPass" class="form-label">Enter the minimum score required to pass the trial</label>
+                <label asp-for="ScoreToPass" class="form-label"></label>
                 <input asp-for="ScoreToPass" class="form-control" />
                 <span asp-validation-for="ScoreToPass" class="text-danger"></span>
             </div>
-            <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="false" onchange="this.value=this.checked"/>Lock trial upon creation?</label>
-
             @if (userIsAdmin)
             {
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label asp-for="AcademyId"></label>
                     <select asp-for="AcademyId" class="form-control">
                         @foreach (AcademyDropdownViewModel academy in Model.Academies)
@@ -44,7 +42,7 @@
                     <span asp-validation-for="AcademyId" class="small text-danger"></span>
                 </div>
             }
-
+            <label><input asp-for="IsLocked" class="mb-2 m-lg-2" type="checkbox" value="false" onchange="this.value=this.checked"/>Lock trial upon creation?</label>
             <div class="mb-3 mt-3">
                 <input class="btn btn-primary" type="submit" value="Add trial" />
             </div>

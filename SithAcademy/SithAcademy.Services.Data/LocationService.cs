@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
+using SithAcademy.Web.Views.Location;
 using SithAcademy.Web.ViewModels.Academy;
 using SithAcademy.Web.ViewModels.Location;
 using SithAcademy.Services.Data.Interfaces;
@@ -64,5 +65,23 @@ public class LocationService : ILocationService
             .FirstAsync(l => l.Id == locationId);
 
         return location.IsLocked;
+    }
+
+    public async Task<IEnumerable<LocationDropdownViewModel>> GetAllLocationsForDropdownSelectAsync()
+    {
+        IEnumerable<LocationDropdownViewModel> allLocations = await dbContext.Locations
+            .Select(l => new LocationDropdownViewModel()
+            {
+                Id = l.Id,
+                Name = l.Name,
+            })
+            .ToArrayAsync();
+
+        return allLocations;
+    }
+
+    public async Task<bool> LocationExistsAsync(int locationId)
+    {
+        return await dbContext.Locations.AnyAsync(l => l.Id == locationId);
     }
 }

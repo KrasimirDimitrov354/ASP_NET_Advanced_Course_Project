@@ -79,6 +79,23 @@ public class AcademyService : IAcademyService
         return academy.LocationId;
     }
 
+    public async Task<int> AddAcademyAndReturnIdAsync(AddAcademyViewModel viewModel)
+    {
+        Academy academy = new Academy()
+        {
+            Title = viewModel.Title,
+            Description = viewModel.Description,
+            ImageUrl = viewModel.ImageUrl,
+            IsLocked = viewModel.IsLocked,
+            LocationId = viewModel.LocationId,
+        };
+
+        await dbContext.Academies.AddAsync(academy);
+        await dbContext.SaveChangesAsync();
+
+        return academy.Id;
+    }
+
     public async Task<AcademyFormViewModel> GetAcademyForModificationAsync(int academyId)
     {
         AcademyFormViewModel academyToModify = await dbContext.Academies

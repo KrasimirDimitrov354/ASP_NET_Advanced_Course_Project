@@ -9,8 +9,6 @@ using SithAcademy.Services.Data.Interfaces;
 
 using static SithAcademy.Common.GeneralConstants;
 
-//TODO: Create Academy (Get and Post methods) - only admin can do that
-
 [Authorize]
 public class AcademyController : Controller
 {

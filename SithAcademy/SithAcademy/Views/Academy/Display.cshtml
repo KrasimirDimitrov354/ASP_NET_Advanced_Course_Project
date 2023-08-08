@@ -1,12 +1,25 @@
-﻿@model IEnumerable<AcademyOverviewViewModel>
+﻿@using SithAcademy.Web.Infrastructure.Extensions;
+@model IEnumerable<AcademyOverviewViewModel>
 @{
-    ViewData["Title"] = "Our Academies";
+    bool userIsAdmin = User.IsAdmin();
+    if (userIsAdmin)
+    {
+        ViewData["Title"] = "All Academies";
+    }
+    else
+    {
+        ViewData["Title"] = "Our Academies";
+    }
+    
     AcademyOverviewViewModel[] academies = Model.ToArray();
 }
 
 <div class="container text-center">
     <div class="row">
-        <p>The arts of the Sith are many and varied. The academies here are but a taste of what the Dark Side has to offer...</p>
+        @if (!userIsAdmin)
+        {
+            <h5 class="text-danger mb-3">The arts of the Sith are many and varied. The academies here are but a taste of what the Dark Side has to offer...</h5>
+        }
 
         @for (int i = 0; i < academies.Length; i++)
         {
@@ -19,9 +32,16 @@
                         <div class="card-body">
                             <h3 class="card-title">@academy.Title</h3>
                             <h5 class="card-title">@academy.LocationName</h5>
-                            <a asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
-                            <span></span>
-                            <a asp-area="" asp-controller="Location" asp-action="Details" asp-route-id="@academy.LocationId" class="btn btn-danger mb-2">Location Details</a>
+                            <a asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-success mb-2">Academy Details</a>
+                            @if (userIsAdmin)
+                            {
+                                <a asp-area="" asp-controller="Academy" asp-action="Edit" asp-route-id="@academy.Id" class="btn btn-warning mb-2">Edit academy</a>
+                                <a asp-area="" asp-controller="Academy" asp-action="Lock" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Lock academy</a>
+                            }
+                            else
+                            {
+                                <a asp-area="" asp-controller="Location" asp-action="Details" asp-route-id="@academy.LocationId" class="btn btn-success mb-2">Location Details</a>
+                            }
                         </div>
                     </div>
                 </div>
