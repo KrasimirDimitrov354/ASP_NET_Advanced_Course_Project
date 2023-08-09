@@ -8,6 +8,8 @@
     string userId = User.GetId()!;
     bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
     string homeworkId = await HomeworkService.GetHomeworkIdByAcolyteIdAndTrialIdAsync(userId, Model.Id);
+
+    ViewData["Title"] = @Model.Title;
 }
 
 <h2 class="text-center">@Model.Title</h2>

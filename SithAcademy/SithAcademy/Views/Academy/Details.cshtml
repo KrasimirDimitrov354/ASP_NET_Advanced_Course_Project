@@ -6,6 +6,8 @@
 @{
     string? userId = User.GetId();
     bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+
+    ViewData["Title"] = @Model.Title;
 }
 
 <h2 class="text-center">@Model.Title</h2>

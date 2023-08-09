@@ -1,4 +1,15 @@
-﻿@model HomeworkSortingViewModel
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
+@model HomeworkSortingViewModel
+
+@inject IOverseerService OverseerService
+@inject IHomeworkService HomeworkService
+@{
+    string userId = User.GetId()!;
+    bool userIsOverseer = await OverseerService.UserIsOverseerAsync(userId);
+    bool homeworkBelongsToUser = await HomeworkService.HomeworkBelongsToUserAsync(Model.Id, userId);
+}
+
 
 <div class="col-md-4">
     <div class="card mb-3">
@@ -9,7 +20,21 @@
             <h6>Score: @Model.HomeworkScore</h6>
             <h6>Score needed to pass: @Model.TrialScore</h6>
 
-            <a asp-area="" asp-controller="Homework" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">View Details</a>
+            @if (User.IsAdmin())
+            {
+                <a asp-area="" asp-controller="Homework" asp-action="Grade" asp-route-id="@Model.Id" class="btn btn-primary">Grade Homework</a>
+            }
+            else if (userIsOverseer)
+            {
+                if (homeworkBelongsToUser)
+                {
+                    <a asp-area="" asp-controller="Homework" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">View Details</a>
+                }
+                else
+                {
+                    <a asp-area="" asp-controller="Homework" asp-action="Grade" asp-route-id="@Model.Id" class="btn btn-primary">Grade Homework</a>
+                }
+            }
         </div>
     </div>
 </div>

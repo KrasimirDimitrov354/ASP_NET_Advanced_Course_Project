@@ -1,0 +1,55 @@
+﻿@model IEnumerable<UserPreviewViewModel>
+
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th><label>Username</label></th>
+            <th><label>User Is Overseer</label></th>
+            <th><label>Options</label></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UserPreviewViewModel user in Model)
+        {
+            <tr>
+                <td><label>@user.Username</label></td>
+                <td>
+                    @if (user.IsOverseer)
+                    {
+                        <label class="text-center">✔</label>
+                    }
+                    else
+                    {
+                        <label class="text-center">❌</label>
+                    }
+                </td>
+                @if (!user.IsOverseer)
+                {
+                    <td>
+                        <a asp-area="Admin" asp-controller="User" asp-action="Promote" asp-route-id="@user.Id">
+                            <input class="btn btn-success" role="button" value="Promote to Overseer" />
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-area="Admin" asp-controller="User" asp-action="Modify" asp-route-id="@user.Id">
+                            <input class="btn btn-warning" role="button" value="Modify Details" />
+                        </a>
+                        <a asp-area="Admin" asp-controller="User" asp-action="Demote" asp-route-id="@user.Id">
+                            <input class="btn btn-danger" role="button" value="Demote" />
+                        </a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -34,5 +34,5 @@ public interface IHomeworkService
 
     Task<GradeHomeworkDetailsViewModel> GetHomeworkDetailsForGradingFormAsync(string homeworkId);
 
-    Task<AllHomeworksFilteredAndPagedServiceModel> GetAllHomeworksAsync(AllHomeworksQueryModel queryModel, string overseerId = "");
+    Task<AllHomeworksFilteredAndPagedServiceModel> GetAllHomeworksAsync(AllHomeworksQueryModel queryModel, string overseerId = "", string userId = "");
 }

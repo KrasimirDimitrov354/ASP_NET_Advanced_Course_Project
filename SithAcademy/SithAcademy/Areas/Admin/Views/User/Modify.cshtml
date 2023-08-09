@@ -1,0 +1,45 @@
+﻿@model OverseerDetailsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Title} Details";
+}
+
+<div class="text-center">
+    <h2>@ViewData["Title"]</h2>
+    <h4>Currently station at: @Model.CurrentAcademyTitle</h4>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-area="Admin" asp-controller="User" asp-action="Modify" method="post">
+            <div class="form-group">
+                <label asp-for="Title">Change title</label>
+                <input asp-for="Title" class="form-control">
+                <span asp-validation-for="Title" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewAcademyId">Change academy of supervision</label>
+                <select asp-for="NewAcademyId" class="form-control">
+                    <option value="@Model.CurrentAcademyId" selected>@Model.CurrentAcademyTitle</option>
+                    @foreach (AcademyDropdownViewModel academy in Model.Academies)
+                    {
+                        if (academy.Id != Model.CurrentAcademyId)
+                        {
+                            <option value="@academy.Id">@academy.Title</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="NewAcademyId" class="small text-danger"></span>
+            </div>
+            <div class="text-center">
+                <input class="btn btn-primary mt-3" type="submit" value="Modify" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts 
+{
+    <partial name="_ValidationScriptsPartial" />
+}

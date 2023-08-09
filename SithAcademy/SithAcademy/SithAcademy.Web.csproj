@@ -45,8 +45,4 @@
     <None Include="Views\Trial\_ResourcePreviewPartial.cshtml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Admin\ViewModels\" />
-  </ItemGroup>
-
 </Project>

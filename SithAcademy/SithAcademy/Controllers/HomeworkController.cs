@@ -170,27 +170,27 @@ public class HomeworkController : Controller
 
         if (!User.IsAdmin())
         {
-            bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
-            if (userIsOverseer)
+            bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
+            if (!homeworkBelongsToUser)
             {
-                string overseerId = await overseerService.GetOverseerIdAsync(userId);
-                int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
-
-                bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
-                if (!overseerCanModify)
+                bool userIsOverseer = await overseerService.UserIsOverseerAsync(userId);
+                if (userIsOverseer)
                 {
-                    TempData[WarningMessage] = "You cannot view details of homeworks not submitted to your academy";
-                    return RedirectToAction("Details", "Academy", new { id = academyId });
+                    string overseerId = await overseerService.GetOverseerIdAsync(userId);
+                    int academyId = await trialService.GetAcademyIdByTrialIdAsync(trialId);
+
+                    bool overseerCanModify = await overseerService.OverseerCanModifyAsync(academyId, overseerId);
+                    if (!overseerCanModify)
+                    {
+                        TempData[WarningMessage] = "You cannot view details of homeworks not submitted to your academy";
+                        return RedirectToAction("Details", "Academy", new { id = academyId });
+                    }
                 }
-            }
-            else
-            {
-                bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
-                if (!homeworkBelongsToUser)
+                else
                 {
                     TempData[WarningMessage] = "You are trying to access homework you haven't submitted.";
                     return RedirectToAction("Details", "Trial", new { id = trialId });
-                }
+                }  
             }
         }
 
@@ -319,6 +319,13 @@ public class HomeworkController : Controller
                 TempData[ErrorMessage] = "You don't have access to this homework.";
                 return RedirectToAction("Index", "Home");
             }
+
+            bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
+            if (homeworkBelongsToUser)
+            {
+                TempData[ErrorMessage] = "You cannot grade your own homework.";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         bool homeworkCanBeGraded = await homeworkService.HomeworkCanBeGradedAsync(id);
@@ -365,6 +372,13 @@ public class HomeworkController : Controller
         if (!overseerCanModify && !User.IsAdmin())
         {
             TempData[ErrorMessage] = "You don't have access to this homework.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        bool homeworkBelongsToUser = await homeworkService.HomeworkBelongsToUserAsync(id, userId);
+        if (homeworkBelongsToUser)
+        {
+            TempData[ErrorMessage] = "You cannot grade your own homework.";
             return RedirectToAction("Index", "Home");
         }
 
@@ -425,7 +439,7 @@ public class HomeworkController : Controller
         else
         {
             string overseerId = await overseerService.GetOverseerIdAsync(userId);
-            serviceModel = await homeworkService.GetAllHomeworksAsync(queryModel, overseerId);
+            serviceModel = await homeworkService.GetAllHomeworksAsync(queryModel, overseerId, userId);
 
             int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
             queryModel.Trials = await trialService.GetAllTrialTitlesForQuerySelectAsync(academyId);

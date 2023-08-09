@@ -187,14 +187,15 @@ public class HomeworkService : IHomeworkService
         return homeworkDetails;
     }
 
-    public async Task<AllHomeworksFilteredAndPagedServiceModel> GetAllHomeworksAsync(AllHomeworksQueryModel queryModel, string overseerId = "")
+    public async Task<AllHomeworksFilteredAndPagedServiceModel> GetAllHomeworksAsync(AllHomeworksQueryModel queryModel, string overseerId = "", string userId = "")
     {
         IQueryable<Homework> homeworksQuery;
 
         if (!string.IsNullOrWhiteSpace(overseerId))
         {
             homeworksQuery = dbContext.Homeworks
-                .Where(h => h.Trial.Academy.Overseers.Any(o => o.Id.ToString() == overseerId))
+                .Where(h => h.Trial.Academy.Overseers.Any(o => o.Id.ToString() == overseerId) ||
+                       h.AcolyteId.ToString() == userId)
                 .AsQueryable();
         }
         else
