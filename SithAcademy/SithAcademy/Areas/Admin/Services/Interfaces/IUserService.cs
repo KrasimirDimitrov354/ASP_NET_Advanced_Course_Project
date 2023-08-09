@@ -11,4 +11,10 @@ public interface IUserService
     Task<OverseerDetailsViewModel> GetOverseerForModificationAsync(string overseerId);
 
     Task ModifyOverseerAsync(string userId, OverseerDetailsViewModel viewModel);
+
+    Task DemoteOverseer(string overseerId);
+
+    Task PromoteOverseer(string userId, OverseerFormViewModel viewModel);
+
+    Task SetLocationToUser(string userId, int locationId);
 }

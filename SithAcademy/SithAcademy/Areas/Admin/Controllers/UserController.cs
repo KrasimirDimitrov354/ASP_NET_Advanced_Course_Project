@@ -67,10 +67,10 @@ public class UserController : BaseAdminController
             return RedirectToAction("All", "User", new { Area = AdminAreaName });
         }
 
-        bool academyExists = await academyService.AcademyExistsAsync(viewModel.NewAcademyId);
+        bool academyExists = await academyService.AcademyExistsAsync(viewModel.AcademyId);
         if (!academyExists)
         {
-            ModelState.AddModelError(nameof(viewModel.NewAcademyId), "Selected academy does not exist!");
+            ModelState.AddModelError(nameof(viewModel.AcademyId), "Selected academy does not exist!");
         }
 
         if (!ModelState.IsValid)
@@ -89,6 +89,103 @@ public class UserController : BaseAdminController
         catch (Exception)
         {
             ModelState.AddModelError(string.Empty, "Unexpected error occured while trying to modify overseer's details. Please try again.");
+
+            viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
+            return View(viewModel);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Demote(string id)
+    {
+        bool userExists = await userService.UserExistsAsync(id);
+        if (!userExists)
+        {
+            TempData[ErrorMessage] = "Incorrect user ID selected.";
+            return RedirectToAction("All", "User", new { Area = AdminAreaName });
+        }
+
+        string overseerId = await overseerService.GetOverseerIdAsync(id);
+        OverseerDetailsViewModel overseerDetails = await userService.GetOverseerForModificationAsync(overseerId);
+
+        return View(overseerDetails);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Demote(string id, OverseerDetailsViewModel viewModel)
+    {
+        bool userExists = await userService.UserExistsAsync(id);
+        if (!userExists)
+        {
+            TempData[ErrorMessage] = "Incorrect user ID selected.";
+            return RedirectToAction("All", "User", new { Area = AdminAreaName });
+        }
+
+        try
+        {
+            await userService.DemoteOverseer(id);
+
+            TempData[SuccessMessage] = "Overseer has been demoted successfully.";
+            return RedirectToAction("All", "User", new { Area = AdminAreaName });
+        }
+        catch (Exception)
+        {
+            TempData[ErrorMessage] = "Something went wrong.";
+            return RedirectToAction("Error", "Home", new { id = 500 });
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Promote(string id)
+    {
+        bool userExists = await userService.UserExistsAsync(id);
+        if (!userExists)
+        {
+            TempData[ErrorMessage] = "Incorrect user ID selected.";
+            return RedirectToAction("All", "User", new { Area = AdminAreaName });
+        }
+
+        OverseerFormViewModel viewModel = new OverseerFormViewModel();
+        viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
+
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Promote(string id, OverseerFormViewModel viewModel)
+    {
+        bool userExists = await userService.UserExistsAsync(id);
+        if (!userExists)
+        {
+            TempData[ErrorMessage] = "Incorrect user ID selected.";
+            return RedirectToAction("All", "User", new { Area = AdminAreaName });
+        }
+
+        bool academyExists = await academyService.AcademyExistsAsync(viewModel.AcademyId);
+        if (!academyExists)
+        {
+            ModelState.AddModelError(nameof(viewModel.AcademyId), "Selected academy does not exist!");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
+            return View(viewModel);
+        }
+
+        try
+        {
+            await userService.PromoteOverseer(id, viewModel);
+
+            int locationId = await academyService.GetLocationIdByAcademyIdAsync(viewModel.AcademyId);
+            await userService.SetLocationToUser(id, locationId);
+
+            TempData[SuccessMessage] = "Acolyte has successfully been promoted to overseer.";
+            return RedirectToAction("All", "User", new { Area = AdminAreaName });
+        }
+        catch (Exception)
+        {
+            ModelState.AddModelError(string.Empty, "Unexpected error occured while trying to promote user to overseer. Please try again.");
 
             viewModel.Academies = await academyService.GetAllAcademiesForDropdownSelectAsync();
             return View(viewModel);

@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 using SithAcademy.Data;
+using SithAcademy.Data.Models;
 using SithAcademy.Web.Areas.Admin.ViewModels.User;
 using SithAcademy.Web.Areas.Admin.Services.Interfaces;
 
 using static SithAcademy.Common.GeneralConstants;
-using SithAcademy.Data.Models;
 
 public class UserService : IUserService
 {
@@ -63,8 +63,39 @@ public class UserService : IUserService
             .FirstAsync(o => o.UserId.ToString() == userId);
 
         overseer.Title = viewModel.Title;
-        overseer.AcademyId = viewModel.NewAcademyId;
+        overseer.AcademyId = viewModel.AcademyId;
 
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task DemoteOverseer(string userId)
+    {
+        Overseer overseer = await dbContext.Overseers
+            .FirstAsync(o => o.UserId.ToString() == userId);
+
+        dbContext.Overseers.Remove(overseer);
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task PromoteOverseer(string userId, OverseerFormViewModel viewModel)
+    {
+        Overseer overseer = new Overseer()
+        {
+            Title = viewModel.Title,
+            AcademyId = viewModel.AcademyId,
+            UserId = Guid.Parse(userId),
+        };
+
+        await dbContext.Overseers.AddAsync(overseer);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task SetLocationToUser(string userId, int locationId)
+    {
+        AcademyUser user = await dbContext.Users.FirstAsync(u => u.Id.ToString() == userId);
+
+        user.LocationId = locationId;
         await dbContext.SaveChangesAsync();
     }
 }

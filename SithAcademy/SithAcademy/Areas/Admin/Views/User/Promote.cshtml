@@ -1,45 +1,40 @@
-﻿@model OverseerDetailsViewModel
+﻿@model OverseerFormViewModel
 
 @{
-    ViewData["Title"] = $"{Model.Title} Details";
+    ViewData["Title"] = "Promote Overseer";
 }
 
 <div class="text-center">
     <h2>@ViewData["Title"]</h2>
-    <h4>Currently station at: @Model.CurrentAcademyTitle</h4>
 </div>
 <hr />
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-area="Admin" asp-controller="User" asp-action="Modify" method="post">
+        <form asp-area="Admin" asp-controller="User" asp-action="Promote" method="post">
             <div class="form-group">
-                <label asp-for="Title">Change title</label>
+                <label asp-for="Title">Enter a title for your new overseer</label>
                 <input asp-for="Title" class="form-control">
                 <span asp-validation-for="Title" class="small text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AcademyId">Change academy of supervision</label>
+                <label asp-for="AcademyId">Select academy</label>
                 <select asp-for="AcademyId" class="form-control">
-                    <option value="@Model.CurrentAcademyId" selected>@Model.CurrentAcademyTitle</option>
                     @foreach (AcademyDropdownViewModel academy in Model.Academies)
                     {
-                        if (academy.Id != Model.CurrentAcademyId)
-                        {
-                            <option value="@academy.Id">@academy.Title</option>
-                        }
+                        <option value="@academy.Id">@academy.Title</option>
                     }
                 </select>
                 <span asp-validation-for="AcademyId" class="small text-danger"></span>
             </div>
             <div class="text-center">
-                <input class="btn btn-primary mt-3" type="submit" value="Modify" />
+                <input class="btn btn-success mt-3" type="submit" value="Promote" />
             </div>
         </form>
     </div>
 </div>
 
-@section Scripts 
+@section Scripts
 {
     <partial name="_ValidationScriptsPartial" />
 }
