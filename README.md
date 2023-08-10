@@ -9,7 +9,6 @@ Below you can find more information about each entity, their purpose and their f
 :construction: **THIS PROJECT IS STILL A WORK IN PROGRESS** :construction:\
 Missing functionality:
 - Unit testing
-- Prevention of XSS attacks
 - Usage of file storage API for storing images 
 
 ## Different entities and their functions
