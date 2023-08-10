@@ -20,4 +20,6 @@ public interface ILocationService
     Task<LocationFormViewModel> GetLocationForModificationAsync(int locationId);
 
     Task EditLocationDetailsAsync(int locationId, LocationFormViewModel viewModel);
+
+    Task ChangeLockStatusOfLocationAndAllLocationAcademiesAsync(int locationId);
 }

@@ -1,5 +1,28 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model LocationFormViewModel
 @{
+    ViewData["Title"] = "Lock Location";
 }
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<form asp-area="Admin" asp-controller="Location" asp-action="Lock" method="post">
+    <div class="d-flex justify-content-center">
+        <div class="card " style="width: 50rem;">
+            <div class="card-body">
+                <h3 class="card-title text-center">Name: @Model.Name</h3>
+                <p class="card-text"><span class="fw-bold">Description: </span>@Model.Description</p>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                @if (!Model.IsLocked)
+                {
+                    <input type="submit" value="Lock" class="btn btn-danger" onclick="return confirm('Are you sure you want to lock @Model.Name?')" />
+                }
+                else
+                {
+                    <input type="submit" value="Unlock" class="btn btn-success" onclick="return confirm('This will unlock @Model.Name. Are you sure you wish to proceed?')" />
+                }
+            </div>
+        </div>
+    </div>
+</form>

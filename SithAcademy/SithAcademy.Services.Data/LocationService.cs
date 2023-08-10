@@ -127,4 +127,28 @@ public class LocationService : ILocationService
 
         await dbContext.SaveChangesAsync();
     }
+
+    public async Task ChangeLockStatusOfLocationAndAllLocationAcademiesAsync(int locationId)
+    {
+        Location location = await dbContext.Locations
+            .Include(l => l.Academies)
+            .FirstAsync(l => l.Id == locationId);
+
+        switch (location.IsLocked)
+        {
+            case true:
+                location.IsLocked = false;
+                break;
+            case false:
+                location.IsLocked = true;
+                break;
+        }
+
+        foreach (Academy academy in location.Academies)
+        {
+            academy.IsLocked = location.IsLocked;
+        }
+
+        await dbContext.SaveChangesAsync();
+    }
 }

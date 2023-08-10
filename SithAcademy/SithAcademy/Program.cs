@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Services.Data.Interfaces;
-using SithAcademy.Web.Areas.Admin.Services.Interfaces;
 using SithAcademy.Web.Infrastructure.Extensions;
 using SithAcademy.Web.Infrastructure.ModelBinders;
+using SithAcademy.Web.Areas.Admin.Services.Interfaces;
 
 using static SithAcademy.Common.GeneralConstants;
 
