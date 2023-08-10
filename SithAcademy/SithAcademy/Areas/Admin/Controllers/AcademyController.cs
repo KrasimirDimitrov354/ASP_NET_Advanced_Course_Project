@@ -43,7 +43,7 @@ public class AcademyController : BaseAdminController
         try
         {
             int academyId = await academyService.AddAcademyAndReturnIdAsync(viewModel);
-            return RedirectToAction("Details", "Academy", new { Area = "", id =  academyId });
+            return RedirectToAction("Details", "Academy", new { Area = "", id = academyId });
         }
         catch (Exception)
         {

@@ -24,7 +24,6 @@ public class AcademyService : IAcademyService
     public async Task<IEnumerable<AcademyOverviewViewModel>> GetAllAcademiesAsync()
     {
         IEnumerable<AcademyOverviewViewModel> academies = await dbContext.Academies
-            .Where(a => !a.Location.IsLocked)
             .Select(a => new AcademyOverviewViewModel()
             {
                 Id = a.Id,
@@ -41,10 +40,9 @@ public class AcademyService : IAcademyService
     public async Task<AcademyDetailsViewModel> DisplayAcademyDetailsAsync(int academyId)
     {
         AcademyDetailsViewModel academyDetails = await dbContext.Academies
-            .Include(a => a.Location)
             .Include(a => a.Trials)
             .Include(a => a.Acolytes)
-            .Where(a => a.Id == academyId && !a.Location.IsLocked)
+            .Where(a => a.Id == academyId)
             .Select(a => new AcademyDetailsViewModel()
             {
                 Id = a.Id,

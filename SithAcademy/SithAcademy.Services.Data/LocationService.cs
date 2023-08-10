@@ -84,4 +84,20 @@ public class LocationService : ILocationService
     {
         return await dbContext.Locations.AnyAsync(l => l.Id == locationId);
     }
+
+    public async Task<int> AddLocationAndReturnIdAsync(LocationFormViewModel viewModel)
+    {
+        Location location = new Location()
+        {
+            Name = viewModel.Name,
+            Description = viewModel.Description,
+            ImageUrl = viewModel.ImageUrl,
+            IsLocked = viewModel.IsLocked
+        };
+
+        await dbContext.Locations.AddAsync(location);
+        await dbContext.SaveChangesAsync();
+
+        return location.Id;
+    }
 }

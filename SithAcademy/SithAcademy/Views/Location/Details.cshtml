@@ -1,7 +1,9 @@
-﻿@model LocationDetailsViewModel
-
+﻿@using SithAcademy.Web.Infrastructure.Extensions;
+@model LocationDetailsViewModel
 @{
     ViewData["Title"] = @Model.Name;
+
+    bool userIsAdmin = User.IsAdmin();
 }
 
 <h2 class="text-center">@Model.Name</h2>
@@ -22,12 +24,32 @@
                 foreach (AcademySummaryViewModel academy in Model.Academies)
                 {
                     <h3 class="card-text">@academy.Title</h3>
-                    <a asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
+                    <a asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-success mb-2">Academy Details</a>
                 }
+
+                <p></p>
+                <a asp-area="Admin" asp-controller="Location" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Edit location</a>
+                <a asp-area="Admin" asp-controller="Location" asp-action="Lock" asp-route-id="@Model.Id" class="btn btn-danger mb-2">Lock location</a>
             }
             else
             {
-                <h2 class="text-center text-danger bg-dark">[+++THIS LOCATION HAS BEEN PLACED ON LOCKDOWN. AWAIT FURTHER DEVELOPMENTS+++]</h2>
+                @if (userIsAdmin)
+                {
+                    <p class="text-center text-danger">Location has been locked. Every academy in the location has been locked as well.</p>
+
+                    foreach (AcademySummaryViewModel academy in Model.Academies)
+                    {
+                        <h3 class="card-text">@academy.Title</h3>
+                        <a asp-area="" asp-controller="Academy" asp-action="Details" asp-route-id="@academy.Id" class="btn btn-danger mb-2">Academy Details</a>
+                    }
+
+                    <a asp-area="Admin" asp-controller="Location" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2">Edit location</a>
+                    <a asp-area="Admin" asp-controller="Location" asp-action="Lock" asp-route-id="@Model.Id" class="btn btn-primary mb-2">Unlock location</a>
+                }
+                else
+                {
+                    <h2 class="text-center text-danger bg-dark">[+++THIS LOCATION HAS BEEN PLACED ON LOCKDOWN. AWAIT FURTHER DEVELOPMENTS+++]</h2>
+                }
             }
         </div>
     </div>
