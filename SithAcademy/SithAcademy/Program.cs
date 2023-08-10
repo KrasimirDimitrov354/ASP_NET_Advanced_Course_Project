@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using Ganss.Xss;
+
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Services.Data.Interfaces;
@@ -40,6 +42,7 @@ public class Program
 
         builder.Services.AddApplicationServices(typeof(ITrialService));
         builder.Services.AddApplicationServices(typeof(IUserService));
+        builder.Services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
 
         builder.Services
             .AddControllersWithViews()

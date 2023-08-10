@@ -5,23 +5,24 @@ using System.Collections.Generic;
 
 using Microsoft.EntityFrameworkCore;
 
+using Ganss.Xss;
+
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.ViewModels.Acolyte;
 using SithAcademy.Web.ViewModels.Academy;
-using SithAcademy.Services.Infrastructure;
 using SithAcademy.Services.Data.Interfaces;
 
 public class AcademyService : IAcademyService
 {
     private readonly AcademyDbContext dbContext;
-    private readonly Sanitizer sanitizer;
+    private readonly IHtmlSanitizer htmlSanitizer;
 
-    public AcademyService(AcademyDbContext dbContext)
+    public AcademyService(AcademyDbContext dbContext, IHtmlSanitizer htmlSanitizer)
     {
         this.dbContext = dbContext;
-        sanitizer = new Sanitizer();
+        this.htmlSanitizer = htmlSanitizer;
     }
 
     public async Task<IEnumerable<AcademyOverviewViewModel>> GetAllAcademiesAsync()
@@ -118,9 +119,9 @@ public class AcademyService : IAcademyService
         Academy academy = await dbContext.Academies
             .FirstAsync(a => a.Id == academyId);
 
-        academy.Title = sanitizer.Sanitize(viewModel.Title);
-        academy.Description = sanitizer.Sanitize(viewModel.Description);
-        academy.ImageUrl = sanitizer.Sanitize(viewModel.ImageUrl);
+        academy.Title = htmlSanitizer.Sanitize(viewModel.Title);
+        academy.Description = htmlSanitizer.Sanitize(viewModel.Description);
+        academy.ImageUrl = htmlSanitizer.Sanitize(viewModel.ImageUrl);
 
         await dbContext.SaveChangesAsync();
     }

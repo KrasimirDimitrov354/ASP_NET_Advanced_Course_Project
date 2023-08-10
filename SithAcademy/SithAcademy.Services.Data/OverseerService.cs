@@ -4,21 +4,22 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
+using Ganss.Xss;
+
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Homework;
 using SithAcademy.Services.Data.Interfaces;
-using SithAcademy.Services.Infrastructure;
 
 public class OverseerService : IOverseerService
 {
     private readonly AcademyDbContext dbContext;
-    private readonly Sanitizer sanitizer;
+    private readonly IHtmlSanitizer htmlSanitizer;
 
-    public OverseerService(AcademyDbContext dbContext)
+    public OverseerService(AcademyDbContext dbContext, IHtmlSanitizer htmlSanitizer)
     {
         this.dbContext = dbContext;
-        sanitizer = new Sanitizer();
+        this.htmlSanitizer = htmlSanitizer;
     }
 
     public async Task<bool> UserIsOverseerAsync(string userId)
@@ -88,7 +89,7 @@ public class OverseerService : IOverseerService
             homework.ReviewerName = overseer.Title;
         }
         
-        homework.ReviewerFeedback = sanitizer.Sanitize(viewModel.Feedback);
+        homework.ReviewerFeedback = htmlSanitizer.Sanitize(viewModel.Feedback);
         homework.Score = viewModel.Score;
 
         await dbContext.SaveChangesAsync();

@@ -5,25 +5,26 @@ using System.Collections.Generic;
 
 using Microsoft.EntityFrameworkCore;
 
+using Ganss.Xss;
+
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.ViewModels.Resource;
 using SithAcademy.Web.ViewModels.Query.Enums;
-using SithAcademy.Services.Infrastructure;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Services.Data.Models.Trial;
 
 public class TrialService : ITrialService
 {
     private readonly AcademyDbContext dbContext;
-    private readonly Sanitizer sanitizer;
+    private readonly IHtmlSanitizer htmlSanitizer;
 
-    public TrialService(AcademyDbContext dbContext)
+    public TrialService(AcademyDbContext dbContext, IHtmlSanitizer htmlSanitizer)
     {
         this.dbContext = dbContext;
-        sanitizer = new Sanitizer();
+        this.htmlSanitizer = htmlSanitizer;
     }
 
     public async Task AssignTrialsToAcolyteAsync(int academyId, string acolyteId)
@@ -150,8 +151,8 @@ public class TrialService : ITrialService
     {
         Trial newTrial = new Trial()
         {
-            Title = sanitizer.Sanitize(viewModel.Title),
-            Description = sanitizer.Sanitize(viewModel.Description),
+            Title = htmlSanitizer.Sanitize(viewModel.Title),
+            Description = htmlSanitizer.Sanitize(viewModel.Description),
             ScoreToPass = viewModel.ScoreToPass,
             IsLocked = viewModel.IsLocked,
             AcademyId = academyId
@@ -205,8 +206,8 @@ public class TrialService : ITrialService
             .Where(t => t.Id.ToString() == trialId)
             .FirstAsync();
 
-        trial.Title = sanitizer.Sanitize(viewModel.Title);
-        trial.Description = sanitizer.Sanitize(viewModel.Description);
+        trial.Title = htmlSanitizer.Sanitize(viewModel.Title);
+        trial.Description = htmlSanitizer.Sanitize(viewModel.Description);
         trial.ScoreToPass = viewModel.ScoreToPass;
         trial.IsLocked = viewModel.IsLocked;
 
@@ -291,7 +292,7 @@ public class TrialService : ITrialService
             trialsQuery = trialsQuery.Where(t => t.Academy.Title == queryModel.Academy);
         }
 
-        queryModel.SearchTerm = sanitizer.Sanitize(queryModel.SearchTerm);
+        queryModel.SearchTerm = htmlSanitizer.Sanitize(queryModel.SearchTerm);
         if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
         {
             string wildCard = $"%{queryModel.SearchTerm.ToLower()}%";

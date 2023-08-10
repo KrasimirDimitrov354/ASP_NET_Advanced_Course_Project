@@ -4,21 +4,22 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
+using Ganss.Xss;
+
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Resource;
 using SithAcademy.Services.Data.Interfaces;
-using SithAcademy.Services.Infrastructure;
 
 public class ResourceService : IResourceService
 {
     private readonly AcademyDbContext dbContext;
-    private readonly Sanitizer sanitizer;
+    private readonly IHtmlSanitizer htmlSanitizer;
 
-    public ResourceService(AcademyDbContext dbContext)
+    public ResourceService(AcademyDbContext dbContext, IHtmlSanitizer htmlSanitizer)
     {
         this.dbContext = dbContext;
-        sanitizer = new Sanitizer();
+        this.htmlSanitizer = htmlSanitizer;
     }
 
     public async Task<bool> ResourceExistsAsync(string resourceId)
@@ -53,9 +54,9 @@ public class ResourceService : IResourceService
     {
         Resource resource = new Resource()
         {
-            Name = sanitizer.Sanitize(viewModel.Name),
-            ImageUrl = sanitizer.Sanitize(viewModel.ImageUrl),
-            SourceUrl = sanitizer.Sanitize(viewModel.SourceUrl),
+            Name = htmlSanitizer.Sanitize(viewModel.Name),
+            ImageUrl = htmlSanitizer.Sanitize(viewModel.ImageUrl),
+            SourceUrl = htmlSanitizer.Sanitize(viewModel.SourceUrl),
             TrialId = Guid.Parse(viewModel.TrialId)
         };
 
@@ -68,9 +69,9 @@ public class ResourceService : IResourceService
         Resource resource = await dbContext.Resources
             .FirstAsync(r => r.Id.ToString() == resourceId);
 
-        resource.Name = sanitizer.Sanitize(viewModel.Name);
-        resource.ImageUrl = sanitizer.Sanitize(viewModel.ImageUrl);
-        resource.SourceUrl = sanitizer.Sanitize(viewModel.SourceUrl);
+        resource.Name = htmlSanitizer.Sanitize(viewModel.Name);
+        resource.ImageUrl = htmlSanitizer.Sanitize(viewModel.ImageUrl);
+        resource.SourceUrl = htmlSanitizer.Sanitize(viewModel.SourceUrl);
         resource.TrialId = Guid.Parse(viewModel.TrialId);
         resource.IsDeleted = viewModel.IsDeleted;
 

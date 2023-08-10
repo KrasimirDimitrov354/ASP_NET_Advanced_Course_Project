@@ -5,24 +5,25 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
+using Ganss.Xss;
+
 using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Homework;
 using SithAcademy.Web.ViewModels.Query.Enums;
-using SithAcademy.Services.Infrastructure;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Services.Data.Models.Homework;
 
 public class HomeworkService : IHomeworkService
 {
     private readonly AcademyDbContext dbContext;
-    private readonly Sanitizer sanitizer;
+    private readonly IHtmlSanitizer htmlSanitizer;
 
-    public HomeworkService(AcademyDbContext dbContext)
+    public HomeworkService(AcademyDbContext dbContext, IHtmlSanitizer htmlSanitizer)
     {
         this.dbContext = dbContext;
-        sanitizer = new Sanitizer();
+        this.htmlSanitizer = htmlSanitizer;
     }
 
     public async Task<bool> TrialHasHomeworkAsync(string trialId, string acolyteId)
@@ -90,7 +91,7 @@ public class HomeworkService : IHomeworkService
     {
         Homework homework = new Homework()
         {
-            Content = sanitizer.Sanitize(homeworkModel.Content),
+            Content = htmlSanitizer.Sanitize(homeworkModel.Content),
             TrialId = Guid.Parse(homeworkModel.TrialInfo!.Id),
             AcolyteId = Guid.Parse(acolyteId)
         };
@@ -142,7 +143,7 @@ public class HomeworkService : IHomeworkService
         Homework homework = await dbContext.Homeworks
             .FirstAsync(h => h.Id.ToString() == homeworkId);
 
-        homework.Content = sanitizer.Sanitize(viewModel.Content);
+        homework.Content = htmlSanitizer.Sanitize(viewModel.Content);
 
         await dbContext.SaveChangesAsync();
     }
@@ -211,7 +212,7 @@ public class HomeworkService : IHomeworkService
             homeworksQuery = homeworksQuery.Where(h => h.Trial.Title == queryModel.Trial);
         }
 
-        queryModel.SearchTerm = sanitizer.Sanitize(queryModel.SearchTerm);
+        queryModel.SearchTerm = htmlSanitizer.Sanitize(queryModel.SearchTerm);
         if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
         {
             string wildcard = $"%{queryModel.SearchTerm.ToLower()}%";
