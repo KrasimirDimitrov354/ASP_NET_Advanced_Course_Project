@@ -10,15 +10,18 @@ using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.ViewModels.Acolyte;
 using SithAcademy.Web.ViewModels.Academy;
+using SithAcademy.Services.Infrastructure;
 using SithAcademy.Services.Data.Interfaces;
 
 public class AcademyService : IAcademyService
 {
     private readonly AcademyDbContext dbContext;
+    private readonly Sanitizer sanitizer;
 
     public AcademyService(AcademyDbContext dbContext)
     {
         this.dbContext = dbContext;
+        sanitizer = new Sanitizer();
     }
 
     public async Task<IEnumerable<AcademyOverviewViewModel>> GetAllAcademiesAsync()
@@ -115,9 +118,9 @@ public class AcademyService : IAcademyService
         Academy academy = await dbContext.Academies
             .FirstAsync(a => a.Id == academyId);
 
-        academy.Title = viewModel.Title;
-        academy.ImageUrl = viewModel.ImageUrl;
-        academy.Description = viewModel.Description;
+        academy.Title = sanitizer.Sanitize(viewModel.Title);
+        academy.Description = sanitizer.Sanitize(viewModel.Description);
+        academy.ImageUrl = sanitizer.Sanitize(viewModel.ImageUrl);
 
         await dbContext.SaveChangesAsync();
     }

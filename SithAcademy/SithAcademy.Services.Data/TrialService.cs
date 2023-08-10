@@ -11,16 +11,19 @@ using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Trial;
 using SithAcademy.Web.ViewModels.Resource;
 using SithAcademy.Web.ViewModels.Query.Enums;
+using SithAcademy.Services.Infrastructure;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Services.Data.Models.Trial;
 
 public class TrialService : ITrialService
 {
     private readonly AcademyDbContext dbContext;
+    private readonly Sanitizer sanitizer;
 
     public TrialService(AcademyDbContext dbContext)
     {
         this.dbContext = dbContext;
+        sanitizer = new Sanitizer();
     }
 
     public async Task AssignTrialsToAcolyteAsync(int academyId, string acolyteId)
@@ -147,8 +150,8 @@ public class TrialService : ITrialService
     {
         Trial newTrial = new Trial()
         {
-            Title = viewModel.Title,
-            Description = viewModel.Description,
+            Title = sanitizer.Sanitize(viewModel.Title),
+            Description = sanitizer.Sanitize(viewModel.Description),
             ScoreToPass = viewModel.ScoreToPass,
             IsLocked = viewModel.IsLocked,
             AcademyId = academyId
@@ -202,8 +205,8 @@ public class TrialService : ITrialService
             .Where(t => t.Id.ToString() == trialId)
             .FirstAsync();
 
-        trial.Title = viewModel.Title;
-        trial.Description = viewModel.Description;
+        trial.Title = sanitizer.Sanitize(viewModel.Title);
+        trial.Description = sanitizer.Sanitize(viewModel.Description);
         trial.ScoreToPass = viewModel.ScoreToPass;
         trial.IsLocked = viewModel.IsLocked;
 
@@ -288,6 +291,7 @@ public class TrialService : ITrialService
             trialsQuery = trialsQuery.Where(t => t.Academy.Title == queryModel.Academy);
         }
 
+        queryModel.SearchTerm = sanitizer.Sanitize(queryModel.SearchTerm);
         if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
         {
             string wildCard = $"%{queryModel.SearchTerm.ToLower()}%";

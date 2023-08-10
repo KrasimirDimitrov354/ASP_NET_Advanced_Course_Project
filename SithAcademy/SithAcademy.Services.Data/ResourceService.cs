@@ -8,14 +8,17 @@ using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Resource;
 using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Services.Infrastructure;
 
 public class ResourceService : IResourceService
 {
     private readonly AcademyDbContext dbContext;
+    private readonly Sanitizer sanitizer;
 
     public ResourceService(AcademyDbContext dbContext)
     {
         this.dbContext = dbContext;
+        sanitizer = new Sanitizer();
     }
 
     public async Task<bool> ResourceExistsAsync(string resourceId)
@@ -50,9 +53,9 @@ public class ResourceService : IResourceService
     {
         Resource resource = new Resource()
         {
-            Name = viewModel.Name,
-            ImageUrl = viewModel.ImageUrl,
-            SourceUrl = viewModel.SourceUrl,
+            Name = sanitizer.Sanitize(viewModel.Name),
+            ImageUrl = sanitizer.Sanitize(viewModel.ImageUrl),
+            SourceUrl = sanitizer.Sanitize(viewModel.SourceUrl),
             TrialId = Guid.Parse(viewModel.TrialId)
         };
 
@@ -65,9 +68,9 @@ public class ResourceService : IResourceService
         Resource resource = await dbContext.Resources
             .FirstAsync(r => r.Id.ToString() == resourceId);
 
-        resource.Name = viewModel.Name;
-        resource.ImageUrl = viewModel.ImageUrl;
-        resource.SourceUrl = viewModel.SourceUrl;
+        resource.Name = sanitizer.Sanitize(viewModel.Name);
+        resource.ImageUrl = sanitizer.Sanitize(viewModel.ImageUrl);
+        resource.SourceUrl = sanitizer.Sanitize(viewModel.SourceUrl);
         resource.TrialId = Guid.Parse(viewModel.TrialId);
         resource.IsDeleted = viewModel.IsDeleted;
 

@@ -8,14 +8,17 @@ using SithAcademy.Data;
 using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Homework;
 using SithAcademy.Services.Data.Interfaces;
+using SithAcademy.Services.Infrastructure;
 
 public class OverseerService : IOverseerService
 {
     private readonly AcademyDbContext dbContext;
+    private readonly Sanitizer sanitizer;
 
     public OverseerService(AcademyDbContext dbContext)
     {
         this.dbContext = dbContext;
+        sanitizer = new Sanitizer();
     }
 
     public async Task<bool> UserIsOverseerAsync(string userId)
@@ -85,7 +88,7 @@ public class OverseerService : IOverseerService
             homework.ReviewerName = overseer.Title;
         }
         
-        homework.ReviewerFeedback = viewModel.Feedback;
+        homework.ReviewerFeedback = sanitizer.Sanitize(viewModel.Feedback);
         homework.Score = viewModel.Score;
 
         await dbContext.SaveChangesAsync();

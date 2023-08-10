@@ -11,6 +11,7 @@
     <ProjectReference Include="..\SithAcademy.Data.Models\SithAcademy.Data.Models.csproj" />
     <ProjectReference Include="..\SithAcademy.Data\SithAcademy.Data.csproj" />
     <ProjectReference Include="..\SithAcademy.Services.Data.Models\SithAcademy.Services.Data.Models.csproj" />
+    <ProjectReference Include="..\SithAcademy.Services.Infrastructure\SithAcademy.Services.Infrastructure.csproj" />
     <ProjectReference Include="..\SithAcademy.Web.ViewModels\SithAcademy.Web.ViewModels.csproj" />
   </ItemGroup>
 

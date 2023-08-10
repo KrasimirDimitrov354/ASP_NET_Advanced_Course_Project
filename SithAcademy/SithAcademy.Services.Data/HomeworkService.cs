@@ -10,16 +10,19 @@ using SithAcademy.Data.Models;
 using SithAcademy.Web.ViewModels.Query;
 using SithAcademy.Web.ViewModels.Homework;
 using SithAcademy.Web.ViewModels.Query.Enums;
+using SithAcademy.Services.Infrastructure;
 using SithAcademy.Services.Data.Interfaces;
 using SithAcademy.Services.Data.Models.Homework;
 
 public class HomeworkService : IHomeworkService
 {
     private readonly AcademyDbContext dbContext;
+    private readonly Sanitizer sanitizer;
 
     public HomeworkService(AcademyDbContext dbContext)
     {
         this.dbContext = dbContext;
+        sanitizer = new Sanitizer();
     }
 
     public async Task<bool> TrialHasHomeworkAsync(string trialId, string acolyteId)
@@ -87,7 +90,7 @@ public class HomeworkService : IHomeworkService
     {
         Homework homework = new Homework()
         {
-            Content = homeworkModel.Content,
+            Content = sanitizer.Sanitize(homeworkModel.Content),
             TrialId = Guid.Parse(homeworkModel.TrialInfo!.Id),
             AcolyteId = Guid.Parse(acolyteId)
         };
@@ -139,7 +142,7 @@ public class HomeworkService : IHomeworkService
         Homework homework = await dbContext.Homeworks
             .FirstAsync(h => h.Id.ToString() == homeworkId);
 
-        homework.Content = viewModel.Content;
+        homework.Content = sanitizer.Sanitize(viewModel.Content);
 
         await dbContext.SaveChangesAsync();
     }
@@ -208,6 +211,7 @@ public class HomeworkService : IHomeworkService
             homeworksQuery = homeworksQuery.Where(h => h.Trial.Title == queryModel.Trial);
         }
 
+        queryModel.SearchTerm = sanitizer.Sanitize(queryModel.SearchTerm);
         if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
         {
             string wildcard = $"%{queryModel.SearchTerm.ToLower()}%";
