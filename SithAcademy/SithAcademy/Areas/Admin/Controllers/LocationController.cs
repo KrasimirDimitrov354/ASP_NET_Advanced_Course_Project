@@ -44,4 +44,54 @@ public class LocationController : BaseAdminController
             return View(viewModel);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        bool locationExists = await locationService.LocationExistsAsync(id);
+        if (!locationExists)
+        {
+            TempData[ErrorMessage] = "Incorrect location ID selected.";
+            return RedirectToAction("Display", "Location", new { Area = "" });
+        }
+
+        try
+        {
+            LocationFormViewModel locationToEdit = await locationService.GetLocationForModificationAsync(id);
+            return View(locationToEdit);
+        }
+        catch (Exception)
+        {
+            return RedirectToAction("Error", "Home", new { id = 500 });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, LocationFormViewModel locationToEdit)
+    {
+        bool locationExists = await locationService.LocationExistsAsync(id);
+        if (!locationExists)
+        {
+            TempData[ErrorMessage] = "Incorrect location ID selected.";
+            return RedirectToAction("Display", "Location", new { Area = "" });
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(locationToEdit);
+        }
+
+        try
+        {
+            await locationService.EditLocationDetailsAsync(id, locationToEdit);
+
+            TempData[SuccessMessage] = "Location details have been successfully edited.";
+            return RedirectToAction("Details", "Location", new { Area = "", id = id });
+        }
+        catch (Exception)
+        {
+            ModelState.AddModelError(string.Empty, "Unexpected error occured while editing the details of the selected location. Please try again.");
+            return View(locationToEdit);
+        }
+    }
 }

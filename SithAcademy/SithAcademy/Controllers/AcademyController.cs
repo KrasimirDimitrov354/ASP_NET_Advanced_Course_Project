@@ -302,6 +302,21 @@ public class AcademyController : Controller
             }
         }
 
+        int locationId = await academyService.GetLocationIdByAcademyIdAsync(id);
+        bool locationIsLocked = await locationService.LocationIsLockedAsync(locationId);
+        if (locationIsLocked)
+        {
+            TempData[ErrorMessage] = "You cannot modify an academy's lock status while the location is locked.";
+            if (User.IsAdmin())
+            {
+                return RedirectToAction("Details", "Location", new { id = locationId });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         try
         {
             AcademyFormViewModel academyToLock = await academyService.GetAcademyForModificationAsync(id);
@@ -341,6 +356,21 @@ public class AcademyController : Controller
 
                 int academyId = await overseerService.GetAcademyIdByOverseerIdAsync(overseerId);
                 return RedirectToAction("Details", "Academy", new { id = academyId });
+            }
+        }
+
+        int locationId = await academyService.GetLocationIdByAcademyIdAsync(id);
+        bool locationIsLocked = await locationService.LocationIsLockedAsync(locationId);
+        if (locationIsLocked)
+        {
+            TempData[ErrorMessage] = "You cannot modify an academy's lock status while the location is locked.";
+            if (User.IsAdmin())
+            {
+                return RedirectToAction("Details", "Location", new { id = locationId });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
             }
         }
 

@@ -100,4 +100,31 @@ public class LocationService : ILocationService
 
         return location.Id;
     }
+
+    public async Task<LocationFormViewModel> GetLocationForModificationAsync(int locationId)
+    {
+        LocationFormViewModel locationToModify = await dbContext.Locations
+            .Where(l => l.Id == locationId)
+            .Select(l => new LocationFormViewModel()
+            {
+                Name = l.Name,
+                Description = l.Description,
+                ImageUrl = l.ImageUrl,
+                IsLocked = l.IsLocked
+            })
+            .FirstAsync();
+
+        return locationToModify;
+    }
+
+    public async Task EditLocationDetailsAsync(int locationId, LocationFormViewModel viewModel)
+    {
+        Location location = await dbContext.Locations.FirstAsync(l => l.Id == locationId);
+
+        location.Name = viewModel.Name;
+        location.Description = viewModel.Description;
+        location.ImageUrl = viewModel.ImageUrl;
+
+        await dbContext.SaveChangesAsync();
+    }
 }

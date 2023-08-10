@@ -16,4 +16,8 @@ public interface ILocationService
     Task<IEnumerable<LocationDropdownViewModel>> GetAllLocationsForDropdownSelectAsync();
 
     Task<int> AddLocationAndReturnIdAsync(LocationFormViewModel viewModel);
+
+    Task<LocationFormViewModel> GetLocationForModificationAsync(int locationId);
+
+    Task EditLocationDetailsAsync(int locationId, LocationFormViewModel viewModel);
 }

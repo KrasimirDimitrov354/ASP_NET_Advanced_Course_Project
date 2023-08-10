@@ -1,5 +1,8 @@
-﻿@using SithAcademy.Web.Infrastructure.Extensions;
+﻿@using SithAcademy.Services.Data.Interfaces;
+@using SithAcademy.Web.Infrastructure.Extensions;
 @model IEnumerable<LocationOverviewViewModel>
+
+@inject ILocationService LocationService
 @{
     bool userIsAdmin = User.IsAdmin(); 
     
@@ -36,7 +39,14 @@
                             @if (userIsAdmin)
                             {
                                 <a asp-area="Admin" asp-controller="Location" asp-action="Edit" asp-route-id="@location.Id" class="btn btn-warning mb-2">Edit</a>
-                                <a asp-area="Admin" asp-controller="Location" asp-action="Lock" asp-route-id="@location.Id" class="btn btn-danger mb-2">Lock</a>
+                                if (await LocationService.LocationIsLockedAsync(location.Id))
+                                {
+                                    <a asp-area="Admin" asp-controller="Location" asp-action="Lock" asp-route-id="@location.Id" class="btn btn-primary mb-2">Unlock</a>
+                                }
+                                else
+                                {
+                                    <a asp-area="Admin" asp-controller="Location" asp-action="Lock" asp-route-id="@location.Id" class="btn btn-danger mb-2">Lock</a>
+                                }
                             }
                         </div>
                     </div>
