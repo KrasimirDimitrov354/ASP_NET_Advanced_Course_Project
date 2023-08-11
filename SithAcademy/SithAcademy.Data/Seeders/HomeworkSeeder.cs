@@ -11,6 +11,7 @@ internal class HomeworkSeeder
 
         homework = new Homework()
         {
+            Id = Guid.Parse("487248b1-3d9d-4165-b005-eeb7d3fa56a0"),
             Content = "This is user DreshdaeOverseer's homework for the Trial of Passion.",
             Score = 10.0m,
             ReviewerName = "The Dark Side itself",
@@ -22,6 +23,7 @@ internal class HomeworkSeeder
 
         homework = new Homework()
         {
+            Id = Guid.Parse("701c939f-774a-46ce-91fb-c747d98ed4b3"),
             Content = "This is user DreshdaeOverseer's homework for the Trial of Strength.",
             Score = 10.0m,
             ReviewerName = "The Dark Side itself",
@@ -33,6 +35,7 @@ internal class HomeworkSeeder
 
         homework = new Homework()
         {
+            Id = Guid.Parse("6fe2e8be-cf3a-467d-b760-a2dd7e426dc4"),
             Content = "This is user DarkTempleOverseer's homework for the Trial of Power.",
             Score = 10.0m,
             ReviewerName = "The Dark Side itself",
@@ -44,6 +47,7 @@ internal class HomeworkSeeder
 
         homework = new Homework()
         {
+            Id = Guid.Parse("aa92f0ed-de04-4bf1-97b4-aa048c05fd61"),
             Content = "This is user DarkTempleOverseer's homework for the Trial of Victory.",
             Score = 10.0m,
             ReviewerName = "The Dark Side itself",
